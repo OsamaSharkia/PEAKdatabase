@@ -226,30 +226,97 @@
                 return;
             }
             
-            // Load user profile data
+            // Try to create or update the user profile
             try {
-                const { data: profile, error } = await supabaseClient
+                console.log("Checking for user profile...");
+                
+                // First check if profile exists
+                const { data: existingProfile, error: checkError } = await supabaseClient
                     .from('user_profiles')
                     .select('*')
                     .eq('id', currentUser.id)
-                    .single();
-                    
-                if (error) throw error;
+                    .maybeSingle();
                 
-                // Update profile form with user data
-                document.getElementById("profile-name").value = profile.name || "";
-                document.getElementById("profile-email").value = profile.email || "";
-                
-                if (profile.education_level) {
-                    document.getElementById("profile-education").value = profile.education_level;
+                if (checkError) {
+                    console.error("Error checking profile:", checkError);
+                    // Continue anyway, we'll try to create the profile
                 }
                 
-                if (profile.interests && Array.isArray(profile.interests)) {
-                    const interestsSelect = document.getElementById("profile-interests");
-                    for (let i = 0; i < interestsSelect.options.length; i++) {
-                        if (profile.interests.includes(interestsSelect.options[i].value)) {
-                            interestsSelect.options[i].selected = true;
+                // If profile doesn't exist, create it
+                if (!existingProfile) {
+                    console.log("Profile doesn't exist, creating it...");
+                    
+                    const { error: insertError } = await supabaseClient
+                        .from('user_profiles')
+                        .insert([
+                            { 
+                                id: currentUser.id,
+                                name: currentUser.name || '',
+                                email: currentUser.email,
+                                is_admin: false
+                            }
+                        ]);
+                        
+                    if (insertError) {
+                        console.error("Error creating profile:", insertError);
+                    } else {
+                        console.log("Profile created successfully");
+                    }
+                    
+                    // Get the newly created profile
+                    const { data: newProfile, error: newProfileError } = await supabaseClient
+                        .from('user_profiles')
+                        .select('*')
+                        .eq('id', currentUser.id)
+                        .single();
+                        
+                    if (newProfileError) {
+                        console.error("Error fetching new profile:", newProfileError);
+                    } else {
+                        console.log("New profile fetched:", newProfile);
+                        // Update the profile form with the new profile data
+                        document.getElementById("profile-name").value = newProfile.name || "";
+                        document.getElementById("profile-email").value = newProfile.email || "";
+                        
+                        if (newProfile.education_level) {
+                            document.getElementById("profile-education").value = newProfile.education_level;
                         }
+                        
+                        if (newProfile.interests && Array.isArray(newProfile.interests)) {
+                            const interestsSelect = document.getElementById("profile-interests");
+                            for (let i = 0; i < interestsSelect.options.length; i++) {
+                                if (newProfile.interests.includes(interestsSelect.options[i].value)) {
+                                    interestsSelect.options[i].selected = true;
+                                }
+                            }
+                        }
+                    }
+                } else {
+                    console.log("Profile exists:", existingProfile);
+                    // Update the profile form with existing data
+                    document.getElementById("profile-name").value = existingProfile.name || "";
+                    document.getElementById("profile-email").value = existingProfile.email || "";
+                    
+                    if (existingProfile.education_level) {
+                        document.getElementById("profile-education").value = existingProfile.education_level;
+                    }
+                    
+                    if (existingProfile.interests && Array.isArray(existingProfile.interests)) {
+                        const interestsSelect = document.getElementById("profile-interests");
+                        for (let i = 0; i < interestsSelect.options.length; i++) {
+                            if (existingProfile.interests.includes(interestsSelect.options[i].value)) {
+                                interestsSelect.options[i].selected = true;
+                            }
+                        }
+                    }
+                    
+                    // Update session storage with admin status if needed
+                    if (existingProfile.is_admin) {
+                        sessionStorage.setItem("isAdmin", "true");
+                        
+                        // Update currentUser in session storage
+                        currentUser.isAdmin = true;
+                        sessionStorage.setItem("currentUser", JSON.stringify(currentUser));
                     }
                 }
                 
@@ -315,14 +382,6 @@
                         }
                         
                         try {
-                            // First verify current password by signing in
-                            const { error: signInError } = await supabaseClient.auth.signInWithPassword({
-                                email: currentUser.email,
-                                password: currentPassword
-                            });
-                            
-                            if (signInError) throw new Error("Current password is incorrect");
-                            
                             // Update password
                             const { error } = await supabaseClient.auth.updateUser({
                                 password: newPassword
@@ -356,13 +415,8 @@
                                     
                                 if (profileError) throw profileError;
                                 
-                                // Delete user from auth
-                                const { error: authError } = await supabaseClient.auth.admin.deleteUser(currentUser.id);
-                                
-                                if (authError) {
-                                    // If admin delete fails, try to sign out at least
-                                    await supabaseClient.auth.signOut();
-                                }
+                                // Sign out
+                                await supabaseClient.auth.signOut();
                                 
                                 // Clear session storage
                                 sessionStorage.removeItem("isLoggedIn");
@@ -402,8 +456,8 @@
                 });
                 
             } catch (error) {
-                console.error("Profile loading error:", error);
-                alert("Failed to load profile data: " + error.message);
+                console.error("Profile page error:", error);
+                alert("There was an error loading your profile. Please try again later.");
             }
         });
     </script>

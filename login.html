@@ -72,6 +72,7 @@
                             <button type="submit" class="btn btn-primary">Login</button>
                             
                             <div class="form-links">
+                                <a href="#" id="magic-link-btn" class="magic-link">Login with Magic Link</a>
                                 <a href="#" class="forgot-password">Forgot your password?</a>
                             </div>
                         </form>
@@ -145,6 +146,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const loginForm = document.getElementById("login-form");
+            const magicLinkBtn = document.getElementById("magic-link-btn");
             
             if (loginForm) {
                 loginForm.addEventListener("submit", async (e) => {
@@ -155,6 +157,11 @@
                     const errorElement = document.getElementById("login-error");
                     
                     try {
+                        // Clear any previous errors
+                        if (errorElement) {
+                            errorElement.style.display = "none";
+                        }
+                        
                         // Sign in with Supabase
                         const { data, error } = await supabaseClient.auth.signInWithPassword({
                             email,
@@ -163,82 +170,63 @@
                         
                         if (error) throw error;
                         
-                        // Check if user profile exists
-                        const { data: profile, error: profileError } = await supabaseClient
-                            .from('user_profiles')
-                            .select('*')
-                            .eq('id', data.user.id)
-                            .single();
+                        // Store basic user data in session storage
+                        sessionStorage.setItem("isLoggedIn", "true");
                         
-                        // If profile doesn't exist, create it
-                        if (profileError && profileError.code === 'PGRST116') {
-                            const { error: insertError } = await supabaseClient
-                                .from('user_profiles')
-                                .insert([
-                                    { 
-                                        id: data.user.id,
-                                        name: data.user.user_metadata.name || '',
-                                        email: data.user.email,
-                                        is_admin: false
-                                    }
-                                ]);
-                                
-                            if (insertError) throw insertError;
-                            
-                            // Get the newly created profile
-                            const { data: newProfile, error: newProfileError } = await supabaseClient
-                                .from('user_profiles')
-                                .select('*')
-                                .eq('id', data.user.id)
-                                .single();
-                                
-                            if (newProfileError) throw newProfileError;
-                            
-                            // Store user data in session storage
-                            sessionStorage.setItem("isLoggedIn", "true");
-                            
-                            const userData = {
-                                id: data.user.id,
-                                name: data.user.user_metadata.name || '',
-                                email: data.user.email,
-                                isAdmin: false
-                            };
-                            
-                            sessionStorage.setItem("currentUser", JSON.stringify(userData));
-                            
-                            // Redirect to profile page
-                            window.location.href = "profile.html";
-                        } else if (profileError) {
-                            throw profileError;
-                        } else {
-                            // Profile exists, store user data in session storage
-                            sessionStorage.setItem("isLoggedIn", "true");
-                            
-                            const userData = {
-                                id: data.user.id,
-                                name: profile.name || data.user.user_metadata.name || '',
-                                email: data.user.email,
-                                isAdmin: profile.is_admin || false
-                            };
-                            
-                            sessionStorage.setItem("currentUser", JSON.stringify(userData));
-                            
-                            if (profile.is_admin) {
-                                sessionStorage.setItem("isAdmin", "true");
-                            }
-                            
-                            // Redirect based on user role
-                            if (profile.is_admin) {
-                                window.location.href = "admin.html";
-                            } else {
-                                window.location.href = "profile.html";
-                            }
-                        }
+                        const userData = {
+                            id: data.user.id,
+                            email: data.user.email,
+                            name: data.user.user_metadata.name || '',
+                            isAdmin: false
+                        };
+                        
+                        sessionStorage.setItem("currentUser", JSON.stringify(userData));
+                        
+                        // Redirect to profile page
+                        window.location.href = "profile.html";
                         
                     } catch (error) {
                         console.error("Login error:", error);
                         if (errorElement) {
                             errorElement.textContent = error.message || "Invalid login credentials";
+                            errorElement.style.display = "block";
+                        }
+                    }
+                });
+            }
+            
+            // Magic link functionality
+            if (magicLinkBtn) {
+                magicLinkBtn.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById("email").value.trim();
+                    const errorElement = document.getElementById("login-error");
+                    
+                    if (!email) {
+                        if (errorElement) {
+                            errorElement.textContent = "Please enter your email address";
+                            errorElement.style.display = "block";
+                        }
+                        return;
+                    }
+                    
+                    try {
+                        const { error } = await supabaseClient.auth.signInWithOtp({
+                            email: email,
+                            options: {
+                                emailRedirectTo: window.location.origin + '/auth-redirect.html'
+                            }
+                        });
+                        
+                        if (error) throw error;
+                        
+                        alert("Magic link sent! Please check your email.");
+                        
+                    } catch (error) {
+                        console.error("Magic link error:", error);
+                        if (errorElement) {
+                            errorElement.textContent = error.message || "Failed to send magic link";
                             errorElement.style.display = "block";
                         }
                     }
