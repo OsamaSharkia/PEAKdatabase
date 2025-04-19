@@ -1,5 +1,42 @@
-// Mobile Navigation Toggle
 document.addEventListener("DOMContentLoaded", () => {
+  // Toggle mobile menu
+  const menuToggle = document.getElementById("menu-toggle")
+  const navLinks = document.getElementById("nav-links")
+
+  if (menuToggle && navLinks) {
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.toggle("active")
+      menuToggle.classList.toggle("active")
+    })
+  }
+
+  // Close mobile menu when a link is clicked
+  const mobileLinks = document.querySelectorAll("#nav-links a")
+  if (mobileLinks.length > 0) {
+    mobileLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        if (navLinks.classList.contains("active")) {
+          navLinks.classList.remove("active")
+          if (menuToggle) menuToggle.classList.remove("active")
+        }
+      })
+    })
+  }
+
+  // Close mobile menu when clicking outside
+  document.addEventListener("click", (event) => {
+    if (navLinks && menuToggle) {
+      if (
+        !navLinks.contains(event.target) &&
+        !menuToggle.contains(event.target) &&
+        navLinks.classList.contains("active")
+      ) {
+        navLinks.classList.remove("active")
+        menuToggle.classList.remove("active")
+      }
+    }
+  })
+
   console.log("Script.js loaded")
 
   // Check if user is logged in (use sessionStorage for tab-specific login)
@@ -9,50 +46,53 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Check Supabase session if available
   if (window.supabaseClient) {
-      try {
-          // Check current session
-          window.supabaseClient.auth.getSession().then(({ data, error }) => {
-              if (error) {
-                  console.error("Session check error:", error);
-                  return;
+    try {
+      // Check current session
+      window.supabaseClient.auth.getSession().then(({ data, error }) => {
+        if (error) {
+          console.error("Session check error:", error)
+          return
+        }
+
+        if (data.session) {
+          // User is logged in with Supabase
+          window.supabaseClient
+            .from("user_profiles")
+            .select("*")
+            .eq("id", data.session.user.id)
+            .single()
+            .then(({ data: profile, error: profileError }) => {
+              if (profileError) {
+                console.error("Profile fetch error:", profileError)
+                return
               }
-              
-              if (data.session) {
-                  // User is logged in with Supabase
-                  window.supabaseClient
-                      .from('user_profiles')
-                      .select('*')
-                      .eq('id', data.session.user.id)
-                      .single()
-                      .then(({ data: profile, error: profileError }) => {
-                          if (profileError) {
-                              console.error("Profile fetch error:", profileError);
-                              return;
-                          }
-                          
-                          if (profile) {
-                              // Update session storage
-                              sessionStorage.setItem("isLoggedIn", "true");
-                              sessionStorage.setItem("currentUser", JSON.stringify({
-                                  id: data.session.user.id,
-                                  name: profile.name,
-                                  email: profile.email,
-                                  isAdmin: profile.is_admin
-                              }));
-                              
-                              if (profile.is_admin) {
-                                  sessionStorage.setItem("isAdmin", "true");
-                              }
-                              
-                              // Update navigation
-                              updateNavigation();
-                          }
-                      });
+
+              if (profile) {
+                // Update session storage
+                sessionStorage.setItem("isLoggedIn", "true")
+                sessionStorage.setItem(
+                  "currentUser",
+                  JSON.stringify({
+                    id: data.session.user.id,
+                    name: profile.name,
+                    email: profile.email,
+                    isAdmin: profile.is_admin,
+                  }),
+                )
+
+                if (profile.is_admin) {
+                  sessionStorage.setItem("isAdmin", "true")
+                }
+
+                // Update navigation
+                updateNavigation()
               }
-          });
-      } catch (error) {
-          console.error("Session check error:", error);
-      }
+            })
+        }
+      })
+    } catch (error) {
+      console.error("Session check error:", error)
+    }
   }
 
   // Store current authentication state in sessionStorage to make it tab-specific
@@ -120,16 +160,16 @@ document.addEventListener("DOMContentLoaded", () => {
     if (logoutLink) {
       logoutLink.addEventListener("click", async (e) => {
         e.preventDefault()
-        
+
         // Sign out from Supabase if available
         if (window.supabaseClient) {
           try {
-              await window.supabaseClient.auth.signOut();
+            await window.supabaseClient.auth.signOut()
           } catch (error) {
-              console.error("Supabase logout error:", error);
+            console.error("Supabase logout error:", error)
           }
         }
-        
+
         // Clear both sessionStorage and localStorage
         sessionStorage.removeItem("isLoggedIn")
         sessionStorage.removeItem("currentUser")
@@ -147,24 +187,24 @@ document.addEventListener("DOMContentLoaded", () => {
   updateNavigation()
 
   // Mobile menu toggle
-  const menuToggle = document.getElementById("menu-toggle")
+  const menuToggle2 = document.getElementById("menu-toggle")
   const navLinks2 = document.getElementById("nav-links")
 
-  if (menuToggle && navLinks2) {
-    menuToggle.addEventListener("click", () => {
+  if (menuToggle2 && navLinks2) {
+    menuToggle2.addEventListener("click", () => {
       navLinks2.classList.toggle("active")
-      menuToggle.classList.toggle("active")
+      menuToggle2.classList.toggle("active")
     })
   }
 
   // Close menu when clicking outside
   document.addEventListener("click", (event) => {
     const isClickInsideNav = navLinks2?.contains(event.target)
-    const isClickOnToggle = menuToggle?.contains(event.target)
+    const isClickOnToggle = menuToggle2?.contains(event.target)
 
     if (navLinks2?.classList.contains("active") && !isClickInsideNav && !isClickOnToggle) {
       navLinks2.classList.remove("active")
-      menuToggle?.classList.remove("active")
+      menuToggle2?.classList.remove("active")
     }
   })
 
