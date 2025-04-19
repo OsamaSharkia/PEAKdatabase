@@ -1,4 +1,18 @@
 document.addEventListener("DOMContentLoaded", () => {
+  console.log("Script.js loaded")
+
+  // Check if we're on a protected page
+  const currentPath = window.location.pathname
+  const currentPage = currentPath.split("/").pop() || "index.html"
+  const protectedPages = ["profile.html", "dashboard.html"]
+
+  // Immediate check for protected pages
+  if (protectedPages.includes(currentPage) && sessionStorage.getItem("isLoggedIn") !== "true") {
+    console.log("Protected page accessed without login, redirecting")
+    window.location.href = "login.html"
+    return
+  }
+
   // Toggle mobile menu
   const menuToggle = document.getElementById("menu-toggle")
   const navLinks = document.getElementById("nav-links")
