@@ -42,8 +42,7 @@
         </section>
 
         <div class="container">
-            <div id="error-message" style="display: none; background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;"></div>
-            <div id="success-message" style="display: none; background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 4px;"></div>
+            <div id="alert-box" style="display: none; padding: 15px; margin-bottom: 20px; border-radius: 4px;"></div>
             
             <div class="card">
                 <div class="card-header">
@@ -89,8 +88,8 @@
                                 <label for="notify-events">Receive information about events and workshops</label>
                             </div>
                         </div>
-                        <button type="submit" class="btn btn-primary" id="save-changes">Save Changes</button>
-                        <button type="button" class="btn btn-danger" id="delete-account" style="margin-top: 20px;">Delete My Account</button>
+                        <button type="submit" class="btn btn-primary" id="save-btn">Save Changes</button>
+                        <button type="button" class="btn btn-danger" id="delete-btn" style="margin-top: 20px;">Delete My Account</button>
                     </form>
                 </div>
             </div>
@@ -128,8 +127,10 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/script.js"></script>
+    <script src="auth-handler.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded', async function() {
             // Initialize Supabase
             const supabaseUrl = 'https://znyoofmcjiknvevezbhb.supabase.co';
             const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0';
@@ -144,39 +145,51 @@
             const notifyUpdates = document.getElementById('notify-updates');
             const notifyResources = document.getElementById('notify-resources');
             const notifyEvents = document.getElementById('notify-events');
-            const saveChangesBtn = document.getElementById('save-changes');
-            const deleteAccountBtn = document.getElementById('delete-account');
-            const logoutBtn = document.getElementById('logout-btn');
-            const errorMessage = document.getElementById('error-message');
-            const successMessage = document.getElementById('success-message');
+            const saveBtn = document.getElementById('save-btn');
+            const deleteBtn = document.getElementById('delete-btn');
+            const alertBox = document.getElementById('alert-box');
             
-            // Check if user is logged in
-            async function checkAuth() {
-                const { data: { session }, error } = await supabase.auth.getSession();
+            // Show alert message
+            function showAlert(message, type = 'success') {
+                alertBox.textContent = message;
+                alertBox.style.display = 'block';
                 
-                if (error || !session) {
-                    window.location.href = 'login.html';
-                    return null;
+                if (type === 'success') {
+                    alertBox.style.backgroundColor = '#d4edda';
+                    alertBox.style.color = '#155724';
+                } else {
+                    alertBox.style.backgroundColor = '#f8d7da';
+                    alertBox.style.color = '#721c24';
                 }
                 
-                return session;
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    alertBox.style.display = 'none';
+                }, 5000);
             }
             
             // Load user profile
             async function loadProfile() {
-                const session = await checkAuth();
-                if (!session) return;
-                
                 try {
-                    const { data: profile, error } = await supabase
+                    // Get user session
+                    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+                    
+                    if (sessionError || !session) {
+                        // Not logged in, redirect to login
+                        window.location.href = 'login.html';
+                        return;
+                    }
+                    
+                    // Get user profile
+                    const { data: profile, error: profileError } = await supabase
                         .from('user_profiles')
                         .select('*')
                         .eq('id', session.user.id)
                         .single();
                     
-                    if (error) {
-                        showError('Error loading profile data');
-                        console.error(error);
+                    if (profileError) {
+                        showAlert('Error loading profile: ' + profileError.message, 'error');
+                        console.error(profileError);
                         return;
                     }
                     
@@ -200,134 +213,83 @@
                             console.error('Error parsing preferences', e);
                         }
                     }
-                } catch (err) {
-                    showError('An unexpected error occurred');
-                    console.error(err);
+                    
+                    // Set up form submission
+                    profileForm.addEventListener('submit', async function(e) {
+                        e.preventDefault();
+                        saveBtn.disabled = true;
+                        saveBtn.textContent = 'Saving...';
+                        
+                        try {
+                            const preferences = {
+                                updates: notifyUpdates.checked,
+                                resources: notifyResources.checked,
+                                events: notifyEvents.checked
+                            };
+                            
+                            const { error } = await supabase
+                                .from('user_profiles')
+                                .update({
+                                    name: fullNameInput.value.trim(),
+                                    phone: phoneInput.value.trim(),
+                                    language: languageSelect.value,
+                                    preferences: JSON.stringify(preferences),
+                                    updated_at: new Date().toISOString()
+                                })
+                                .eq('id', session.user.id);
+                            
+                            if (error) {
+                                throw error;
+                            }
+                            
+                            showAlert('Profile updated successfully');
+                        } catch (error) {
+                            console.error('Error updating profile:', error);
+                            showAlert('Failed to update profile: ' + error.message, 'error');
+                        } finally {
+                            saveBtn.disabled = false;
+                            saveBtn.textContent = 'Save Changes';
+                        }
+                    });
+                    
+                    // Set up delete account
+                    deleteBtn.addEventListener('click', async function() {
+                        if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                            return;
+                        }
+                        
+                        deleteBtn.disabled = true;
+                        deleteBtn.textContent = 'Deleting...';
+                        
+                        try {
+                            // First delete the profile
+                            const { error: profileError } = await supabase
+                                .from('user_profiles')
+                                .delete()
+                                .eq('id', session.user.id);
+                            
+                            if (profileError) {
+                                throw profileError;
+                            }
+                            
+                            // Sign out
+                            await supabase.auth.signOut();
+                            localStorage.removeItem('isLoggedIn');
+                            
+                            alert('Your account has been deleted successfully');
+                            window.location.href = 'index.html';
+                        } catch (error) {
+                            console.error('Error deleting account:', error);
+                            showAlert('Failed to delete account: ' + error.message, 'error');
+                            deleteBtn.disabled = false;
+                            deleteBtn.textContent = 'Delete My Account';
+                        }
+                    });
+                    
+                } catch (error) {
+                    console.error('Unexpected error:', error);
+                    showAlert('An unexpected error occurred', 'error');
                 }
-            }
-            
-            // Save profile changes
-            profileForm.addEventListener('submit', async function(e) {
-                e.preventDefault();
-                
-                const session = await checkAuth();
-                if (!session) return;
-                
-                // Disable save button
-                saveChangesBtn.disabled = true;
-                saveChangesBtn.textContent = 'Saving...';
-                
-                try {
-                    const preferences = {
-                        updates: notifyUpdates.checked,
-                        resources: notifyResources.checked,
-                        events: notifyEvents.checked
-                    };
-                    
-                    const { error } = await supabase
-                        .from('user_profiles')
-                        .update({
-                            name: fullNameInput.value.trim(),
-                            phone: phoneInput.value.trim(),
-                            language: languageSelect.value,
-                            preferences: JSON.stringify(preferences),
-                            updated_at: new Date().toISOString()
-                        })
-                        .eq('id', session.user.id);
-                    
-                    if (error) {
-                        showError('Failed to save changes');
-                        console.error(error);
-                    } else {
-                        showSuccess('Profile updated successfully');
-                    }
-                } catch (err) {
-                    showError('An unexpected error occurred');
-                    console.error(err);
-                } finally {
-                    // Re-enable save button
-                    saveChangesBtn.disabled = false;
-                    saveChangesBtn.textContent = 'Save Changes';
-                }
-            });
-            
-            // Delete account
-            deleteAccountBtn.addEventListener('click', async function() {
-                if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                    return;
-                }
-                
-                const session = await checkAuth();
-                if (!session) return;
-                
-                // Disable delete button
-                deleteAccountBtn.disabled = true;
-                deleteAccountBtn.textContent = 'Deleting...';
-                
-                try {
-                    // First delete the profile
-                    const { error: profileError } = await supabase
-                        .from('user_profiles')
-                        .delete()
-                        .eq('id', session.user.id);
-                    
-                    if (profileError) {
-                        showError('Failed to delete account');
-                        console.error(profileError);
-                        deleteAccountBtn.disabled = false;
-                        deleteAccountBtn.textContent = 'Delete My Account';
-                        return;
-                    }
-                    
-                    // Then sign out
-                    await supabase.auth.signOut();
-                    
-                    // Redirect to home page
-                    alert('Your account has been deleted successfully');
-                    window.location.href = 'index.html';
-                    
-                } catch (err) {
-                    showError('An unexpected error occurred');
-                    console.error(err);
-                    deleteAccountBtn.disabled = false;
-                    deleteAccountBtn.textContent = 'Delete My Account';
-                }
-            });
-            
-            // Logout
-            logoutBtn.addEventListener('click', async function(e) {
-                e.preventDefault();
-                
-                try {
-                    await supabase.auth.signOut();
-                    window.location.href = 'index.html';
-                } catch (err) {
-                    showError('Failed to log out');
-                    console.error(err);
-                }
-            });
-            
-            // Helper functions
-            function showError(message) {
-                errorMessage.textContent = message;
-                errorMessage.style.display = 'block';
-                successMessage.style.display = 'none';
-                
-                // Hide after 5 seconds
-                setTimeout(() => {
-                    errorMessage.style.display = 'none';
-                }, 5000);
-            }
-            
-            function showSuccess(message) {
-                successMessage.textContent = message;
-                successMessage.style.display = 'block';
-                errorMessage.style.display = 'none';
-                
-                // Hide after 5 seconds
-                setTimeout(() => {
-                    successMessage.style.display = 'none';
-                }, 5000);
             }
             
             // Load profile on page load
