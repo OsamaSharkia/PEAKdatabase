@@ -4,6 +4,9 @@ const supabaseKey =
   "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0"
 const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey)
 
+// Make supabaseClient globally available
+window.supabaseClient = supabaseClient
+
 // Check if user is logged in on page load
 document.addEventListener("DOMContentLoaded", async () => {
   try {
@@ -23,6 +26,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Current page
     const currentPath = window.location.pathname
     const currentPage = currentPath.split("/").pop() || "index.html"
+
+    console.log("Current page:", currentPage)
+    console.log("Session exists:", !!session)
 
     // Handle login/logout specific logic
     if (session) {
@@ -52,6 +58,18 @@ document.addEventListener("DOMContentLoaded", async () => {
         if (profile.is_admin) {
           sessionStorage.setItem("isAdmin", "true")
         }
+      } else {
+        // Still store basic user data even if profile not found
+        sessionStorage.setItem("isLoggedIn", "true")
+        sessionStorage.setItem(
+          "currentUser",
+          JSON.stringify({
+            id: session.user.id,
+            email: session.user.email,
+            name: "User",
+            isAdmin: false,
+          }),
+        )
       }
 
       // If on login page, redirect to profile
@@ -72,13 +90,79 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       // If on a page that requires auth, redirect to login
       if (authRequiredPages.includes(currentPage)) {
+        console.log("Redirecting to login page")
         window.location.href = "login.html"
+        return
       }
     }
+
+    // Update navigation based on login status
+    updateNavigation(!!session)
   } catch (err) {
     console.error("Unexpected error in auth check:", err)
   }
 })
+
+// Update navigation based on auth status
+function updateNavigation(isLoggedIn) {
+  const navLinks = document.getElementById("nav-links")
+  if (!navLinks) return
+
+  // Find all links
+  const links = navLinks.getElementsByTagName("a")
+  let loginLink, registerLink, profileLink, logoutLink
+
+  // Find relevant links
+  for (let i = 0; i < links.length; i++) {
+    const link = links[i]
+    if (link.textContent.trim() === "Login") loginLink = link
+    if (link.textContent.trim() === "Register") registerLink = link
+    if (link.textContent.trim() === "My Profile") profileLink = link
+    if (link.textContent.trim() === "Logout") logoutLink = link
+  }
+
+  if (isLoggedIn) {
+    // User is logged in - show profile and logout
+    if (loginLink) {
+      loginLink.textContent = "My Profile"
+      loginLink.href = "profile.html"
+    }
+
+    if (registerLink) {
+      registerLink.textContent = "Logout"
+      registerLink.href = "#"
+      registerLink.id = "logout-btn"
+
+      // Add logout functionality
+      registerLink.addEventListener("click", async (e) => {
+        e.preventDefault()
+        await supabaseClient.auth.signOut()
+
+        // Clear session data
+        sessionStorage.removeItem("isLoggedIn")
+        sessionStorage.removeItem("currentUser")
+        sessionStorage.removeItem("isAdmin")
+        localStorage.removeItem("isLoggedIn")
+        localStorage.removeItem("currentUser")
+        localStorage.removeItem("isAdmin")
+
+        window.location.href = "index.html"
+      })
+    }
+  } else {
+    // User is logged out - show login and register
+    if (profileLink) {
+      profileLink.textContent = "Login"
+      profileLink.href = "login.html"
+    }
+
+    if (logoutLink) {
+      logoutLink.textContent = "Register"
+      logoutLink.href = "register.html"
+      logoutLink.id = ""
+    }
+  }
+}
 
 // Handle login form submission
 if (document.getElementById("login-form")) {
