@@ -130,9 +130,36 @@
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
+            // Process the authentication hash
+            if (window.location.hash) {
+                // The hash contains the access token and other auth info
+                console.log("Processing authentication...");
+                
+                // Initialize Supabase client
+                const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co";
+                const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0";
+                const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
+                
+                // Extract the hash parameters
+                const hashParams = new URLSearchParams(window.location.hash.substring(1));
+                const accessToken = hashParams.get("access_token");
+                const refreshToken = hashParams.get("refresh_token");
+                
+                if (accessToken) {
+                    // Set the session with the tokens
+                    supabase.auth.setSession({
+                        access_token: accessToken,
+                        refresh_token: refreshToken
+                    }).then(() => {
+                        console.log("Session set successfully");
+                    }).catch(error => {
+                        console.error("Error setting session:", error);
+                    });
+                }
+            }
+            
             // Redirect to login page after 5 seconds
             setTimeout(function() {
                 window.location.href = "login.html";
