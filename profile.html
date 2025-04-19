@@ -5,116 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My Profile - PEAK</title>
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        /* Simple profile styles */
-        .profile-container {
-            max-width: 800px;
-            margin: 2rem auto;
-            background-color: #fff;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        
-        .profile-header {
-            background-color: #2c6da3;
-            color: white;
-            padding: 2rem;
-        }
-        
-        .profile-content {
-            padding: 2rem;
-        }
-        
-        .form-group {
-            margin-bottom: 1.5rem;
-        }
-        
-        .form-group label {
-            display: block;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        
-        .form-control {
-            width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
-            font-size: 1rem;
-        }
-        
-        .btn {
-            padding: 0.75rem 1.5rem;
-            border: none;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.2s;
-        }
-        
-        .btn-primary {
-            background-color: #2c6da3;
-            color: white;
-        }
-        
-        .btn-danger {
-            background-color: #dc3545;
-            color: white;
-            margin-top: 2rem;
-        }
-        
-        .checkbox-group {
-            margin: 0.5rem 0;
-        }
-        
-        .checkbox-group input {
-            margin-right: 0.5rem;
-        }
-        
-        .notification {
-            padding: 1rem;
-            margin-bottom: 1rem;
-            border-radius: 4px;
-        }
-        
-        .notification.success {
-            background-color: #d4edda;
-            color: #155724;
-        }
-        
-        .notification.error {
-            background-color: #f8d7da;
-            color: #721c24;
-        }
-        
-        .loading-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: rgba(255, 255, 255, 0.8);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-        }
-        
-        .loading-spinner {
-            border: 5px solid #f3f3f3;
-            border-top: 5px solid #2c6da3;
-            border-radius: 50%;
-            width: 50px;
-            height: 50px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-    </style>
 </head>
 <body>
     <header>
@@ -137,7 +27,7 @@
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="profile.html" class="active">My Profile</a></li>
-                    <li><a href="#" id="logout-link">Logout</a></li>
+                    <li><a href="#" id="logout-btn">Logout</a></li>
                 </ul>
             </nav>
         </div>
@@ -152,34 +42,30 @@
         </section>
 
         <div class="container">
-            <div id="notification-area"></div>
+            <div id="error-message" style="display: none; background-color: #f8d7da; color: #721c24; padding: 10px; margin-bottom: 20px; border-radius: 4px;"></div>
+            <div id="success-message" style="display: none; background-color: #d4edda; color: #155724; padding: 10px; margin-bottom: 20px; border-radius: 4px;"></div>
             
-            <div class="profile-container">
-                <div class="profile-header">
-                    <h2 id="profile-name">My Profile</h2>
-                    <p id="profile-email"></p>
+            <div class="card">
+                <div class="card-header">
+                    <h2>My Profile</h2>
                 </div>
-                
-                <div class="profile-content">
+                <div class="card-body">
                     <form id="profile-form">
                         <div class="form-group">
-                            <label for="name">Full Name</label>
-                            <input type="text" id="name" name="name" class="form-control">
+                            <label for="full-name">Full Name</label>
+                            <input type="text" id="full-name" class="form-control">
                         </div>
-                        
                         <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <input type="email" id="email" name="email" class="form-control" disabled>
+                            <label for="email-address">Email Address</label>
+                            <input type="email" id="email-address" class="form-control" disabled>
                         </div>
-                        
                         <div class="form-group">
-                            <label for="phone">Phone Number (optional)</label>
-                            <input type="tel" id="phone" name="phone" class="form-control">
+                            <label for="phone-number">Phone Number (optional)</label>
+                            <input type="tel" id="phone-number" class="form-control">
                         </div>
-                        
                         <div class="form-group">
-                            <label for="language">Preferred Language</label>
-                            <select id="language" name="language" class="form-control">
+                            <label for="preferred-language">Preferred Language</label>
+                            <select id="preferred-language" class="form-control">
                                 <option value="en">English</option>
                                 <option value="ar">Arabic</option>
                                 <option value="fr">French</option>
@@ -188,36 +74,26 @@
                                 <option value="tr">Turkish</option>
                             </select>
                         </div>
-                        
                         <div class="form-group">
                             <label>Email Notifications</label>
                             <div class="checkbox-group">
-                                <input type="checkbox" id="notify-updates" name="notify-updates" checked>
+                                <input type="checkbox" id="notify-updates" checked>
                                 <label for="notify-updates">Receive updates about educational opportunities</label>
                             </div>
                             <div class="checkbox-group">
-                                <input type="checkbox" id="notify-resources" name="notify-resources" checked>
+                                <input type="checkbox" id="notify-resources" checked>
                                 <label for="notify-resources">Receive notifications about new resources</label>
                             </div>
                             <div class="checkbox-group">
-                                <input type="checkbox" id="notify-events" name="notify-events" checked>
+                                <input type="checkbox" id="notify-events" checked>
                                 <label for="notify-events">Receive information about events and workshops</label>
                             </div>
                         </div>
-                        
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
-                        
-                        <div>
-                            <button type="button" id="delete-account-btn" class="btn btn-danger">Delete My Account</button>
-                        </div>
+                        <button type="submit" class="btn btn-primary" id="save-changes">Save Changes</button>
+                        <button type="button" class="btn btn-danger" id="delete-account" style="margin-top: 20px;">Delete My Account</button>
                     </form>
                 </div>
             </div>
-        </div>
-        
-        <!-- Loading Overlay -->
-        <div id="loading-overlay" class="loading-overlay">
-            <div class="loading-spinner"></div>
         </div>
     </main>
 
@@ -253,193 +129,210 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
-        // Initialize Supabase client
-        const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co";
-        const supabaseAnonKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0";
-        
-        // Fix for the supabase variable name conflict
-        const supabaseClient = window.supabase.createClient(supabaseUrl, supabaseAnonKey);
-        
-        // DOM elements
-        const loadingOverlay = document.getElementById('loading-overlay');
-        const profileForm = document.getElementById('profile-form');
-        const deleteAccountBtn = document.getElementById('delete-account-btn');
-        const logoutLink = document.getElementById('logout-link');
-        const notificationArea = document.getElementById('notification-area');
-        
-        // Show loading overlay
-        function showLoading() {
-            loadingOverlay.style.display = 'flex';
-        }
-        
-        // Hide loading overlay
-        function hideLoading() {
-            loadingOverlay.style.display = 'none';
-        }
-        
-        // Show notification
-        function showNotification(message, type = 'success') {
-            const notification = document.createElement('div');
-            notification.className = `notification ${type}`;
-            notification.textContent = message;
+        document.addEventListener('DOMContentLoaded', function() {
+            // Initialize Supabase
+            const supabaseUrl = 'https://znyoofmcjiknvevezbhb.supabase.co';
+            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0';
+            const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
             
-            notificationArea.innerHTML = '';
-            notificationArea.appendChild(notification);
+            // Elements
+            const profileForm = document.getElementById('profile-form');
+            const fullNameInput = document.getElementById('full-name');
+            const emailInput = document.getElementById('email-address');
+            const phoneInput = document.getElementById('phone-number');
+            const languageSelect = document.getElementById('preferred-language');
+            const notifyUpdates = document.getElementById('notify-updates');
+            const notifyResources = document.getElementById('notify-resources');
+            const notifyEvents = document.getElementById('notify-events');
+            const saveChangesBtn = document.getElementById('save-changes');
+            const deleteAccountBtn = document.getElementById('delete-account');
+            const logoutBtn = document.getElementById('logout-btn');
+            const errorMessage = document.getElementById('error-message');
+            const successMessage = document.getElementById('success-message');
             
-            // Remove after 5 seconds
-            setTimeout(() => {
-                notification.remove();
-            }, 5000);
-        }
-        
-        // Initialize profile page
-        async function initProfile() {
-            showLoading();
-            
-            try {
-                // Check if user is logged in
-                const { data: { session }, error: sessionError } = await supabaseClient.auth.getSession();
+            // Check if user is logged in
+            async function checkAuth() {
+                const { data: { session }, error } = await supabase.auth.getSession();
                 
-                if (sessionError || !session) {
-                    // Redirect to login page if not logged in
+                if (error || !session) {
                     window.location.href = 'login.html';
-                    return;
+                    return null;
                 }
                 
-                // Get user profile data
-                const { data: profile, error: profileError } = await supabaseClient
-                    .from('user_profiles')
-                    .select('*')
-                    .eq('id', session.user.id)
-                    .single();
+                return session;
+            }
+            
+            // Load user profile
+            async function loadProfile() {
+                const session = await checkAuth();
+                if (!session) return;
                 
-                if (profileError) {
-                    console.error('Error fetching profile:', profileError);
-                    showNotification('Error loading profile data. Please try again later.', 'error');
-                    hideLoading();
-                    return;
-                }
-                
-                // Populate profile data
-                document.getElementById('profile-name').textContent = profile.name || 'My Profile';
-                document.getElementById('profile-email').textContent = session.user.email;
-                document.getElementById('name').value = profile.name || '';
-                document.getElementById('email').value = session.user.email;
-                document.getElementById('phone').value = profile.phone || '';
-                
-                if (profile.language) {
-                    document.getElementById('language').value = profile.language;
-                }
-                
-                // Populate notification preferences if they exist
-                if (profile.preferences) {
-                    try {
-                        const preferences = JSON.parse(profile.preferences);
-                        document.getElementById('notify-updates').checked = preferences.updates !== false;
-                        document.getElementById('notify-resources').checked = preferences.resources !== false;
-                        document.getElementById('notify-events').checked = preferences.events !== false;
-                    } catch (e) {
-                        console.error('Error parsing preferences:', e);
-                    }
-                }
-                
-                // Set up form submission
-                profileForm.addEventListener('submit', async (e) => {
-                    e.preventDefault();
-                    showLoading();
+                try {
+                    const { data: profile, error } = await supabase
+                        .from('user_profiles')
+                        .select('*')
+                        .eq('id', session.user.id)
+                        .single();
                     
-                    try {
-                        const name = document.getElementById('name').value.trim();
-                        const phone = document.getElementById('phone').value.trim();
-                        const language = document.getElementById('language').value;
-                        
-                        // Get notification preferences
-                        const preferences = {
-                            updates: document.getElementById('notify-updates').checked,
-                            resources: document.getElementById('notify-resources').checked,
-                            events: document.getElementById('notify-events').checked
-                        };
-                        
-                        const { error } = await supabaseClient
-                            .from('user_profiles')
-                            .update({
-                                name,
-                                phone,
-                                language,
-                                preferences: JSON.stringify(preferences),
-                                updated_at: new Date().toISOString()
-                            })
-                            .eq('id', session.user.id);
-                        
-                        if (error) throw error;
-                        
-                        document.getElementById('profile-name').textContent = name || 'My Profile';
-                        showNotification('Profile updated successfully');
-                    } catch (error) {
-                        console.error('Error updating profile:', error);
-                        showNotification('Failed to update profile. Please try again.', 'error');
-                    } finally {
-                        hideLoading();
+                    if (error) {
+                        showError('Error loading profile data');
+                        console.error(error);
+                        return;
                     }
-                });
-                
-                // Set up delete account button
-                deleteAccountBtn.addEventListener('click', async () => {
-                    if (confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
-                        showLoading();
-                        
+                    
+                    // Populate form
+                    fullNameInput.value = profile.name || '';
+                    emailInput.value = session.user.email;
+                    phoneInput.value = profile.phone || '';
+                    
+                    if (profile.language) {
+                        languageSelect.value = profile.language;
+                    }
+                    
+                    // Set notification preferences
+                    if (profile.preferences) {
                         try {
-                            // First delete user profile data
-                            const { error: profileError } = await supabaseClient
-                                .from('user_profiles')
-                                .delete()
-                                .eq('id', session.user.id);
-                            
-                            if (profileError) {
-                                console.error('Error deleting profile:', profileError);
-                                showNotification('Error deleting account. Please contact support.', 'error');
-                                hideLoading();
-                                return;
-                            }
-                            
-                            // Sign out
-                            await supabaseClient.auth.signOut();
-                            
-                            alert('Your account has been deleted successfully.');
-                            window.location.href = 'index.html';
-                        } catch (error) {
-                            console.error('Error deleting account:', error);
-                            showNotification('Failed to delete account. Please try again or contact support.', 'error');
-                            hideLoading();
+                            const prefs = JSON.parse(profile.preferences);
+                            notifyUpdates.checked = prefs.updates !== false;
+                            notifyResources.checked = prefs.resources !== false;
+                            notifyEvents.checked = prefs.events !== false;
+                        } catch (e) {
+                            console.error('Error parsing preferences', e);
                         }
                     }
-                });
-                
-                // Set up logout link
-                logoutLink.addEventListener('click', async (e) => {
-                    e.preventDefault();
-                    showLoading();
-                    
-                    try {
-                        await supabaseClient.auth.signOut();
-                        window.location.href = 'login.html';
-                    } catch (error) {
-                        console.error('Error signing out:', error);
-                        showNotification('Failed to sign out. Please try again.', 'error');
-                        hideLoading();
-                    }
-                });
-                
-            } catch (error) {
-                console.error('Error initializing profile:', error);
-                showNotification('An unexpected error occurred. Please try again later.', 'error');
-            } finally {
-                hideLoading();
+                } catch (err) {
+                    showError('An unexpected error occurred');
+                    console.error(err);
+                }
             }
-        }
-        
-        // Initialize when DOM is loaded
-        document.addEventListener('DOMContentLoaded', initProfile);
+            
+            // Save profile changes
+            profileForm.addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                const session = await checkAuth();
+                if (!session) return;
+                
+                // Disable save button
+                saveChangesBtn.disabled = true;
+                saveChangesBtn.textContent = 'Saving...';
+                
+                try {
+                    const preferences = {
+                        updates: notifyUpdates.checked,
+                        resources: notifyResources.checked,
+                        events: notifyEvents.checked
+                    };
+                    
+                    const { error } = await supabase
+                        .from('user_profiles')
+                        .update({
+                            name: fullNameInput.value.trim(),
+                            phone: phoneInput.value.trim(),
+                            language: languageSelect.value,
+                            preferences: JSON.stringify(preferences),
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', session.user.id);
+                    
+                    if (error) {
+                        showError('Failed to save changes');
+                        console.error(error);
+                    } else {
+                        showSuccess('Profile updated successfully');
+                    }
+                } catch (err) {
+                    showError('An unexpected error occurred');
+                    console.error(err);
+                } finally {
+                    // Re-enable save button
+                    saveChangesBtn.disabled = false;
+                    saveChangesBtn.textContent = 'Save Changes';
+                }
+            });
+            
+            // Delete account
+            deleteAccountBtn.addEventListener('click', async function() {
+                if (!confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+                    return;
+                }
+                
+                const session = await checkAuth();
+                if (!session) return;
+                
+                // Disable delete button
+                deleteAccountBtn.disabled = true;
+                deleteAccountBtn.textContent = 'Deleting...';
+                
+                try {
+                    // First delete the profile
+                    const { error: profileError } = await supabase
+                        .from('user_profiles')
+                        .delete()
+                        .eq('id', session.user.id);
+                    
+                    if (profileError) {
+                        showError('Failed to delete account');
+                        console.error(profileError);
+                        deleteAccountBtn.disabled = false;
+                        deleteAccountBtn.textContent = 'Delete My Account';
+                        return;
+                    }
+                    
+                    // Then sign out
+                    await supabase.auth.signOut();
+                    
+                    // Redirect to home page
+                    alert('Your account has been deleted successfully');
+                    window.location.href = 'index.html';
+                    
+                } catch (err) {
+                    showError('An unexpected error occurred');
+                    console.error(err);
+                    deleteAccountBtn.disabled = false;
+                    deleteAccountBtn.textContent = 'Delete My Account';
+                }
+            });
+            
+            // Logout
+            logoutBtn.addEventListener('click', async function(e) {
+                e.preventDefault();
+                
+                try {
+                    await supabase.auth.signOut();
+                    window.location.href = 'index.html';
+                } catch (err) {
+                    showError('Failed to log out');
+                    console.error(err);
+                }
+            });
+            
+            // Helper functions
+            function showError(message) {
+                errorMessage.textContent = message;
+                errorMessage.style.display = 'block';
+                successMessage.style.display = 'none';
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    errorMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+            function showSuccess(message) {
+                successMessage.textContent = message;
+                successMessage.style.display = 'block';
+                errorMessage.style.display = 'none';
+                
+                // Hide after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+            // Load profile on page load
+            loadProfile();
+        });
     </script>
 </body>
 </html>
