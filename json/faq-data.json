@@ -1,0 +1,44 @@
+[
+  {
+    "id": "1",
+    "question": "How do I apply to universities in Kent?",
+    "answer": "Most undergraduate courses in the UK require application through UCAS (Universities and Colleges Admissions Service). You'll need to create an account on the UCAS website, search for courses at Kent universities, and submit your application before the deadline.",
+    "category": "admissions",
+    "approved": true
+  },
+  {
+    "id": "2",
+    "question": "What are the application deadlines?",
+    "answer": "For undergraduate courses starting in September 2025, the main UCAS deadline is January 31st, 2025. However, some courses may have earlier deadlines, especially for international students. It's best to check specific university websites for the most accurate information.",
+    "category": "admissions",
+    "approved": true
+  },
+  {
+    "id": "3",
+    "question": "What English language qualifications do I need?",
+    "answer": "Most universities require IELTS Academic with a score of 6.0-7.0 overall, with no component below 5.5. Some courses, particularly in healthcare or education, may require higher scores. Universities may also accept other qualifications like TOEFL, PTE Academic, or Cambridge English qualifications.",
+    "category": "language",
+    "approved": true
+  },
+  {
+    "id": "4",
+    "question": "Are there any scholarships available for refugees?",
+    "answer": "Yes, many universities offer specific scholarships for refugees and asylum seekers. The Refugee Education UK charity also provides support. Universities like Kent, Canterbury Christ Church, and Greenwich (Medway campus) have dedicated refugee scholarships. Contact the university's international office for more information.",
+    "category": "financial",
+    "approved": true
+  },
+  {
+    "id": "5",
+    "question": "How can I get my previous qualifications recognized in the UK?",
+    "answer": "UK NARIC (now UK ENIC) can provide statements of comparability for international qualifications. Universities may also have their own assessment processes. Some universities offer foundation years specifically designed for students with international qualifications.",
+    "category": "general",
+    "approved": true
+  },
+  {
+    "id": "6",
+    "question": "What support services are available for refugee students?",
+    "answer": "Universities in Kent offer various support services including counseling, academic skills support, and sometimes dedicated refugee advisors. Organizations like Refugee Education UK and Student Action for Refugees also provide additional support and networking opportunities.",
+    "category": "general",
+    "approved": true
+  }
+]

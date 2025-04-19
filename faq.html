@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAQ - PEAK</title>
+    <meta name="description" content="Frequently asked questions about higher education access for refugees in Kent">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Additional styles for the enhanced FAQ page */
+        .faq-search-section {
+            background-color: #f0f7ff;
+            padding: 2rem 0;
+            margin-bottom: 2rem;
+        }
+        
+        .search-container {
+            display: flex;
+            max-width: 600px;
+            margin: 0 auto 1.5rem;
+        }
+        
+        .search-container input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+        }
+        
+        .search-container button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+        
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .category-tab {
+            background-color: white;
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-tab.active {
+            background-color: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+        
+        .faq-item {
+            background-color: white;
+            border-radius: 8px;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+        }
+        
+        .faq-question {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.5rem;
+            cursor: pointer;
+        }
+        
+        .faq-question h3 {
+            margin: 0;
+            font-size: 1.1rem;
+            color: #333;
+            flex: 1;
+        }
+        
+        .toggle-answer {
+            background: none;
+            border: none;
+            color: #0066cc;
+            font-size: 1.2rem;
+            cursor: pointer;
+            padding: 0.5rem;
+        }
+        
+        .faq-answer {
+            padding: 0 1.5rem 1.5rem;
+            display: none;
+        }
+        
+        .faq-answer p {
+            margin-top: 0;
+            color: #555;
+            line-height: 1.6;
+        }
+        
+        .faq-category-title {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0 1rem;
+            color: #0066cc;
+            font-size: 1.5rem;
+        }
+        
+        .faq-category-title i {
+            margin-right: 0.75rem;
+        }
+        
+        #faq-not-found {
+            text-align: center;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        /* User contribution styles */
+        .user-contribution {
+            margin-top: 3rem;
+            background-color: #f0f7ff;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+        
+        .user-contribution h2 {
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: #0066cc;
+        }
+        
+        .auth-message {
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
+            text-align: center;
+        }
+        
+        .auth-message.info {
+            background-color: #e3f2fd;
+            color: #0066cc;
+            border: 1px solid #bbdefb;
+        }
+        
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: #333;
+        }
+        
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #0066cc;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
+        }
+        
+        .btn-primary {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0052a3;
+        }
+        
+        /* User contributed questions */
+        .user-question {
+            position: relative;
+        }
+        
+        .question-tag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0 8px 0 8px;
+            z-index: 1;
+        }
+        
+        .community-tag {
+            background-color: #e67e22;
+            color: white;
+        }
+        
+        .pending-tag {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .question-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Image upload styles */
+        .image-upload {
+            border: 2px dashed #ddd;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .image-upload:hover {
+            border-color: #0066cc;
+        }
+        
+        .image-upload i {
+            font-size: 2rem;
+            color: #0066cc;
+            margin-bottom: 0.5rem;
+        }
+        
+        .image-upload p {
+            margin: 0;
+            color: #555;
+        }
+        
+        .image-preview {
+            margin-top: 1rem;
+            display: none;
+        }
+        
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 4px;
+        }
+        
+        /* Error message */
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Reply section styles */
+        .replies-section {
+            margin-top: 1.5rem;
+            border-top: 1px dashed #ddd;
+            padding-top: 1.5rem;
+        }
+        
+        .replies-section h4 {
+            color: #0066cc;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .replies-section h4 i {
+            margin-right: 0.5rem;
+        }
+        
+        .reply {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid #0066cc;
+        }
+        
+        .reply-content {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .reply-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            color: #777;
+        }
+        
+        .reply-form {
+            margin-top: 1.5rem;
+        }
+        
+        .reply-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 1rem;
+        }
+        
+        .reply-form button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .reply-form button:hover {
+            background-color: #0052a3;
+        }
+        
+        .no-replies {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            padding: 1rem;
+        }
+        
+        .pending-message {
+            background-color: #fff3e0;
+            color: #e65100;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-style: italic;
+            border-left: 3px solid #e65100;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>PEAK</h1>
+                <p class="tagline">Pathway to Education Access in Kent</p>
+            </div>
+            <nav>
+                <ul id="nav-links">
+                    <!-- Navigation will be populated by script.js -->
+                </ul>
+                <button id="menu-toggle" aria-label="Toggle navigation menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+            </nav>
+        </div>
+    </header>
+
+    <div class="page-header">
+        <div class="container">
+            <h1>Frequently Asked Questions</h1>
+            <p>Find answers to common questions about higher education access for refugees in Kent</p>
+        </div>
+    </div>
+
+    <section class="faq-search-section">
+        <div class="container">
+            <div class="search-container">
+                <input type="text" id="faq-search" placeholder="Search for questions..." aria-label="Search for questions">
+                <button id="search-btn" aria-label="Search"><i class="fas fa-search"></i></button>
+            </div>
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all">All Questions</button>
+                <button class="category-tab" data-category="admissions">Admissions</button>
+                <button class="category-tab" data-category="language">Language</button>
+                <button class="category-tab" data-category="financial">Financial</button>
+                <button class="category-tab" data-category="general">General</button>
+                <button class="category-tab" data-category="community">Community Questions</button>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-content">
+        <div class="container">
+            <div id="faq-list">
+                <!-- FAQ items will be loaded dynamically -->
+                <p class="loading">Loading questions...</p>
+            </div>
+            <div id="faq-not-found" style="display: none;">
+                <h3>No questions found</h3>
+                <p>Try a different search term or browse by category.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="user-contribution">
+        <div class="container">
+            <h2>Ask a Question</h2>
+            
+            <!-- Message for non-authenticated users -->
+            <div id="login-to-ask" class="auth-message info">
+                <p>Please <a href="login.html">login</a> or <a href="register.html">register</a> to submit a question.</p>
+            </div>
+            
+            <!-- Form for authenticated users -->
+            <form id="question-form" class="question-form" style="display: none;">
+                <div class="form-group">
+                    <label for="question">Your Question</label>
+                    <textarea id="question" name="question" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="admissions">Admissions</option>
+                        <option value="language">Language Requirements</option>
+                        <option value="financial">Financial Support</option>
+                        <option value="general">General</option>
+                    </select>
+                </div>
+                
+                <!-- Image upload section -->
+                <div class="form-group">
+                    <label>Add an Image (Optional)</label>
+                    <div class="image-upload" id="image-upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload an image or drag and drop</p>
+                        <input type="file" id="question-image" name="question-image" accept="image/*" style="display: none;">
+                    </div>
+                    <div class="image-preview" id="image-preview">
+                        <img id="preview-img" src="#" alt="Preview">
+                    </div>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit Question</button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>About PEAK</h3>
+                    <p>Pathway to Education Access in Kent (PEAK) is dedicated to helping refugees access higher education opportunities in Kent.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="admin.html">Admin</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> os146@canterbuy.ac.uk</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
+                <p>Developed by Osama Sharkia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("FAQ page script loaded");
+            
+            // Check if user is logged in (prefer sessionStorage for tab-specific logins)
+            const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn') === 'true';
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
+            
+            console.log("Login status:", isLoggedIn);
+            console.log("Current user:", currentUser);
+            
+            const questionForm = document.getElementById('question-form');
+            const loginToAsk = document.getElementById('login-to-ask');
+            
+            // Show appropriate form based on login status
+            if (isLoggedIn && currentUser) {
+                if (questionForm) questionForm.style.display = 'block';
+                if (loginToAsk) loginToAsk.style.display = 'none';
+                console.log("Showing question form for logged in user");
+            } else {
+                if (questionForm) questionForm.style.display = 'none';
+                if (loginToAsk) loginToAsk.style.display = 'block';
+                console.log("Showing login message for non-logged in user");
+            }
+            
+            // Load FAQ data
+            loadFAQs();
+            
+            // Image upload functionality
+            setupImageUpload();
+            
+            // Handle question submission
+            setupQuestionForm();
+            
+            // Set up search and filter functionality
+            setupSearchAndFilter();
+        });
+        
+        function setupImageUpload() {
+            const imageUploadArea = document.getElementById('image-upload-area');
+            const imageInput = document.getElementById('question-image');
+            const imagePreview = document.getElementById('image-preview');
+            const previewImg = document.getElementById('preview-img');
+            
+            if (imageUploadArea && imageInput) {
+                imageUploadArea.addEventListener('click', () => {
+                    imageInput.click();
+                });
+                
+                imageInput.addEventListener('change', function() {
+                    if (this.files && this.files[0]) {
+                        const reader = new FileReader();
+                        
+                        reader.onload = function(e) {
+                            previewImg.src = e.target.result;
+                            imagePreview.style.display = 'block';
+                        };
+                        
+                        reader.readAsDataURL(this.files[0]);
+                    }
+                });
+                
+                // Drag and drop functionality
+                imageUploadArea.addEventListener('dragover', (e) => {
+                    e.preventDefault();
+                    imageUploadArea.style.borderColor = '#0066cc';
+                    imageUploadArea.style.backgroundColor = '#f0f7ff';
+                });
+                
+                imageUploadArea.addEventListener('dragleave', () => {
+                    imageUploadArea.style.borderColor = '#ddd';
+                    imageUploadArea.style.backgroundColor = '';
+                });
+                
+                imageUploadArea.addEventListener('drop', (e) => {
+                    e.preventDefault();
+                    imageUploadArea.style.borderColor = '#ddd';
+                    imageUploadArea.style.backgroundColor = '';
+                    
+                    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+                        imageInput.files = e.dataTransfer.files;
+                        
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            previewImg.src = e.target.result;
+                            imagePreview.style.display = 'block';
+                        };
+                        
+                        reader.readAsDataURL(e.dataTransfer.files[0]);
+                    }
+                });
+            }
+        }
+        
+        function setupQuestionForm() {
+            const questionForm = document.getElementById('question-form');
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
+            
+            if (questionForm && currentUser) {
+                questionForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    
+                    const questionText = document.getElementById('question').value.trim();
+                    const category = document.getElementById('category').value;
+                    const termsChecked = document.getElementById('terms').checked;
+                    const imageFile = document.getElementById('question-image').files[0];
+                    
+                    if (!questionText || !category || !termsChecked) {
+                        alert('Please fill in all required fields and accept the terms.');
+                        return;
+                    }
+                    
+                    // Create new question object
+                    const newQuestion = {
+                        id: Date.now().toString(),
+                        question: questionText,
+                        answer: "", // Empty answer instead of "This question is pending review"
+                        category: category,
+                        approved: false,
+                        userId: currentUser.email,
+                        userName: currentUser.name || 'Anonymous',
+                        createdAt: new Date().toISOString(),
+                        replies: []
+                    };
+                    
+                    // Add image if one was uploaded
+                    if (imageFile) {
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            newQuestion.image = e.target.result;
+                            saveQuestion(newQuestion);
+                        };
+                        reader.readAsDataURL(imageFile);
+                    } else {
+                        saveQuestion(newQuestion);
+                    }
+                });
+            }
+        }
+        
+        function saveQuestion(question) {
+            // Get existing questions from localStorage or initialize empty array
+            const faqs = JSON.parse(localStorage.getItem('faqs') || '[]');
+            
+            // Add new question
+            faqs.push(question);
+            
+            // Save back to localStorage
+            localStorage.setItem('faqs', JSON.stringify(faqs));
+            
+            // Show success message
+            alert('Thank you for your question! It has been submitted for review and will appear in the FAQ once approved.');
+            
+            // Reset form
+            document.getElementById('question-form').reset();
+            document.getElementById('image-preview').style.display = 'none';
+        }
+        
+        function loadFAQs() {
+            console.log("Loading FAQs...");
+            const faqList = document.getElementById('faq-list');
+            if (!faqList) {
+                console.error("FAQ list element not found");
+                return;
+            }
+            
+            // Show loading indicator
+            faqList.innerHTML = '<p class="loading">Loading questions...</p>';
+            
+            // First try to get FAQs from localStorage
+            let faqs = JSON.parse(localStorage.getItem('faqs') || '[]');
+            console.log(`Found ${faqs.length} FAQs in localStorage`);
+            
+            // If no FAQs in localStorage, create default ones
+            if (faqs.length === 0) {
+                console.log("No FAQs found, creating default ones");
+                
+                // Create default FAQs
+                const defaultFaqs = [
+                    {
+                        id: "1",
+                        question: "How do I apply to universities in Kent?",
+                        answer: "Most undergraduate courses in the UK require application through UCAS (Universities and Colleges Admissions Service). You'll need to create an account on the UCAS website, search for courses at Kent universities, and submit your application before the deadline.",
+                        category: "admissions",
+                        approved: true,
+                        replies: []
+                    },
+                    {
+                        id: "2",
+                        question: "What are the application deadlines?",
+                        answer: "For undergraduate courses starting in September 2025, the main UCAS deadline is January 31st, 2025. However, some courses may have earlier deadlines, especially for international students. It's best to check specific university websites for the most accurate information.",
+                        category: "admissions",
+                        approved: true,
+                        replies: []
+                    },
+                    {
+                        id: "3",
+                        question: "What English language qualifications do I need?",
+                        answer: "Most universities require IELTS Academic with a score of 6.0-7.0 overall, with no component below 5.5. Some courses, particularly in healthcare or education, may require higher scores. Universities may also accept other qualifications like TOEFL, PTE Academic, or Cambridge English qualifications.",
+                        category: "language",
+                        approved: true,
+                        replies: []
+                    },
+                    {
+                        id: "4",
+                        question: "Are there any scholarships available for refugees?",
+                        answer: "Yes, many universities offer specific scholarships for refugees and asylum seekers. The Refugee Education UK charity also provides support. Universities like Kent, Canterbury Christ Church, and Greenwich (Medway campus) have dedicated refugee scholarships. Contact the university's international office for more information.",
+                        category: "financial",
+                        approved: true,
+                        replies: []
+                    },
+                    {
+                        id: "5",
+                        question: "How can I get my previous qualifications recognized in the UK?",
+                        answer: "UK NARIC (now UK ENIC) can provide statements of comparability for international qualifications. Universities may also have their own assessment processes. Some universities offer foundation years specifically designed for students with international qualifications.",
+                        category: "general",
+                        approved: true,
+                        replies: []
+                    },
+                    {
+                        id: "6",
+                        question: "What support services are available for refugee students?",
+                        answer: "Universities in Kent offer various support services including counseling, academic skills support, and sometimes dedicated refugee advisors. Organizations like Refugee Education UK and Student Action for Refugees also provide additional support and networking opportunities.",
+                        category: "general",
+                        approved: true,
+                        replies: []
+                    }
+                ];
+                
+                // Save default FAQs to localStorage
+                localStorage.setItem('faqs', JSON.stringify(defaultFaqs));
+                faqs = defaultFaqs;
+                console.log("Default FAQs created and saved");
+            }
+            
+            // Display the FAQs
+            displayFAQs(faqs);
+        }
+        
+        function displayFAQs(faqs) {
+            console.log(`Displaying ${faqs.length} FAQs`);
+            const faqList = document.getElementById('faq-list');
+            if (!faqList) {
+                console.error("FAQ list element not found");
+                return;
+            }
+            
+            // Clear the list
+            faqList.innerHTML = '';
+            
+            // Get current user
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
+            const isAdmin = sessionStorage.getItem('isAdmin') === 'true' || localStorage.getItem('isAdmin') === 'true';
+            
+            // For regular users, only show approved FAQs and their own pending FAQs
+            let visibleFaqs = faqs;
+            if (!isAdmin && currentUser) {
+                visibleFaqs = faqs.filter(faq => 
+                    faq.approved || 
+                    (faq.userId === currentUser.email)
+                );
+            } else if (!isAdmin && !currentUser) {
+                // For non-logged in users, only show approved FAQs
+                visibleFaqs = faqs.filter(faq => faq.approved);
+            }
+            
+            console.log(`Showing ${visibleFaqs.length} visible FAQs`);
+            
+            if (visibleFaqs.length === 0) {
+                faqList.innerHTML = `<div class="empty-state">
+                    <h3>No FAQs Available</h3>
+                    <p>Check back soon or submit your own question.</p>
+                </div>`;
+                return;
+            }
+            
+            // Create categories for organization
+            const categories = {
+                'admissions': [],
+                'language': [],
+                'financial': [],
+                'general': [],
+                'community': []
+            };
+            
+            // Sort FAQs into categories
+            visibleFaqs.forEach(faq => {
+                if (faq.userId) {
+                    // User-submitted questions go to community
+                    categories['community'].push(faq);
+                } else {
+                    // Standard questions go to their respective categories
+                    const category = faq.category || 'general';
+                    if (!categories[category]) {
+                        categories[category] = [];
+                    }
+                    categories[category].push(faq);
+                }
+            });
+            
+            // Render FAQs by category
+            for (const category in categories) {
+                // Skip empty categories
+                if (categories[category].length === 0) continue;
+                
+                const categoryTitle = getCategoryTitle(category);
+                const categoryIcon = getCategoryIcon(category);
+                
+                const categoryHeader = document.createElement('h2');
+                categoryHeader.className = 'faq-category-title';
+                categoryHeader.innerHTML = `<i class="${categoryIcon}"></i> ${categoryTitle}`;
+                faqList.appendChild(categoryHeader);
+                
+                categories[category].forEach(faq => {
+                    const faqItem = document.createElement('div');
+                    faqItem.className = 'faq-item';
+                    faqItem.setAttribute('data-category', faq.category);
+                    
+                    // Add tags if needed
+                    let tagHtml = '';
+                    if (faq.userId) {
+                        tagHtml += `<div class="question-tag community-tag">Community</div>`;
+                    }
+                    if (!faq.approved) {
+                        tagHtml += `<div class="question-tag pending-tag">Pending</div>`;
+                    }
+                    
+                    // Prepare answer content
+                    let answerContent = '';
+                    if (!faq.approved) {
+                        answerContent = `<div class="pending-message">This question is pending review.</div>`;
+                    } else if (!faq.answer) {
+                        answerContent = `<p>No answer provided yet.</p>`;
+                    } else {
+                        answerContent = `<p>${faq.answer}</p>`;
+                    }
+                    
+                    // Add image if present
+                    if (faq.image) {
+                        answerContent += `<img src="${faq.image}" alt="Question image" style="max-width: 100%; margin-top: 1rem;">`;
+                    }
+                    
+                    // Create HTML for replies
+                    let repliesHtml = '';
+                    if (faq.replies && faq.replies.length > 0) {
+                        const repliesContent = faq.replies.map(reply => `
+                            <div class="reply">
+                                <div class="reply-content">${reply.content}</div>
+                                <div class="reply-meta">
+                                    <span>By: ${reply.userName || 'Anonymous'}</span>
+                                    <span>Posted: ${formatDate(reply.createdAt)}</span>
+                                </div>
+                            </div>
+                        `).join('');
+                        
+                        repliesHtml = `
+                            <div class="replies-section">
+                                <h4><i class="fas fa-comments"></i> Replies (${faq.replies.length})</h4>
+                                <div class="replies-list">
+                                    ${repliesContent}
+                                </div>
+                                ${currentUser ? `
+                                <div class="reply-form">
+                                    <textarea placeholder="Write your reply here..." class="reply-textarea" data-question-id="${faq.id}"></textarea>
+                                    <button class="reply-submit" data-question-id="${faq.id}">Submit Reply</button>
+                                </div>
+                                ` : `
+                                <div class="auth-message info">
+                                    <p>Please <a href="login.html">login</a> to reply to this question.</p>
+                                </div>
+                                `}
+                            </div>
+                        `;
+                    } else {
+                        repliesHtml = `
+                            <div class="replies-section">
+                                <h4><i class="fas fa-comments"></i> Replies</h4>
+                                <div class="no-replies">No replies yet.</div>
+                                ${currentUser ? `
+                                <div class="reply-form">
+                                    <textarea placeholder="Write your reply here..." class="reply-textarea" data-question-id="${faq.id}"></textarea>
+                                    <button class="reply-submit" data-question-id="${faq.id}">Submit Reply</button>
+                                </div>
+                                ` : `
+                                <div class="auth-message info">
+                                    <p>Please <a href="login.html">login</a> to reply to this question.</p>
+                                </div>
+                                `}
+                            </div>
+                        `;
+                    }
+                    
+                    faqItem.innerHTML = `
+                        <div class="faq-question">
+                            <h3>${faq.question}</h3>
+                            <button class="toggle-answer"><i class="fas fa-plus"></i></button>
+                        </div>
+                        <div class="faq-answer">
+                            ${answerContent}
+                            ${faq.userId ? `
+                                <div class="question-meta">
+                                    <span>Asked by: ${faq.userName || 'Anonymous'}</span>
+                                    <span>Posted: ${formatDate(faq.createdAt)}</span>
+                                </div>
+                            ` : ''}
+                            ${repliesHtml}
+                        </div>
+                        ${tagHtml}
+                    `;
+                    
+                    faqList.appendChild(faqItem);
+                    
+                    // Add toggle functionality
+                    const question = faqItem.querySelector('.faq-question');
+                    const answer = faqItem.querySelector('.faq-answer');
+                    const toggleButton = faqItem.querySelector('.toggle-answer');
+                    
+                    if (question && answer && toggleButton) {
+                        question.addEventListener('click', () => {
+                            const isOpen = answer.style.display === 'block';
+                            
+                            // Close all other answers
+                            document.querySelectorAll('.faq-answer').forEach(a => {
+                                a.style.display = 'none';
+                            });
+                            document.querySelectorAll('.toggle-answer i').forEach(icon => {
+                                icon.className = 'fas fa-plus';
+                            });
+                            
+                            // Toggle current answer
+                            answer.style.display = isOpen ? 'none' : 'block';
+                            toggleButton.querySelector('i').className = isOpen ? 'fas fa-plus' : 'fas fa-minus';
+                        });
+                    }
+                    
+                    // Add event listeners for reply submission
+                    const replyButtons = faqItem.querySelectorAll('.reply-submit');
+                    replyButtons.forEach(button => {
+                        button.addEventListener('click', function() {
+                            const questionId = this.getAttribute('data-question-id');
+                            const textarea = faqItem.querySelector(`.reply-textarea[data-question-id="${questionId}"]`);
+                            if (textarea && textarea.value.trim()) {
+                                submitReply(questionId, textarea.value.trim());
+                            } else {
+                                alert('Please enter a reply before submitting.');
+                            }
+                        });
+                    });
+                });
+            }
+        }
+        
+        function submitReply(questionId, content) {
+            const currentUser = JSON.parse(sessionStorage.getItem('currentUser') || localStorage.getItem('currentUser') || 'null');
+            
+            if (!currentUser) {
+                alert('You must be logged in to reply.');
+                return;
+            }
+            
+            // Get FAQs from localStorage
+            const faqs = JSON.parse(localStorage.getItem('faqs') || '[]');
+            
+            // Find the question
+            const questionIndex = faqs.findIndex(q => q.id === questionId);
+            if (questionIndex === -1) {
+                alert('Question not found.');
+                return;
+            }
+            
+            // Create reply object
+            const reply = {
+                id: Date.now().toString(),
+                content: content,
+                userId: currentUser.email,
+                userName: currentUser.name || 'Anonymous',
+                createdAt: new Date().toISOString()
+            };
+            
+            // Add reply to question
+            if (!faqs[questionIndex].replies) {
+                faqs[questionIndex].replies = [];
+            }
+            
+            faqs[questionIndex].replies.push(reply);
+            
+            // Save updated FAQs to localStorage
+            localStorage.setItem('faqs', JSON.stringify(faqs));
+            
+            // Reload FAQs to show the new reply
+            loadFAQs();
+            
+            // Show success message
+            alert('Your reply has been submitted successfully!');
+        }
+        
+        function setupSearchAndFilter() {
+            const faqSearch = document.getElementById('faq-search');
+            const searchBtn = document.getElementById('search-btn');
+            const categoryTabs = document.querySelectorAll('.category-tab');
+            const faqNotFound = document.getElementById('faq-not-found');
+            
+            // Search functionality
+            if (searchBtn) {
+                searchBtn.addEventListener('click', () => {
+                    searchFAQs();
+                });
+            }
+            
+            if (faqSearch) {
+                faqSearch.addEventListener('keyup', e => {
+                    if (e.key === 'Enter') {
+                        searchFAQs();
+                    }
+                });
+            }
+            
+            // Category filtering
+            if (categoryTabs) {
+                categoryTabs.forEach(tab => {
+                    tab.addEventListener('click', () => {
+                        // Remove active class from all tabs
+                        categoryTabs.forEach(t => t.classList.remove('active'));
+                        
+                        // Add active class to clicked tab
+                        tab.classList.add('active');
+                        
+                        // Perform search with new category filter
+                        searchFAQs();
+                    });
+                });
+            }
+            
+            function searchFAQs() {
+                const searchTerm = faqSearch ? faqSearch.value.toLowerCase() : '';
+                const selectedCategory = document.querySelector('.category-tab.active') ? 
+                                        document.querySelector('.category-tab.active').getAttribute('data-category') : 
+                                        'all';
+                
+                const faqItems = document.querySelectorAll('.faq-item');
+                let resultsFound = false;
+                
+                faqItems.forEach(item => {
+                    const questionText = item.querySelector('.faq-question h3').textContent.toLowerCase();
+                    const answerText = item.querySelector('.faq-answer').textContent.toLowerCase();
+                    const itemCategory = item.getAttribute('data-category');
+                    
+                    // Check if matching search term
+                    const matchesSearch = searchTerm === '' || 
+                                         questionText.includes(searchTerm) || 
+                                         answerText.includes(searchTerm);
+                    
+                    // Check if matching selected category
+                    const matchesCategory = selectedCategory === 'all' || 
+                                           itemCategory === selectedCategory || 
+                                           (selectedCategory === 'community' && item.querySelector('.community-tag'));
+                    
+                    if (matchesSearch && matchesCategory) {
+                        item.style.display = 'block';
+                        resultsFound = true;
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+                
+                // Show/hide no results message
+                if (faqNotFound) {
+                    faqNotFound.style.display = resultsFound ? 'none' : 'block';
+                }
+                
+                // Show/hide category headers based on visible items
+                updateCategoryHeadersVisibility();
+            }
+            
+            function updateCategoryHeadersVisibility() {
+                const categoryHeaders = document.querySelectorAll('.faq-category-title');
+                
+                categoryHeaders.forEach(header => {
+                    let nextElement = header.nextElementSibling;
+                    let hasVisibleItems = false;
+                    
+                    // Check for visible items in this category
+                    while (nextElement && !nextElement.classList.contains('faq-category-title')) {
+                        if (nextElement.classList.contains('faq-item') && nextElement.style.display !== 'none') {
+                            hasVisibleItems = true;
+                            break;
+                        }
+                        nextElement = nextElement.nextElementSibling;
+                    }
+                    
+                    // Show/hide the category header
+                    header.style.display = hasVisibleItems ? 'flex' : 'none';
+                });
+            }
+        }
+        
+        // Helper function to get category title
+        function getCategoryTitle(category) {
+            const titles = {
+                'admissions': 'Admissions',
+                'language': 'Language Requirements',
+                'financial': 'Financial Support',
+                'general': 'General Information',
+                'community': 'Community Questions'
+            };
+            
+            return titles[category] || 'Other';
+        }
+        
+        // Helper function to get category icon
+        function getCategoryIcon(category) {
+            const icons = {
+                'admissions': 'fas fa-university',
+                'language': 'fas fa-language',
+                'financial': 'fas fa-money-bill-wave',
+                'general': 'fas fa-info-circle',
+                'community': 'fas fa-users'
+            };
+            
+            return icons[category] || 'fas fa-question-circle';
+        }
+        
+        // Helper function to format date
+        function formatDate(dateString) {
+            if (!dateString) return '';
+            
+            const date = new Date(dateString);
+            return date.toLocaleDateString('en-GB', {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric'
+            });
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug FAQ Data</title>
+</head>
+<body>
+    <h1>FAQ Data Debug</h1>
+    <div id="result"></div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const resultDiv = document.getElementById('result');
+            
+            // Try to load from root directory
+            fetch('faq-data.json')
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Failed to load from root');
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    resultDiv.innerHTML += '<p style="color:green">✓ Successfully loaded from root directory</p>';
+                    resultDiv.innerHTML += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                })
+                .catch(error => {
+                    resultDiv.innerHTML += '<p style="color:red">✗ Failed to load from root: ' + error.message + '</p>';
+                    
+                    // Try to load from json directory
+                    fetch('json/faq-data.json')
+                        .then(response => {
+                            if (!response.ok) {
+                                throw new Error('Failed to load from json directory');
+                            }
+                            return response.json();
+                        })
+                        .then(data => {
+                            resultDiv.innerHTML += '<p style="color:green">✓ Successfully loaded from json directory</p>';
+                            resultDiv.innerHTML += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                        })
+                        .catch(error => {
+                            resultDiv.innerHTML += '<p style="color:red">✗ Failed to load from json directory: ' + error.message + '</p>';
+                        });
+                });
+        });
+    </script>
+</body>
+</html>

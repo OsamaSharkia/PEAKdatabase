@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - PEAK</title>
+    <meta name="description" content="Login to your PEAK account to access personalized education pathway guidance">
+    <link rel="stylesheet" href="CSS/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>PEAK</h1>
+                <p class="tagline">Pathway to Education Access in Kent</p>
+            </div>
+            <nav id="navbar">
+                <button id="menu-toggle" aria-label="Toggle menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <ul id="nav-links">
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="pathways.html">Education Pathways</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="login.html" class="active">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Login to Your Account</h1>
+                <p>Access personalized education pathway guidance and resources</p>
+            </div>
+        </section>
+
+        <section class="form-section">
+            <div class="container">
+                <div class="form-container">
+                    <div class="form-tabs">
+                        <a href="login.html" class="form-tab active">Login</a>
+                        <a href="register.html" class="form-tab">Register</a>
+                    </div>
+                    <div class="form-content">
+                        <div id="login-error" class="error-message" style="display: none;"></div>
+                        
+                        <form id="login-form" class="auth-form">
+                            <div class="form-group">
+                                <label for="email">Email</label>
+                                <input type="email" id="email" name="email" required>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="password">Password</label>
+                                <input type="password" id="password" name="password" required>
+                            </div>
+                            
+                            <div class="form-group checkbox-group">
+                                <input type="checkbox" id="remember" name="remember">
+                                <label for="remember">Remember me</label>
+                            </div>
+                            
+                            <button type="submit" class="btn btn-primary">Login</button>
+                        </form>
+                        
+                        <div class="form-footer">
+                            <a href="#" class="forgot-password">Forgot your password?</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="admin-login-link" style="text-align: center; margin-top: 2rem;">
+                    <p>Are you an administrator? <a href="admin-login.html">Login to Admin Panel</a></p>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PEAK</h3>
+                    <p>Supporting refugees in Kent to access higher education opportunities.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pathways.html">Education Pathways</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> os146@canterbuy.ac.uk</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
+                <p>Developed by Osama Sharkia</p>
+            </div>
+        </div>
+    </footer>
+
+    <div class="chat-widget" id="chat-widget">
+        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-box" id="chat-box">
+            <div class="chat-header">
+                <h3>Need Help?</h3>
+                <button class="close-chat" id="close-chat" aria-label="Close chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message received">
+                    <p>Hello! How can we help you with your education journey today?</p>
+                </div>
+            </div>
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
+                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="JS/supabase.js"></script>
+    <script src="JS/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const loginForm = document.getElementById("login-form");
+            
+            if (loginForm) {
+                loginForm.addEventListener("submit", async (e) => {
+                    e.preventDefault();
+                    
+                    const email = document.getElementById("email").value.trim();
+                    const password = document.getElementById("password").value;
+                    const errorElement = document.getElementById("login-error");
+                    
+                    try {
+                        // Sign in with Supabase
+                        const { data, error } = await supabaseClient.auth.signInWithPassword({
+                            email,
+                            password
+                        });
+                        
+                        if (error) throw error;
+                        
+                        // Get user profile including admin status
+                        const { data: profile, error: profileError } = await supabaseClient
+                            .from('user_profiles')
+                            .select('*')
+                            .eq('id', data.user.id)
+                            .single();
+                            
+                        if (profileError) throw profileError;
+                        
+                        // Store user data in sessionStorage (more secure than localStorage)
+                        sessionStorage.setItem("isLoggedIn", "true");
+                        sessionStorage.setItem("currentUser", JSON.stringify({
+                            id: data.user.id,
+                            name: profile.name,
+                            email: profile.email,
+                            isAdmin: profile.is_admin
+                        }));
+                        
+                        if (profile.is_admin) {
+                            sessionStorage.setItem("isAdmin", "true");
+                        }
+                        
+                        // Redirect to appropriate page
+                        window.location.href = profile.is_admin ? "admin.html" : "profile.html";
+                        
+                    } catch (error) {
+                        console.error("Login error:", error);
+                        if (errorElement) {
+                            errorElement.textContent = error.message || "Invalid login credentials";
+                            errorElement.style.display = "block";
+                        }
+                    }
+                });
+            }
+        });
+    </script>
+</body>
+</html>
