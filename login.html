@@ -150,139 +150,82 @@
     <script src="js/script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
-            const loginForm = document.getElementById("login-form");
-            const errorElement = document.getElementById("login-error");
-            const resendConfirmation = document.getElementById("resend-confirmation");
-            const resendBtn = document.getElementById("resend-btn");
-            const emailInput = document.getElementById("email");
-            const forgotPasswordLink = document.getElementById("forgot-password");
+            // Initialize Supabase client
+            const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co"
+            const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0"
+            window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey)
             
-            if (loginForm) {
-                loginForm.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-                    
-                    const email = emailInput.value.trim();
-                    const password = document.getElementById("password").value;
-                    
-                    try {
-                        // Clear any previous errors
-                        if (errorElement) {
-                            errorElement.style.display = "none";
-                        }
-                        
-                        // Hide resend section
-                        if (resendConfirmation) {
-                            resendConfirmation.style.display = "none";
-                        }
-                        
-                        // Sign in with Supabase
-                        const { data, error } = await supabaseClient.auth.signInWithPassword({
-                            email,
-                            password
-                        });
-                        
-                        if (error) {
-                            // Check if this is an email confirmation error
-                            if (error.message.includes("Email not confirmed")) {
-                                // Show the resend confirmation section
-                                if (resendConfirmation) {
-                                    resendConfirmation.style.display = "block";
-                                }
-                                throw new Error("Please check your email and click the confirmation link before logging in.");
-                            }
-                            throw error;
-                        }
-                        
-                        // Store basic user data in session storage
-                        sessionStorage.setItem("isLoggedIn", "true");
-                        
-                        const userData = {
-                            id: data.user.id,
-                            email: data.user.email,
-                            name: data.user.user_metadata.name || '',
-                            isAdmin: false
-                        };
-                        
-                        sessionStorage.setItem("currentUser", JSON.stringify(userData));
-                        
-                        // Redirect to profile page
-                        window.location.href = "profile.html";
-                        
-                    } catch (error) {
-                        console.error("Login error:", error);
-                        if (errorElement) {
-                            errorElement.textContent = error.message || "Invalid login credentials";
-                            errorElement.style.display = "block";
-                        }
-                    }
-                });
-            }
+            const resendConfirmation = document.getElementById("resend-confirmation")
+            const resendBtn = document.getElementById("resend-btn")
+            const emailInput = document.getElementById("email")
+            const forgotPasswordLink = document.getElementById("forgot-password")
+            const errorElement = document.getElementById("login-error")
             
             if (resendBtn) {
                 resendBtn.addEventListener("click", async () => {
-                    const email = emailInput.value.trim();
+                    const email = emailInput.value.trim()
                     
                     if (!email) {
                         if (errorElement) {
-                            errorElement.textContent = "Please enter your email address";
-                            errorElement.style.display = "block";
+                            errorElement.textContent = "Please enter your email address"
+                            errorElement.style.display = "block"
                         }
-                        return;
+                        return
                     }
                     
                     try {
-                        const { error } = await supabaseClient.auth.resend({
+                        const { error } = await window.supabaseClient.auth.resend({
                             type: 'signup',
                             email: email
-                        });
+                        })
                         
-                        if (error) throw error;
+                        if (error) throw error
                         
-                        alert("Confirmation email resent! Please check your inbox.");
+                        alert("Confirmation email resent! Please check your inbox.")
                         
                     } catch (error) {
-                        console.error("Resend error:", error);
+                        console.error("Resend error:", error)
                         if (errorElement) {
-                            errorElement.textContent = error.message || "Failed to resend confirmation email";
-                            errorElement.style.display = "block";
+                            errorElement.textContent = error.message || "Failed to resend confirmation email"
+                            errorElement.style.display = "block"
                         }
                     }
-                });
+                })
             }
             
             if (forgotPasswordLink) {
                 forgotPasswordLink.addEventListener("click", async (e) => {
-                    e.preventDefault();
+                    e.preventDefault()
                     
-                    const email = emailInput.value.trim();
+                    const email = emailInput.value.trim()
                     
                     if (!email) {
                         if (errorElement) {
-                            errorElement.textContent = "Please enter your email address";
-                            errorElement.style.display = "block";
+                            errorElement.textContent = "Please enter your email address"
+                            errorElement.style.display = "block"
                         }
-                        return;
+                        return
                     }
                     
                     try {
-                        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                        const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
                             redirectTo: window.location.origin + '/reset-password.html',
-                        });
+                        })
                         
-                        if (error) throw error;
+                        if (error) throw error
                         
-                        alert("Password reset email sent! Please check your inbox.");
+                        alert("Password reset email sent! Please check your inbox.")
                         
                     } catch (error) {
-                        console.error("Password reset error:", error);
+                        console.error("Password reset error:", error)
                         if (errorElement) {
-                            errorElement.textContent = error.message || "Failed to send password reset email";
-                            errorElement.style.display = "block";
+                            errorElement.textContent = error.message || "Failed to send password reset email"
+                            errorElement.style.display = "block"
                         }
                     }
-                });
+                })
             }
-        });
+        })
     </script>
 </body>
 </html>
