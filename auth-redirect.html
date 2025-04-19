@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authentication - PEAK</title>
+    <meta name="description" content="Processing your authentication">
+    <link rel="stylesheet" href="css/styles.css">
+    <style>
+        .auth-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+            text-align: center;
+        }
+        
+        .auth-message {
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 8px;
+        }
+        
+        .auth-success {
+            background-color: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+        
+        .auth-error {
+            background-color: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+        
+        .auth-loading {
+            background-color: #e2f3f5;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+        
+        .spinner {
+            display: inline-block;
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            border-radius: 50%;
+            border-top-color: #2e6da4;
+            animation: spin 1s ease-in-out infinite;
+            margin-bottom: 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>PEAK</h1>
+                <p class="tagline">Pathway to Education Access in Kent</p>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="auth-section">
+            <div class="container">
+                <div class="auth-container">
+                    <div id="auth-loading" class="auth-message auth-loading">
+                        <div class="spinner"></div>
+                        <h2>Processing Authentication</h2>
+                        <p>Please wait while we verify your account...</p>
+                    </div>
+                    
+                    <div id="auth-success" class="auth-message auth-success" style="display: none;">
+                        <h2>Authentication Successful</h2>
+                        <p>Your account has been verified successfully.</p>
+                        <p>You will be redirected to your profile page shortly.</p>
+                    </div>
+                    
+                    <div id="auth-error" class="auth-message auth-error" style="display: none;">
+                        <h2>Authentication Error</h2>
+                        <p id="error-message">There was an error processing your authentication.</p>
+                        <p>Please try again or contact support if the problem persists.</p>
+                    </div>
+                    
+                    <div class="auth-actions" id="auth-actions" style="display: none;">
+                        <a href="login.html" class="btn btn-primary">Go to Login</a>
+                        <a href="index.html" class="btn btn-secondary">Return to Home</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PEAK</h3>
+                    <p>Supporting refugees in Kent to access higher education opportunities.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
+                <p>Developed by Osama Sharkia</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Add this before your closing </body> tag -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth-handler.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const loadingElement = document.getElementById("auth-loading");
+            const successElement = document.getElementById("auth-success");
+            const errorElement = document.getElementById("auth-error");
+            const errorMessageElement = document.getElementById("error-message");
+            const actionsElement = document.getElementById("auth-actions");
+            
+            try {
+                // Get the hash fragment from the URL
+                const hash = window.location.hash.substring(1);
+                
+                // If there's no hash, show an error
+                if (!hash) {
+                    throw new Error("No authentication data found in URL");
+                }
+                
+                // Process the authentication with Supabase
+                const { data, error } = await supabaseClient.auth.onAuthStateChange((event, session) => {
+                    if (event === 'SIGNED_IN') {
+                        // Show success message
+                        loadingElement.style.display = "none";
+                        successElement.style.display = "block";
+                        actionsElement.style.display = "block";
+                        
+                        // Redirect to profile page after 3 seconds
+                        setTimeout(() => {
+                            window.location.href = "profile.html";
+                        }, 3000);
+                    } else if (event === 'USER_UPDATED') {
+                        // Show success message for password reset
+                        loadingElement.style.display = "none";
+                        successElement.style.display = "block";
+                        successElement.querySelector("h2").textContent = "Password Updated";
+                        successElement.querySelector("p").textContent = "Your password has been updated successfully.";
+                        actionsElement.style.display = "block";
+                    } else {
+                        // Show error message
+                        loadingElement.style.display = "none";
+                        errorElement.style.display = "block";
+                        errorMessageElement.textContent = "Authentication failed. Please try again.";
+                        actionsElement.style.display = "block";
+                    }
+                });
+                
+                if (error) throw error;
+                
+            } catch (error) {
+                console.error("Authentication error:", error);
+                
+                // Show error message
+                loadingElement.style.display = "none";
+                errorElement.style.display = "block";
+                errorMessageElement.textContent = error.message || "Authentication failed. Please try again.";
+                actionsElement.style.display = "block";
+            }
+        });
+    </script>
+</body>
+</html>

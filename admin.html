@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Panel - PEAK</title>
-    <meta name="description" content="Admin panel for PEAK website management">
+    <title>Admin Dashboard - PEAK</title>
+    <meta name="description" content="Administrator dashboard for PEAK website management">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
@@ -29,102 +29,131 @@
     </header>
 
     <main>
-        <div id="admin-login" style="display: block;">
-            <section class="page-header">
-                <div class="container">
-                    <h1>Admin Login</h1>
-                    <p>Secure access for PEAK administrators only</p>
-                </div>
-            </section>
+        <section class="page-header">
+            <div class="container">
+                <h1>Admin Dashboard</h1>
+                <p>Manage website content and user accounts</p>
+            </div>
+        </section>
 
-            <section class="form-section">
-                <div class="container">
-                    <div class="admin-login">
-                        <h2>Admin Login</h2>
-                        <div id="login-error" class="error-message" style="display: none;"></div>
-                        <form id="login-form">
-                            <input type="text" id="username" placeholder="Username or Email" required>
-                            <input type="password" id="password" placeholder="Password" required>
-                            <button type="submit">Login</button>
-                        </form>
-                    </div>
-                </div>
-            </section>
-        </div>
-
-        <div id="admin-panel" style="display: none;">
-            <section class="page-header">
-                <div class="container">
-                    <h1>Admin Panel</h1>
-                    <p>Manage PEAK website content and users</p>
-                </div>
-            </section>
-
-            <section class="admin-section">
+        <section class="admin-section">
+            <div class="container">
                 <div class="admin-container">
-                    <div class="admin-header">
-                        <h2>Admin Dashboard</h2>
-                        <button id="logout-button" class="logout-button">Logout</button>
+                    <div class="admin-sidebar">
+                        <div class="admin-nav">
+                            <ul>
+                                <li><a href="#dashboard" class="active">Dashboard</a></li>
+                                <li><a href="#users">User Management</a></li>
+                                <li><a href="#content">Content Management</a></li>
+                                <li><a href="#messages">Messages</a></li>
+                                <li><a href="#settings">Settings</a></li>
+                            </ul>
+                        </div>
                     </div>
-
-                    <div id="status-message" class="status-message" style="display: none;"></div>
-
-                    <div class="admin-tabs">
-                        <button class="admin-tab active" data-tab="questions">FAQ Questions</button>
-                        <button class="admin-tab" data-tab="users">User Management</button>
-                        <button class="admin-tab" data-tab="resources">Resources</button>
-                    </div>
-
-                    <div class="admin-tab-content active" id="questions-tab">
-                        <h3>Manage FAQ Questions</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Question</th>
-                                    <th>Answer</th>
-                                    <th>Category</th>
-                                    <th>Status</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="questions-body">
-                                <!-- Questions will be loaded here -->
-                                <tr>
-                                    <td colspan="6" style="text-align: center;">Loading questions...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="admin-tab-content" id="users-tab">
-                        <h3>Manage Users</h3>
-                        <table>
-                            <thead>
-                                <tr>
-                                    <th>ID</th>
-                                    <th>Name</th>
-                                    <th>Email</th>
-                                    <th>Role</th>
-                                    <th>Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody id="users-body">
-                                <!-- Users will be loaded here -->
-                                <tr>
-                                    <td colspan="5" style="text-align: center;">Loading users...</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="admin-tab-content" id="resources-tab">
-                        <h3>Manage Resources</h3>
-                        <p>This feature is coming soon.</p>
+                    
+                    <div class="admin-content">
+                        <div id="dashboard" class="admin-tab active">
+                            <h2>Dashboard</h2>
+                            <div class="admin-stats">
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-users"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3>Total Users</h3>
+                                        <p class="stat-number">0</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-envelope"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3>New Messages</h3>
+                                        <p class="stat-number">0</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-file-alt"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3>Resources</h3>
+                                        <p class="stat-number">0</p>
+                                    </div>
+                                </div>
+                                
+                                <div class="stat-card">
+                                    <div class="stat-icon">
+                                        <i class="fas fa-chart-line"></i>
+                                    </div>
+                                    <div class="stat-info">
+                                        <h3>Page Views</h3>
+                                        <p class="stat-number">0</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="admin-recent">
+                                <h3>Recent Activity</h3>
+                                <div class="empty-state">
+                                    <p>No recent activity to display.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="users" class="admin-tab">
+                            <h2>User Management</h2>
+                            <div class="admin-actions">
+                                <button id="create-user-btn" class="btn btn-primary">Create New User</button>
+                            </div>
+                            
+                            <div class="admin-table-container">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Email</th>
+                                            <th>Role</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="users-table-body">
+                                        <!-- User data will be loaded here -->
+                                    </tbody>
+                                </table>
+                                
+                                <div id="users-loading" class="loading-indicator">
+                                    <p>Loading users...</p>
+                                </div>
+                                
+                                <div id="users-empty" class="empty-state" style="display: none;">
+                                    <p>No users found.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div id="content" class="admin-tab">
+                            <h2>Content Management</h2>
+                            <p>This feature is coming soon.</p>
+                        </div>
+                        
+                        <div id="messages" class="admin-tab">
+                            <h2>Messages</h2>
+                            <p>This feature is coming soon.</p>
+                        </div>
+                        
+                        <div id="settings" class="admin-tab">
+                            <h2>Settings</h2>
+                            <p>This feature is coming soon.</p>
+                        </div>
                     </div>
                 </div>
-            </section>
-        </div>
+            </div>
+        </section>
     </main>
 
     <footer>
@@ -147,7 +176,7 @@
                 </div>
                 <div class="footer-section">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-envelope"></i> os146@canterbuy.ac.uk</p>
+                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -157,8 +186,9 @@
         </div>
     </footer>
 
+    <!-- Add this before your closing </body> tag -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
+    <script src="js/auth-handler.js"></script>
     <script src="js/script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
@@ -167,487 +197,137 @@
             const isAdmin = sessionStorage.getItem("isAdmin") === "true";
             const currentUser = JSON.parse(sessionStorage.getItem("currentUser") || "null");
             
-            if (isLoggedIn && isAdmin && currentUser && currentUser.isAdmin) {
-                // User is admin, show admin panel
-                document.getElementById("admin-login").style.display = "none";
-                document.getElementById("admin-panel").style.display = "block";
-                
-                // Load users for admin management
-                try {
-                    const { data: users, error } = await supabaseClient
-                        .from('user_profiles')
-                        .select('*');
-                        
-                    if (error) throw error;
-                    
-                    // Display users in admin table
-                    const usersTable = document.getElementById("users-body");
-                    if (usersTable) {
-                        usersTable.innerHTML = "";
-                        
-                        if (users.length === 0) {
-                            usersTable.innerHTML = `<tr><td colspan="5" style="text-align: center;">No users found</td></tr>`;
-                        } else {
-                            users.forEach(user => {
-                                const row = document.createElement("tr");
-                                
-                                row.innerHTML = `
-                                    <td>${user.id}</td>
-                                    <td>${user.name || 'N/A'}</td>
-                                    <td>${user.email || 'N/A'}</td>
-                                    <td>${user.is_admin ? "Admin" : "User"}</td>
-                                    <td>
-                                        <div class="action-buttons">
-                                            <button class="action-button ${user.is_admin ? 'decline-button' : 'approve-button'}" 
-                                                    data-id="${user.id}" 
-                                                    data-action="toggle-admin">
-                                                ${user.is_admin ? 'Remove Admin' : 'Make Admin'}
-                                            </button>
-                                            <button class="action-button delete-button" 
-                                                    data-id="${user.id}" 
-                                                    data-action="delete-user">
-                                                Delete
-                                            </button>
-                                        </div>
-                                    </td>
-                                `;
-                                
-                                usersTable.appendChild(row);
-                            });
-                            
-                            // Add event listeners for admin actions
-                            document.querySelectorAll("[data-action]").forEach(button => {
-                                button.addEventListener("click", async () => {
-                                    const userId = button.getAttribute("data-id");
-                                    const action = button.getAttribute("data-action");
-                                    
-                                    if (action === "toggle-admin") {
-                                        const isCurrentlyAdmin = button.classList.contains("decline-button");
-                                        
-                                        try {
-                                            const { error } = await supabaseClient
-                                                .from('user_profiles')
-                                                .update({ is_admin: !isCurrentlyAdmin })
-                                                .eq('id', userId);
-                                                
-                                            if (error) throw error;
-                                            
-                                            // Show success message
-                                            showStatusMessage(`User ${isCurrentlyAdmin ? 'removed from' : 'added to'} admin role successfully`, "success");
-                                            
-                                            // Reload page to show updated data
-                                            setTimeout(() => {
-                                                location.reload();
-                                            }, 1500);
-                                            
-                                        } catch (error) {
-                                            console.error("Admin toggle error:", error);
-                                            showStatusMessage("Failed to update admin status: " + error.message, "error");
-                                        }
-                                    }
-                                    
-                                    if (action === "delete-user") {
-                                        if (confirm("Are you sure you want to delete this user?")) {
-                                            try {
-                                                // Delete user profile
-                                                const { error: profileError } = await supabaseClient
-                                                    .from('user_profiles')
-                                                    .delete()
-                                                    .eq('id', userId);
-                                                    
-                                                if (profileError) throw profileError;
-                                                
-                                                // Show success message
-                                                showStatusMessage("User deleted successfully", "success");
-                                                
-                                                // Reload page to show updated data
-                                                setTimeout(() => {
-                                                    location.reload();
-                                                }, 1500);
-                                                
-                                            } catch (error) {
-                                                console.error("User deletion error:", error);
-                                                showStatusMessage("Failed to delete user: " + error.message, "error");
-                                            }
-                                        }
-                                    }
-                                });
-                            });
-                        }
-                    }
-                    
-                    // Load FAQ questions
-                    loadQuestions();
-                    
-                } catch (error) {
-                    console.error("Admin loading error:", error);
-                    showStatusMessage("Failed to load admin data: " + error.message, "error");
-                }
-                
-                // Admin tab navigation
-                const tabButtons = document.querySelectorAll(".admin-tab");
-                const tabContents = document.querySelectorAll(".admin-tab-content");
-                
-                tabButtons.forEach(button => {
-                    button.addEventListener("click", () => {
-                        // Remove active class from all buttons and contents
-                        tabButtons.forEach(b => b.classList.remove("active"));
-                        tabContents.forEach(c => c.classList.remove("active"));
-                        
-                        // Add active class to clicked button
-                        button.classList.add("active");
-                        
-                        // Show corresponding content
-                        const tabId = button.getAttribute("data-tab") + "-tab";
-                        document.getElementById(tabId).classList.add("active");
-                    });
-                });
-                
-                // Logout button
-                document.getElementById("logout-button").addEventListener("click", async () => {
-                    try {
-                        // Sign out from Supabase
-                        await supabaseClient.auth.signOut();
-                        
-                        // Clear session storage
-                        sessionStorage.removeItem("isLoggedIn");
-                        sessionStorage.removeItem("currentUser");
-                        sessionStorage.removeItem("isAdmin");
-                        
-                        // Redirect to home page
-                        window.location.href = "index.html";
-                        
-                    } catch (error) {
-                        console.error("Logout error:", error);
-                        showStatusMessage("Failed to logout: " + error.message, "error");
-                    }
-                });
-                
-            } else {
-                // User is not admin, show login form
-                document.getElementById("admin-login").style.display = "block";
-                document.getElementById("admin-panel").style.display = "none";
-                
-                // Login form submission
-                const loginForm = document.getElementById("login-form");
-                if (loginForm) {
-                    loginForm.addEventListener("submit", async (e) => {
-                        e.preventDefault();
-                        
-                        const username = document.getElementById("username").value.trim();
-                        const password = document.getElementById("password").value;
-                        const errorElement = document.getElementById("login-error");
-                        
-                        try {
-                            // Sign in with Supabase
-                            const { data, error } = await supabaseClient.auth.signInWithPassword({
-                                email: username,
-                                password: password
-                            });
-                            
-                            if (error) throw error;
-                            
-                            // Get user profile including admin status
-                            const { data: profile, error: profileError } = await supabaseClient
-                                .from('user_profiles')
-                                .select('*')
-                                .eq('id', data.user.id)
-                                .single();
-                                
-                            if (profileError) throw profileError;
-                            
-                            // Check if user is admin
-                            if (!profile.is_admin) {
-                                throw new Error("You don't have admin privileges");
-                            }
-                            
-                            // Store user data in sessionStorage
-                            sessionStorage.setItem("isLoggedIn", "true");
-                            sessionStorage.setItem("isAdmin", "true");
-                            sessionStorage.setItem("currentUser", JSON.stringify({
-                                id: data.user.id,
-                                name: profile.name,
-                                email: profile.email,
-                                isAdmin: profile.is_admin
-                            }));
-                            
-                            // Reload page to show admin panel
-                            location.reload();
-                            
-                        } catch (error) {
-                            console.error("Admin login error:", error);
-                            if (errorElement) {
-                                errorElement.textContent = error.message || "Invalid login credentials";
-                                errorElement.style.display = "block";
-                            }
-                        }
-                    });
-                }
-            }
-        });
-        
-        // Function to load questions
-        async function loadQuestions() {
-            const tableBody = document.getElementById("questions-body");
-            
-            if (!tableBody) return;
-            
-            try {
-                // First try to get questions from Supabase
-                const { data: questions, error } = await supabaseClient
-                    .from('faqs')
-                    .select('*');
-                    
-                if (error) throw error;
-                
-                if (questions && questions.length > 0) {
-                    displayQuestions(questions);
-                } else {
-                    // If no questions in Supabase, try to load from localStorage
-                    const localQuestions = JSON.parse(localStorage.getItem("faqs") || "[]");
-                    
-                    if (localQuestions.length > 0) {
-                        // Import questions to Supabase
-                        const { error: importError } = await supabaseClient
-                            .from('faqs')
-                            .insert(localQuestions);
-                            
-                        if (importError) throw importError;
-                        
-                        displayQuestions(localQuestions);
-                    } else {
-                        // No questions found
-                        tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No questions found</td></tr>`;
-                    }
-                }
-            } catch (error) {
-                console.error("Error loading questions:", error);
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: red;">Error loading questions: ${error.message}</td></tr>`;
-            }
-        }
-        
-        // Function to display questions
-        function displayQuestions(questions) {
-            const tableBody = document.getElementById("questions-body");
-            if (!tableBody) return;
-            
-            tableBody.innerHTML = "";
-            
-            if (questions.length === 0) {
-                tableBody.innerHTML = `<tr><td colspan="6" style="text-align: center;">No questions found</td></tr>`;
+            if (!isLoggedIn || !isAdmin || !currentUser) {
+                window.location.href = "admin-login.html";
                 return;
             }
             
-            questions.forEach((question) => {
-                const row = document.createElement("tr");
-                
-                // ID cell
-                const idCell = document.createElement("td");
-                idCell.textContent = question.id;
-                row.appendChild(idCell);
-                
-                // Question cell
-                const questionCell = document.createElement("td");
-                questionCell.textContent = question.question;
-                row.appendChild(questionCell);
-                
-                // Answer cell
-                const answerCell = document.createElement("td");
-                const answerText = question.answer || "No answer provided";
-                
-                // Add edit button for answer
-                const editBtn = document.createElement("button");
-                editBtn.className = "edit-answer-btn";
-                editBtn.textContent = "Edit";
-                editBtn.addEventListener("click", () => {
-                    openEditAnswerModal(question.id, answerText);
+            // Admin tab navigation
+            const tabLinks = document.querySelectorAll(".admin-nav a");
+            const tabContents = document.querySelectorAll(".admin-tab");
+            
+            tabLinks.forEach(link => {
+                link.addEventListener("click", (e) => {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links and tabs
+                    tabLinks.forEach(l => l.classList.remove("active"));
+                    tabContents.forEach(t => t.classList.remove("active"));
+                    
+                    // Add active class to clicked link
+                    link.classList.add("active");
+                    
+                    // Show corresponding tab
+                    const targetId = link.getAttribute("href").substring(1);
+                    document.getElementById(targetId).classList.add("active");
                 });
-                
-                const answerDisplay = document.createElement("div");
-                answerDisplay.textContent = answerText.length > 50 ? answerText.substring(0, 50) + "..." : answerText;
-                
-                answerCell.appendChild(answerDisplay);
-                answerCell.appendChild(editBtn);
-                row.appendChild(answerCell);
-                
-                // Category cell
-                const categoryCell = document.createElement("td");
-                categoryCell.textContent = question.category || "Uncategorized";
-                row.appendChild(categoryCell);
-                
-                // Status cell
-                const statusCell = document.createElement("td");
-                statusCell.textContent = question.approved ? "Approved" : "Pending";
-                statusCell.className = question.approved ? "status-approved" : "status-pending";
-                row.appendChild(statusCell);
-                
-                // Actions cell
-                const actionsCell = document.createElement("td");
-                const actionsDiv = document.createElement("div");
-                actionsDiv.className = "action-buttons";
-                
-                // Approve/Decline button
-                const approveButton = document.createElement("button");
-                approveButton.className = question.approved ? "action-button decline-button" : "action-button approve-button";
-                approveButton.textContent = question.approved ? "Decline" : "Approve";
-                approveButton.addEventListener("click", () => {
-                    toggleApproval(question.id, !question.approved);
-                });
-                actionsDiv.appendChild(approveButton);
-                
-                // Delete button
-                const deleteButton = document.createElement("button");
-                deleteButton.className = "action-button delete-button";
-                deleteButton.textContent = "Delete";
-                deleteButton.addEventListener("click", () => {
-                    if (confirm("Are you sure you want to delete this question?")) {
-                        deleteQuestion(question.id);
-                    }
-                });
-                actionsDiv.appendChild(deleteButton);
-                
-                actionsCell.appendChild(actionsDiv);
-                row.appendChild(actionsCell);
-                
-                tableBody.appendChild(row);
             });
-        }
-        
-        // Function to toggle question approval - FIXED VERSION
-        async function toggleApproval(id, approved) {
-            try {
-                const { error } = await supabaseClient
-                    .from('faqs')
-                    .update({ approved: approved })
-                    .eq('id', id);
-                    
-                if (error) throw error;
-                
-                // Show success message
-                showStatusMessage(`Question ${approved ? 'approved' : 'declined'} successfully`, "success");
-                
-                // Reload questions to update the UI
-                loadQuestions();
-                
-            } catch (error) {
-                console.error("Error toggling approval:", error);
-                showStatusMessage("Failed to update question status: " + error.message, "error");
-            }
-        }
-        
-        // Function to delete question
-        async function deleteQuestion(id) {
-            try {
-                const { error } = await supabaseClient
-                    .from('faqs')
-                    .delete()
-                    .eq('id', id);
-                    
-                if (error) throw error;
-                
-                // Show success message
-                showStatusMessage("Question deleted successfully", "success");
-                
-                // Reload questions to update the UI
-                loadQuestions();
-                
-            } catch (error) {
-                console.error("Error deleting question:", error);
-                showStatusMessage("Failed to delete question: " + error.message, "error");
-            }
-        }
-        
-        // Function to open edit answer modal
-        function openEditAnswerModal(questionId, currentAnswer) {
-            // Create modal if it doesn't exist
-            let modal = document.getElementById("edit-answer-modal");
             
-            if (!modal) {
-                modal = document.createElement("div");
-                modal.id = "edit-answer-modal";
-                modal.className = "edit-answer-modal";
-                modal.innerHTML = `
-                    <div class="edit-answer-modal-content">
-                        <div class="edit-answer-modal-header">
-                            <h3>Edit Answer</h3>
-                            <button class="close-modal">&times;</button>
-                        </div>
-                        <textarea class="edit-answer-textarea" id="edit-answer-textarea"></textarea>
-                        <div class="edit-answer-buttons">
-                            <button class="cancel-edit-btn">Cancel</button>
-                            <button class="save-answer-btn">Save Changes</button>
-                        </div>
-                    </div>
-                `;
-                document.body.appendChild(modal);
+            // Load users
+            const loadUsers = async () => {
+                const usersTableBody = document.getElementById("users-table-body");
+                const usersLoading = document.getElementById("users-loading");
+                const usersEmpty = document.getElementById("users-empty");
                 
-                // Add event listeners for closing modal
-                modal.querySelector(".close-modal").addEventListener("click", () => {
-                    modal.style.display = "none";
-                });
-                
-                modal.querySelector(".cancel-edit-btn").addEventListener("click", () => {
-                    modal.style.display = "none";
-                });
-                
-                // Add event listener for saving changes
-                modal.querySelector(".save-answer-btn").addEventListener("click", async () => {
-                    const newAnswer = document.getElementById("edit-answer-textarea").value.trim();
-                    const questionId = modal.getAttribute("data-question-id");
+                try {
+                    usersLoading.style.display = "block";
+                    usersEmpty.style.display = "none";
                     
-                    if (newAnswer) {
-                        try {
-                            const { error } = await supabaseClient
-                                .from('faqs')
-                                .update({ answer: newAnswer })
-                                .eq('id', questionId);
-                                
-                            if (error) throw error;
-                            
-                            // Show success message
-                            showStatusMessage("Answer updated successfully", "success");
-                            
-                            // Hide modal
-                            modal.style.display = "none";
-                            
-                            // Reload questions to update the UI
-                            loadQuestions();
-                            
-                        } catch (error) {
-                            console.error("Error updating answer:", error);
-                            showStatusMessage("Failed to update answer: " + error.message, "error");
-                        }
-                    } else {
-                        alert("Please enter an answer before saving.");
+                    const { data: users, error } = await supabaseClient
+                        .from('user_profiles')
+                        .select('*')
+                        .order('created_at', { ascending: false });
+                        
+                    if (error) throw error;
+                    
+                    usersLoading.style.display = "none";
+                    
+                    if (!users || users.length === 0) {
+                        usersEmpty.style.display = "block";
+                        return;
                     }
-                });
-            }
+                    
+                    // Clear existing rows
+                    usersTableBody.innerHTML = "";
+                    
+                    // Add user rows
+                    users.forEach(user => {
+                        const row = document.createElement("tr");
+                        
+                        row.innerHTML = `
+                            <td>${user.name || "N/A"}</td>
+                            <td>${user.email || "N/A"}</td>
+                            <td>${user.is_admin ? "Admin" : "User"}</td>
+                            <td>Active</td>
+                            <td>
+                                <button class="btn-icon edit-user" data-id="${user.id}" title="Edit User">
+                                    <i class="fas fa-edit"></i>
+                                </button>
+                                <button class="btn-icon delete-user" data-id="${user.id}" title="Delete User">
+                                    <i class="fas fa-trash-alt"></i>
+                                </button>
+                            </td>
+                        `;
+                        
+                        usersTableBody.appendChild(row);
+                    });
+                    
+                    // Add event listeners to action buttons
+                    document.querySelectorAll(".edit-user").forEach(button => {
+                        button.addEventListener("click", () => {
+                            const userId = button.getAttribute("data-id");
+                            alert("Edit user functionality coming soon. User ID: " + userId);
+                        });
+                    });
+                    
+                    document.querySelectorAll(".delete-user").forEach(button => {
+                        button.addEventListener("click", async () => {
+                            const userId = button.getAttribute("data-id");
+                            
+                            // Prevent deleting current user
+                            if (userId === currentUser.id) {
+                                alert("You cannot delete your own account from here.");
+                                return;
+                            }
+                            
+                            const confirmed = confirm("Are you sure you want to delete this user? This action cannot be undone.");
+                            
+                            if (confirmed) {
+                                try {
+                                    // Delete user profile
+                                    const { error: profileError } = await supabaseClient
+                                        .from('user_profiles')
+                                        .delete()
+                                        .eq('id', userId);
+                                        
+                                    if (profileError) throw profileError;
+                                    
+                                    alert("User deleted successfully.");
+                                    loadUsers(); // Reload the user list
+                                    
+                                } catch (error) {
+                                    console.error("User deletion error:", error);
+                                    alert("Failed to delete user: " + error.message);
+                                }
+                            }
+                        });
+                    });
+                    
+                } catch (error) {
+                    console.error("Error loading users:", error);
+                    usersLoading.style.display = "none";
+                    alert("Failed to load users: " + error.message);
+                }
+            };
             
-            // Set current answer in textarea
-            const textarea = document.getElementById("edit-answer-textarea");
-            textarea.value = currentAnswer;
+            // Load users when the users tab is clicked
+            document.querySelector('a[href="#users"]').addEventListener("click", loadUsers);
             
-            // Set question ID as data attribute
-            modal.setAttribute("data-question-id", questionId);
-            
-            // Show the modal
-            modal.style.display = "flex";
-        }
-        
-        // Function to show status message
-        function showStatusMessage(message, type) {
-            const statusMessage = document.getElementById("status-message");
-            if (!statusMessage) return;
-            
-            statusMessage.textContent = message;
-            statusMessage.className = `status-message ${type}`;
-            statusMessage.style.display = "block";
-            
-            // Auto hide after 3 seconds
-            setTimeout(() => {
-                statusMessage.style.display = "none";
-            }, 3000);
-        }
+            // Create user button
+            document.getElementById("create-user-btn").addEventListener("click", () => {
+                alert("Create user functionality coming soon.");
+            });
+        });
     </script>
 </body>
 </html>

@@ -70,15 +70,15 @@
                             </div>
                             
                             <button type="submit" class="btn btn-primary">Login</button>
+                            
+                            <div class="form-links">
+                                <a href="#" class="forgot-password">Forgot your password?</a>
+                            </div>
                         </form>
-                        
-                        <div class="form-footer">
-                            <a href="#" class="forgot-password">Forgot your password?</a>
-                        </div>
                     </div>
                 </div>
                 
-                <div class="admin-login-link" style="text-align: center; margin-top: 2rem;">
+                <div class="admin-login-link">
                     <p>Are you an administrator? <a href="admin-login.html">Login to Admin Panel</a></p>
                 </div>
             </div>
@@ -105,7 +105,7 @@
                 </div>
                 <div class="footer-section">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-envelope"></i> os146@canterbuy.ac.uk</p>
+                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -138,8 +138,9 @@
         </div>
     </div>
 
+    <!-- Add this before your closing </body> tag -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/supabase.js"></script>
+    <script src="js/auth-handler.js"></script>
     <script src="js/script.js"></script>
     <script>
         document.addEventListener("DOMContentLoaded", () => {
@@ -162,7 +163,7 @@
                         
                         if (error) throw error;
                         
-                        // Get user profile including admin status
+                        // Get user profile
                         const { data: profile, error: profileError } = await supabaseClient
                             .from('user_profiles')
                             .select('*')
@@ -171,21 +172,28 @@
                             
                         if (profileError) throw profileError;
                         
-                        // Store user data in sessionStorage (more secure than localStorage)
+                        // Store user data in session storage
                         sessionStorage.setItem("isLoggedIn", "true");
-                        sessionStorage.setItem("currentUser", JSON.stringify({
+                        
+                        const userData = {
                             id: data.user.id,
                             name: profile.name,
                             email: profile.email,
                             isAdmin: profile.is_admin
-                        }));
+                        };
+                        
+                        sessionStorage.setItem("currentUser", JSON.stringify(userData));
                         
                         if (profile.is_admin) {
                             sessionStorage.setItem("isAdmin", "true");
                         }
                         
-                        // Redirect to appropriate page
-                        window.location.href = profile.is_admin ? "admin.html" : "profile.html";
+                        // Redirect based on user role
+                        if (profile.is_admin) {
+                            window.location.href = "admin.html";
+                        } else {
+                            window.location.href = "profile.html";
+                        }
                         
                     } catch (error) {
                         console.error("Login error:", error);
