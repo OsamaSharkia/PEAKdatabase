@@ -176,15 +176,11 @@
                             options: {
                                 data: {
                                     name: name
-                                },
-                                emailRedirectTo: window.location.origin + '/auth-redirect.html'
+                                }
                             }
                         });
                         
                         if (error) throw error;
-                        
-                        // Don't try to create the profile here - it will be created in auth-redirect.html
-                        // This avoids the RLS policy issues
                         
                         // Show success message
                         alert("Registration successful! Please check your email to confirm your account.");

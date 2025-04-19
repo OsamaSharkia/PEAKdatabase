@@ -163,36 +163,76 @@
                         
                         if (error) throw error;
                         
-                        // Get user profile
+                        // Check if user profile exists
                         const { data: profile, error: profileError } = await supabaseClient
                             .from('user_profiles')
                             .select('*')
                             .eq('id', data.user.id)
                             .single();
+                        
+                        // If profile doesn't exist, create it
+                        if (profileError && profileError.code === 'PGRST116') {
+                            const { error: insertError } = await supabaseClient
+                                .from('user_profiles')
+                                .insert([
+                                    { 
+                                        id: data.user.id,
+                                        name: data.user.user_metadata.name || '',
+                                        email: data.user.email,
+                                        is_admin: false
+                                    }
+                                ]);
+                                
+                            if (insertError) throw insertError;
                             
-                        if (profileError) throw profileError;
-                        
-                        // Store user data in session storage
-                        sessionStorage.setItem("isLoggedIn", "true");
-                        
-                        const userData = {
-                            id: data.user.id,
-                            name: profile.name,
-                            email: profile.email,
-                            isAdmin: profile.is_admin
-                        };
-                        
-                        sessionStorage.setItem("currentUser", JSON.stringify(userData));
-                        
-                        if (profile.is_admin) {
-                            sessionStorage.setItem("isAdmin", "true");
-                        }
-                        
-                        // Redirect based on user role
-                        if (profile.is_admin) {
-                            window.location.href = "admin.html";
-                        } else {
+                            // Get the newly created profile
+                            const { data: newProfile, error: newProfileError } = await supabaseClient
+                                .from('user_profiles')
+                                .select('*')
+                                .eq('id', data.user.id)
+                                .single();
+                                
+                            if (newProfileError) throw newProfileError;
+                            
+                            // Store user data in session storage
+                            sessionStorage.setItem("isLoggedIn", "true");
+                            
+                            const userData = {
+                                id: data.user.id,
+                                name: data.user.user_metadata.name || '',
+                                email: data.user.email,
+                                isAdmin: false
+                            };
+                            
+                            sessionStorage.setItem("currentUser", JSON.stringify(userData));
+                            
+                            // Redirect to profile page
                             window.location.href = "profile.html";
+                        } else if (profileError) {
+                            throw profileError;
+                        } else {
+                            // Profile exists, store user data in session storage
+                            sessionStorage.setItem("isLoggedIn", "true");
+                            
+                            const userData = {
+                                id: data.user.id,
+                                name: profile.name || data.user.user_metadata.name || '',
+                                email: data.user.email,
+                                isAdmin: profile.is_admin || false
+                            };
+                            
+                            sessionStorage.setItem("currentUser", JSON.stringify(userData));
+                            
+                            if (profile.is_admin) {
+                                sessionStorage.setItem("isAdmin", "true");
+                            }
+                            
+                            // Redirect based on user role
+                            if (profile.is_admin) {
+                                window.location.href = "admin.html";
+                            } else {
+                                window.location.href = "profile.html";
+                            }
                         }
                         
                     } catch (error) {

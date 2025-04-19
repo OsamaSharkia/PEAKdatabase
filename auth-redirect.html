@@ -91,7 +91,7 @@
                     <div id="auth-success" class="auth-message auth-success" style="display: none;">
                         <h2>Authentication Successful</h2>
                         <p>Your account has been verified successfully.</p>
-                        <p>You will be redirected to your profile page shortly.</p>
+                        <p>You will be redirected to the login page shortly.</p>
                     </div>
                     
                     <div id="auth-error" class="auth-message auth-error" style="display: none;">
@@ -179,189 +179,31 @@
             try {
                 logDebug("Auth redirect page loaded");
                 
-                // Log the full URL for debugging
-                logDebug("Current URL", window.location.href);
+                // Get URL parameters
+                const urlParams = new URLSearchParams(window.location.search);
+                const tokenHash = urlParams.get('token_hash');
+                const type = urlParams.get('type');
                 
-                // Check if we have a hash or query parameters
-                const hash = window.location.hash.substring(1);
-                const query = window.location.search.substring(1);
+                logDebug("URL parameters", { tokenHash: tokenHash ? "exists" : "missing", type });
                 
-                logDebug("URL hash", hash);
-                logDebug("URL query", query);
-                
-                // Try to get parameters from either hash or query
-                let params;
-                let accessToken = null;
-                let refreshToken = null;
-                let type = null;
-                
-                if (hash) {
-                    params = new URLSearchParams(hash);
-                    accessToken = params.get("access_token");
-                    refreshToken = params.get("refresh_token");
-                    type = params.get("type");
-                    logDebug("Parsed hash parameters", { accessToken: accessToken ? "exists" : "missing", refreshToken: refreshToken ? "exists" : "missing", type });
-                } else if (query) {
-                    params = new URLSearchParams(query);
-                    // Check for token_hash which is used in email confirmations
-                    const tokenHash = params.get("token_hash");
-                    type = params.get("type");
-                    logDebug("Parsed query parameters", { tokenHash: tokenHash ? "exists" : "missing", type });
+                if (tokenHash && type === 'email') {
+                    // This is an email confirmation
+                    logDebug("Processing email confirmation");
                     
-                    if (tokenHash && type === "email") {
-                        // This is an email confirmation link
-                        logDebug("Processing email confirmation with token_hash");
-                    }
-                }
-                
-                // If we have neither, check if Supabase can detect the auth state
-                if (!hash && !query) {
-                    logDebug("No hash or query parameters found, checking session");
-                }
-                
-                // Get the current session
-                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
-                
-                if (sessionError) {
-                    throw sessionError;
-                }
-                
-                logDebug("Current session", session ? "exists" : "null");
-                
-                if (session) {
-                    // We have a session, get the user
-                    const { data: { user }, error: userError } = await supabase.auth.getUser();
-                    
-                    if (userError) {
-                        throw userError;
-                    }
-                    
-                    logDebug("User retrieved", { id: user.id, email: user.email });
-                    
-                    // Check if user profile exists
-                    const { data: profile, error: profileError } = await supabase
-                        .from('user_profiles')
-                        .select('*')
-                        .eq('id', user.id)
-                        .single();
-                    
-                    if (profileError && profileError.code === 'PGRST116') {
-                        // Profile doesn't exist, create it
-                        logDebug("Profile doesn't exist, creating it");
-                        
-                        const { error: insertError } = await supabase
-                            .from('user_profiles')
-                            .insert([
-                                { 
-                                    id: user.id,
-                                    name: user.user_metadata.name || '',
-                                    email: user.email,
-                                    is_admin: false
-                                }
-                            ]);
-                            
-                        if (insertError) {
-                            logDebug("Error creating profile", insertError);
-                            throw insertError;
-                        }
-                        
-                        logDebug("Profile created successfully");
-                    } else if (profileError) {
-                        logDebug("Error checking profile", profileError);
-                        throw profileError;
-                    } else {
-                        logDebug("Profile already exists", { name: profile.name, email: profile.email });
-                    }
-                    
-                    // Store user data in session storage
-                    sessionStorage.setItem("isLoggedIn", "true");
-                    
-                    const userData = {
-                        id: user.id,
-                        name: user.user_metadata.name || profile?.name || '',
-                        email: user.email,
-                        isAdmin: profile?.is_admin || false
-                    };
-                    
-                    sessionStorage.setItem("currentUser", JSON.stringify(userData));
-                    
-                    if (profile?.is_admin) {
-                        sessionStorage.setItem("isAdmin", "true");
-                    }
-                    
-                    logDebug("User data stored in session storage");
-                    
-                    // Show success message
+                    // Simply show success and redirect to login
+                    // The actual verification is handled by Supabase automatically
                     loadingElement.style.display = "none";
                     successElement.style.display = "block";
                     actionsElement.style.display = "block";
                     
-                    // Redirect to profile page after 3 seconds
-                    logDebug("Redirecting to profile page in 3 seconds");
+                    // Redirect to login page after 3 seconds
                     setTimeout(() => {
-                        window.location.href = "profile.html";
+                        window.location.href = "login.html";
                     }, 3000);
-                } else if (hash || query) {
-                    // We have URL parameters but no session, try to handle the auth flow
-                    
-                    if (hash && accessToken) {
-                        // We have an access token in the hash, try to set the session
-                        logDebug("Setting session with access token");
-                        
-                        const { error: setSessionError } = await supabase.auth.setSession({
-                            access_token: accessToken,
-                            refresh_token: refreshToken || ""
-                        });
-                        
-                        if (setSessionError) {
-                            throw setSessionError;
-                        }
-                        
-                        // Get the user after setting the session
-                        const { data: { user }, error: userError } = await supabase.auth.getUser();
-                        
-                        if (userError) {
-                            throw userError;
-                        }
-                        
-                        logDebug("User retrieved after setting session", { id: user.id, email: user.email });
-                        
-                        // Reload the page to process the session
-                        logDebug("Reloading page to process session");
-                        window.location.reload();
-                    } else if (query && params.get("token_hash") && params.get("type") === "email") {
-                        // This is an email confirmation link
-                        logDebug("Processing email confirmation");
-                        
-                        // The email confirmation is handled automatically by Supabase
-                        // We just need to wait for the session to be established
-                        
-                        // Check if we can get a session after a short delay
-                        setTimeout(async () => {
-                            const { data: { session: newSession }, error: newSessionError } = await supabase.auth.getSession();
-                            
-                            if (newSessionError) {
-                                logDebug("Error getting session after delay", newSessionError);
-                                throw newSessionError;
-                            }
-                            
-                            if (newSession) {
-                                logDebug("Session established after delay, reloading");
-                                window.location.reload();
-                            } else {
-                                logDebug("No session after delay, showing error");
-                                throw new Error("Failed to establish session after email confirmation");
-                            }
-                        }, 2000);
-                    } else {
-                        // We have URL parameters but they're not what we expect
-                        throw new Error("Invalid URL parameters for authentication");
-                    }
                 } else {
-                    // We have no session and no URL parameters
-                    throw new Error("No authentication data found");
+                    // No valid parameters
+                    throw new Error("Invalid or missing authentication parameters");
                 }
-                
             } catch (error) {
                 console.error("Authentication error:", error);
                 logDebug("Authentication error", error);
