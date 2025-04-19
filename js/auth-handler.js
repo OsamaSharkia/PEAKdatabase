@@ -6,34 +6,102 @@ const supabase = window.supabase.createClient(supabaseUrl, supabaseKey)
 
 // Check if user is logged in on page load
 document.addEventListener("DOMContentLoaded", async () => {
-  // Skip auth check on login and register pages
-  const currentPage = window.location.pathname.split("/").pop()
-  if (currentPage === "login.html" || currentPage === "register.html") {
-    return
-  }
+  try {
+    // Get current session
+    const {
+      data: { session },
+      error,
+    } = await supabase.auth.getSession()
 
-  const {
-    data: { session },
-    error,
-  } = await supabase.auth.getSession()
-
-  if (error) {
-    console.error("Error checking auth status:", error)
-    return
-  }
-
-  // If not logged in and not on public pages, redirect to login
-  if (!session) {
-    const publicPages = ["index.html", "about.html", "contact.html", "faq.html"]
-    if (!publicPages.includes(currentPage) && currentPage !== "") {
-      window.location.href = "login.html"
+    if (error) {
+      console.error("Error checking auth status:", error)
+      return
     }
-    return
+
+    // Current page
+    const currentPath = window.location.pathname
+    const currentPage = currentPath.split("/").pop() || "index.html"
+
+    // Update navigation based on login status
+    updateNavigation(session)
+
+    // Handle login/logout specific logic
+    if (session) {
+      // User is logged in
+      console.log("User is logged in:", session.user.email)
+
+      // If on login page, redirect to home
+      if (currentPage === "login.html" || currentPage === "register.html") {
+        window.location.href = "index.html"
+      }
+    } else {
+      // User is not logged in
+      console.log("User is not logged in")
+
+      // Pages that require authentication
+      const authRequiredPages = ["profile.html", "dashboard.html"]
+
+      // If on a page that requires auth, redirect to login
+      if (authRequiredPages.includes(currentPage)) {
+        window.location.href = "login.html"
+      }
+    }
+  } catch (err) {
+    console.error("Unexpected error in auth check:", err)
+  }
+})
+
+// Update navigation based on auth status
+function updateNavigation(session) {
+  const navLinks = document.getElementById("nav-links")
+  if (!navLinks) return
+
+  // Find all links
+  const links = navLinks.getElementsByTagName("a")
+  let loginLink, registerLink, profileLink, logoutLink
+
+  // Find relevant links
+  for (let i = 0; i < links.length; i++) {
+    const link = links[i]
+    if (link.textContent.trim() === "Login") loginLink = link
+    if (link.textContent.trim() === "Register") registerLink = link
+    if (link.textContent.trim() === "My Profile") profileLink = link
+    if (link.textContent.trim() === "Logout") logoutLink = link
   }
 
-  // Update UI for logged in users
-  updateNavForLoggedInUser(session)
-})
+  if (session) {
+    // User is logged in - show profile and logout
+    if (loginLink) {
+      loginLink.textContent = "My Profile"
+      loginLink.href = "profile.html"
+    }
+
+    if (registerLink) {
+      registerLink.textContent = "Logout"
+      registerLink.href = "#"
+      registerLink.id = "logout-btn"
+
+      // Add logout functionality
+      registerLink.addEventListener("click", async (e) => {
+        e.preventDefault()
+        await supabase.auth.signOut()
+        window.location.href = "index.html"
+      })
+    }
+  } else {
+    // User is logged out - show login and register
+    if (profileLink) {
+      profileLink.textContent = "Login"
+      profileLink.href = "login.html"
+    }
+
+    if (logoutLink) {
+      logoutLink.textContent = "Register"
+      logoutLink.href = "register.html"
+      logoutLink.id = ""
+    }
+  }
+}
 
 // Handle login form submission
 if (document.getElementById("login-form")) {
@@ -43,25 +111,53 @@ if (document.getElementById("login-form")) {
     const email = document.getElementById("email").value
     const password = document.getElementById("password").value
     const errorElement = document.getElementById("login-error")
+    const loginButton = document.querySelector('#login-form button[type="submit"]')
 
     try {
+      // Disable button and show loading state
+      if (loginButton) {
+        loginButton.disabled = true
+        loginButton.textContent = "Logging in..."
+      }
+
+      if (errorElement) errorElement.style.display = "none"
+
+      // Attempt login
       const { data, error } = await supabase.auth.signInWithPassword({
         email: email,
         password: password,
       })
 
       if (error) {
-        errorElement.textContent = error.message
-        errorElement.style.display = "block"
+        if (errorElement) {
+          errorElement.textContent = error.message || "Login failed. Please check your credentials."
+          errorElement.style.display = "block"
+        } else {
+          alert("Login failed: " + (error.message || "Please check your credentials."))
+        }
         return
       }
+
+      console.log("Login successful, redirecting to home page")
+      // Store login state in localStorage as a backup
+      localStorage.setItem("isLoggedIn", "true")
 
       // Redirect to home page after successful login
       window.location.href = "index.html"
     } catch (err) {
-      errorElement.textContent = "An unexpected error occurred"
-      errorElement.style.display = "block"
-      console.error(err)
+      console.error("Unexpected error during login:", err)
+      if (errorElement) {
+        errorElement.textContent = "An unexpected error occurred. Please try again."
+        errorElement.style.display = "block"
+      } else {
+        alert("An unexpected error occurred. Please try again.")
+      }
+    } finally {
+      // Reset button state
+      if (loginButton) {
+        loginButton.disabled = false
+        loginButton.textContent = "Login"
+      }
     }
   })
 }
@@ -124,29 +220,17 @@ if (document.getElementById("register-form")) {
   })
 }
 
-// Update navigation for logged in users
-function updateNavForLoggedInUser(session) {
-  const navLinks = document.getElementById("nav-links")
-  if (!navLinks) return
-
-  // Find login/register links and replace with profile/logout
-  const loginLink = Array.from(navLinks.querySelectorAll("a")).find((a) => a.textContent === "Login")
-  const registerLink = Array.from(navLinks.querySelectorAll("a")).find((a) => a.textContent === "Register")
-
-  if (loginLink) {
-    const li = loginLink.parentElement
-    li.innerHTML = '<a href="profile.html">My Profile</a>'
-  }
-
-  if (registerLink) {
-    const li = registerLink.parentElement
-    li.innerHTML = '<a href="#" id="logout-link">Logout</a>'
-
-    // Add logout functionality
-    document.getElementById("logout-link").addEventListener("click", async (e) => {
-      e.preventDefault()
+// Add event listener for logout button
+document.addEventListener("click", async (e) => {
+  if (e.target && e.target.id === "logout-btn") {
+    e.preventDefault()
+    try {
       await supabase.auth.signOut()
+      localStorage.removeItem("isLoggedIn")
       window.location.href = "index.html"
-    })
+    } catch (err) {
+      console.error("Error during logout:", err)
+      alert("Failed to log out. Please try again.")
+    }
   }
-}
+})
