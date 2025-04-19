@@ -52,6 +52,20 @@
         @keyframes spin {
             to { transform: rotate(360deg); }
         }
+
+        .debug-info {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #f8f9fa;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            text-align: left;
+            font-family: monospace;
+            font-size: 12px;
+            max-height: 200px;
+            overflow-y: auto;
+            display: none;
+        }
     </style>
 </head>
 <body>
@@ -90,6 +104,12 @@
                         <a href="login.html" class="btn btn-primary">Go to Login</a>
                         <a href="index.html" class="btn btn-secondary">Return to Home</a>
                     </div>
+
+                    <div id="debug-info" class="debug-info"></div>
+                    
+                    <div style="margin-top: 20px;">
+                        <button id="show-debug" class="btn btn-secondary" style="font-size: 12px;">Show Debug Info</button>
+                    </div>
                 </div>
             </div>
         </section>
@@ -122,6 +142,34 @@
             const errorElement = document.getElementById("auth-error");
             const errorMessageElement = document.getElementById("error-message");
             const actionsElement = document.getElementById("auth-actions");
+            const debugInfoElement = document.getElementById("debug-info");
+            const showDebugButton = document.getElementById("show-debug");
+            
+            // Debug info toggle
+            showDebugButton.addEventListener("click", () => {
+                debugInfoElement.style.display = debugInfoElement.style.display === "none" ? "block" : "none";
+            });
+
+            // Function to log debug info
+            function logDebug(message, data = null) {
+                const timestamp = new Date().toISOString().split('T')[1].split('.')[0];
+                let logMessage = `[${timestamp}] ${message}`;
+                
+                if (data) {
+                    try {
+                        logMessage += `: ${JSON.stringify(data)}`;
+                    } catch (e) {
+                        logMessage += `: [Object cannot be stringified]`;
+                    }
+                }
+                
+                console.log(logMessage);
+                
+                const logElement = document.createElement("div");
+                logElement.textContent = logMessage;
+                debugInfoElement.appendChild(logElement);
+                debugInfoElement.scrollTop = debugInfoElement.scrollHeight;
+            }
             
             // Supabase client initialization
             const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co";
@@ -129,91 +177,194 @@
             const supabase = supabase.createClient(supabaseUrl, supabaseAnonKey);
             
             try {
-                // Get the hash fragment from the URL
+                logDebug("Auth redirect page loaded");
+                
+                // Log the full URL for debugging
+                logDebug("Current URL", window.location.href);
+                
+                // Check if we have a hash or query parameters
                 const hash = window.location.hash.substring(1);
+                const query = window.location.search.substring(1);
                 
-                // If there's no hash, show an error
-                if (!hash) {
-                    throw new Error("No authentication data found in URL");
+                logDebug("URL hash", hash);
+                logDebug("URL query", query);
+                
+                // Try to get parameters from either hash or query
+                let params;
+                let accessToken = null;
+                let refreshToken = null;
+                let type = null;
+                
+                if (hash) {
+                    params = new URLSearchParams(hash);
+                    accessToken = params.get("access_token");
+                    refreshToken = params.get("refresh_token");
+                    type = params.get("type");
+                    logDebug("Parsed hash parameters", { accessToken: accessToken ? "exists" : "missing", refreshToken: refreshToken ? "exists" : "missing", type });
+                } else if (query) {
+                    params = new URLSearchParams(query);
+                    // Check for token_hash which is used in email confirmations
+                    const tokenHash = params.get("token_hash");
+                    type = params.get("type");
+                    logDebug("Parsed query parameters", { tokenHash: tokenHash ? "exists" : "missing", type });
+                    
+                    if (tokenHash && type === "email") {
+                        // This is an email confirmation link
+                        logDebug("Processing email confirmation with token_hash");
+                    }
                 }
                 
-                // Parse the hash parameters
-                const params = new URLSearchParams(hash);
-                const accessToken = params.get("access_token");
-                const refreshToken = params.get("refresh_token");
-                const type = params.get("type");
-                
-                if (!accessToken) {
-                    throw new Error("No access token found in URL");
+                // If we have neither, check if Supabase can detect the auth state
+                if (!hash && !query) {
+                    logDebug("No hash or query parameters found, checking session");
                 }
                 
-                // Set the session
-                const { error } = await supabase.auth.setSession({
-                    access_token: accessToken,
-                    refresh_token: refreshToken || ""
-                });
+                // Get the current session
+                const { data: { session }, error: sessionError } = await supabase.auth.getSession();
                 
-                if (error) throw error;
+                if (sessionError) {
+                    throw sessionError;
+                }
                 
-                // Get the user
-                const { data: { user }, error: userError } = await supabase.auth.getUser();
+                logDebug("Current session", session ? "exists" : "null");
                 
-                if (userError || !user) throw userError || new Error("Failed to get user");
-                
-                // Get user profile
-                const { data: profile, error: profileError } = await supabase
-                    .from('user_profiles')
-                    .select('*')
-                    .eq('id', user.id)
-                    .single();
-                
-                // If profile doesn't exist yet, create it
-                if (profileError && profileError.code === 'PGRST116') {
-                    // Profile doesn't exist, create it
-                    const { error: insertError } = await supabase
+                if (session) {
+                    // We have a session, get the user
+                    const { data: { user }, error: userError } = await supabase.auth.getUser();
+                    
+                    if (userError) {
+                        throw userError;
+                    }
+                    
+                    logDebug("User retrieved", { id: user.id, email: user.email });
+                    
+                    // Check if user profile exists
+                    const { data: profile, error: profileError } = await supabase
                         .from('user_profiles')
-                        .insert([
-                            { 
-                                id: user.id,
-                                name: user.user_metadata.name || '',
-                                email: user.email,
-                                is_admin: false
-                            }
-                        ]);
+                        .select('*')
+                        .eq('id', user.id)
+                        .single();
+                    
+                    if (profileError && profileError.code === 'PGRST116') {
+                        // Profile doesn't exist, create it
+                        logDebug("Profile doesn't exist, creating it");
                         
-                    if (insertError) throw insertError;
-                } else if (profileError) {
-                    throw profileError;
+                        const { error: insertError } = await supabase
+                            .from('user_profiles')
+                            .insert([
+                                { 
+                                    id: user.id,
+                                    name: user.user_metadata.name || '',
+                                    email: user.email,
+                                    is_admin: false
+                                }
+                            ]);
+                            
+                        if (insertError) {
+                            logDebug("Error creating profile", insertError);
+                            throw insertError;
+                        }
+                        
+                        logDebug("Profile created successfully");
+                    } else if (profileError) {
+                        logDebug("Error checking profile", profileError);
+                        throw profileError;
+                    } else {
+                        logDebug("Profile already exists", { name: profile.name, email: profile.email });
+                    }
+                    
+                    // Store user data in session storage
+                    sessionStorage.setItem("isLoggedIn", "true");
+                    
+                    const userData = {
+                        id: user.id,
+                        name: user.user_metadata.name || profile?.name || '',
+                        email: user.email,
+                        isAdmin: profile?.is_admin || false
+                    };
+                    
+                    sessionStorage.setItem("currentUser", JSON.stringify(userData));
+                    
+                    if (profile?.is_admin) {
+                        sessionStorage.setItem("isAdmin", "true");
+                    }
+                    
+                    logDebug("User data stored in session storage");
+                    
+                    // Show success message
+                    loadingElement.style.display = "none";
+                    successElement.style.display = "block";
+                    actionsElement.style.display = "block";
+                    
+                    // Redirect to profile page after 3 seconds
+                    logDebug("Redirecting to profile page in 3 seconds");
+                    setTimeout(() => {
+                        window.location.href = "profile.html";
+                    }, 3000);
+                } else if (hash || query) {
+                    // We have URL parameters but no session, try to handle the auth flow
+                    
+                    if (hash && accessToken) {
+                        // We have an access token in the hash, try to set the session
+                        logDebug("Setting session with access token");
+                        
+                        const { error: setSessionError } = await supabase.auth.setSession({
+                            access_token: accessToken,
+                            refresh_token: refreshToken || ""
+                        });
+                        
+                        if (setSessionError) {
+                            throw setSessionError;
+                        }
+                        
+                        // Get the user after setting the session
+                        const { data: { user }, error: userError } = await supabase.auth.getUser();
+                        
+                        if (userError) {
+                            throw userError;
+                        }
+                        
+                        logDebug("User retrieved after setting session", { id: user.id, email: user.email });
+                        
+                        // Reload the page to process the session
+                        logDebug("Reloading page to process session");
+                        window.location.reload();
+                    } else if (query && params.get("token_hash") && params.get("type") === "email") {
+                        // This is an email confirmation link
+                        logDebug("Processing email confirmation");
+                        
+                        // The email confirmation is handled automatically by Supabase
+                        // We just need to wait for the session to be established
+                        
+                        // Check if we can get a session after a short delay
+                        setTimeout(async () => {
+                            const { data: { session: newSession }, error: newSessionError } = await supabase.auth.getSession();
+                            
+                            if (newSessionError) {
+                                logDebug("Error getting session after delay", newSessionError);
+                                throw newSessionError;
+                            }
+                            
+                            if (newSession) {
+                                logDebug("Session established after delay, reloading");
+                                window.location.reload();
+                            } else {
+                                logDebug("No session after delay, showing error");
+                                throw new Error("Failed to establish session after email confirmation");
+                            }
+                        }, 2000);
+                    } else {
+                        // We have URL parameters but they're not what we expect
+                        throw new Error("Invalid URL parameters for authentication");
+                    }
+                } else {
+                    // We have no session and no URL parameters
+                    throw new Error("No authentication data found");
                 }
-                
-                // Store user data in session storage
-                sessionStorage.setItem("isLoggedIn", "true");
-                
-                const userData = {
-                    id: user.id,
-                    name: profile?.name || user.user_metadata.name || '',
-                    email: user.email,
-                    isAdmin: profile?.is_admin || false
-                };
-                
-                sessionStorage.setItem("currentUser", JSON.stringify(userData));
-                
-                if (profile?.is_admin) {
-                    sessionStorage.setItem("isAdmin", "true");
-                }
-                
-                // Show success message
-                loadingElement.style.display = "none";
-                successElement.style.display = "block";
-                actionsElement.style.display = "block";
-                
-                // Redirect to profile page after 3 seconds
-                setTimeout(() => {
-                    window.location.href = "profile.html";
-                }, 3000);
                 
             } catch (error) {
                 console.error("Authentication error:", error);
+                logDebug("Authentication error", error);
                 
                 // Show error message
                 loadingElement.style.display = "none";
