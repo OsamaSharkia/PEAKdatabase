@@ -9,6 +9,24 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Add authentication handling script -->
+    <script>
+        // Check if we have authentication parameters in the URL hash
+        if (window.location.hash && (window.location.hash.includes('access_token') || window.location.hash.includes('token_hash'))) {
+            // Create a success message element
+            const successMessage = document.createElement('div');
+            successMessage.className = 'auth-success-message';
+            successMessage.style.cssText = 'background-color: #4CAF50; color: white; text-align: center; padding: 15px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000;';
+            successMessage.innerHTML = '<p>Email verified successfully! Redirecting to login page...</p>';
+            document.body.prepend(successMessage);
+            
+            // Redirect to login page after 3 seconds
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 3000);
+        }
+    </script>
+
     <header>
         <div class="container">
             <div class="logo">
@@ -28,6 +46,9 @@
                     <li><a href="faq.html">FAQ</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About Us</a></li>
+                    <!-- Add login and register links -->
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
                 </ul>
             </nav>
         </div>
@@ -179,7 +200,8 @@
                 </div>
                 <div class="footer-section">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-envelope"></i> os146@canterbuy.ac.uk</p>
+                    <!-- Fixed email typo -->
+                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -212,6 +234,44 @@
         </div>
     </div>
 
+    <!-- Add authentication status check -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Check if user is logged in
+            const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+            const currentUser = JSON.parse(sessionStorage.getItem("currentUser") || "null");
+            
+            // Get the navigation links
+            const navLinks = document.getElementById("nav-links");
+            
+            if (isLoggedIn && currentUser && navLinks) {
+                // Find the login and register links
+                const loginLink = Array.from(navLinks.querySelectorAll("a")).find(a => a.textContent === "Login");
+                const registerLink = Array.from(navLinks.querySelectorAll("a")).find(a => a.textContent === "Register");
+                
+                // Replace them with profile and logout links
+                if (loginLink) {
+                    const li = loginLink.parentElement;
+                    li.innerHTML = `<a href="profile.html">Profile</a>`;
+                }
+                
+                if (registerLink) {
+                    const li = registerLink.parentElement;
+                    li.innerHTML = `<a href="#" id="logout-link">Logout</a>`;
+                    
+                    // Add logout functionality
+                    document.getElementById("logout-link").addEventListener("click", (e) => {
+                        e.preventDefault();
+                        sessionStorage.removeItem("isLoggedIn");
+                        sessionStorage.removeItem("currentUser");
+                        sessionStorage.removeItem("isAdmin");
+                        window.location.href = "index.html";
+                    });
+                }
+            }
+        });
+    </script>
+    
     <script src="js/script.js"></script>
 </body>
 </html>
