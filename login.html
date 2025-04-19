@@ -72,10 +72,15 @@
                             <button type="submit" class="btn btn-primary">Login</button>
                             
                             <div class="form-links">
-                                <a href="#" id="magic-link-btn" class="magic-link">Login with Magic Link</a>
-                                <a href="#" class="forgot-password">Forgot your password?</a>
+                                <a href="#" id="forgot-password" class="forgot-password">Forgot your password?</a>
                             </div>
                         </form>
+                        
+                        <!-- Resend confirmation email section -->
+                        <div id="resend-confirmation" class="resend-confirmation" style="display: none; margin-top: 20px; text-align: center;">
+                            <p>Haven't received the confirmation email?</p>
+                            <button id="resend-btn" class="btn btn-secondary">Resend Confirmation Email</button>
+                        </div>
                     </div>
                 </div>
                 
@@ -146,20 +151,28 @@
     <script>
         document.addEventListener("DOMContentLoaded", () => {
             const loginForm = document.getElementById("login-form");
-            const magicLinkBtn = document.getElementById("magic-link-btn");
+            const errorElement = document.getElementById("login-error");
+            const resendConfirmation = document.getElementById("resend-confirmation");
+            const resendBtn = document.getElementById("resend-btn");
+            const emailInput = document.getElementById("email");
+            const forgotPasswordLink = document.getElementById("forgot-password");
             
             if (loginForm) {
                 loginForm.addEventListener("submit", async (e) => {
                     e.preventDefault();
                     
-                    const email = document.getElementById("email").value.trim();
+                    const email = emailInput.value.trim();
                     const password = document.getElementById("password").value;
-                    const errorElement = document.getElementById("login-error");
                     
                     try {
                         // Clear any previous errors
                         if (errorElement) {
                             errorElement.style.display = "none";
+                        }
+                        
+                        // Hide resend section
+                        if (resendConfirmation) {
+                            resendConfirmation.style.display = "none";
                         }
                         
                         // Sign in with Supabase
@@ -168,7 +181,17 @@
                             password
                         });
                         
-                        if (error) throw error;
+                        if (error) {
+                            // Check if this is an email confirmation error
+                            if (error.message.includes("Email not confirmed")) {
+                                // Show the resend confirmation section
+                                if (resendConfirmation) {
+                                    resendConfirmation.style.display = "block";
+                                }
+                                throw new Error("Please check your email and click the confirmation link before logging in.");
+                            }
+                            throw error;
+                        }
                         
                         // Store basic user data in session storage
                         sessionStorage.setItem("isLoggedIn", "true");
@@ -195,13 +218,9 @@
                 });
             }
             
-            // Magic link functionality
-            if (magicLinkBtn) {
-                magicLinkBtn.addEventListener("click", async (e) => {
-                    e.preventDefault();
-                    
-                    const email = document.getElementById("email").value.trim();
-                    const errorElement = document.getElementById("login-error");
+            if (resendBtn) {
+                resendBtn.addEventListener("click", async () => {
+                    const email = emailInput.value.trim();
                     
                     if (!email) {
                         if (errorElement) {
@@ -212,21 +231,52 @@
                     }
                     
                     try {
-                        const { error } = await supabaseClient.auth.signInWithOtp({
-                            email: email,
-                            options: {
-                                emailRedirectTo: window.location.origin + '/auth-redirect.html'
-                            }
+                        const { error } = await supabaseClient.auth.resend({
+                            type: 'signup',
+                            email: email
                         });
                         
                         if (error) throw error;
                         
-                        alert("Magic link sent! Please check your email.");
+                        alert("Confirmation email resent! Please check your inbox.");
                         
                     } catch (error) {
-                        console.error("Magic link error:", error);
+                        console.error("Resend error:", error);
                         if (errorElement) {
-                            errorElement.textContent = error.message || "Failed to send magic link";
+                            errorElement.textContent = error.message || "Failed to resend confirmation email";
+                            errorElement.style.display = "block";
+                        }
+                    }
+                });
+            }
+            
+            if (forgotPasswordLink) {
+                forgotPasswordLink.addEventListener("click", async (e) => {
+                    e.preventDefault();
+                    
+                    const email = emailInput.value.trim();
+                    
+                    if (!email) {
+                        if (errorElement) {
+                            errorElement.textContent = "Please enter your email address";
+                            errorElement.style.display = "block";
+                        }
+                        return;
+                    }
+                    
+                    try {
+                        const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+                            redirectTo: window.location.origin + '/reset-password.html',
+                        });
+                        
+                        if (error) throw error;
+                        
+                        alert("Password reset email sent! Please check your inbox.");
+                        
+                    } catch (error) {
+                        console.error("Password reset error:", error);
+                        if (errorElement) {
+                            errorElement.textContent = error.message || "Failed to send password reset email";
                             errorElement.style.display = "block";
                         }
                     }
