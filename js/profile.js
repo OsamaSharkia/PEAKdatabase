@@ -123,16 +123,15 @@ document.addEventListener("DOMContentLoaded", () => {
         phoneNumberInput.value = userProfile.phone || ""
 
         // Handle preferred language
-        // Remove these lines:
-        // if (preferredLanguageSelect) {
-        //   // Check if the value exists in the options
-        //   const languageValue = userProfile.preferred_language || "English";
-        //   const optionExists = Array.from(preferredLanguageSelect.options).some(
-        //     (option) => option.value === languageValue,
-        //   );
+        if (preferredLanguageSelect) {
+          // Check if the value exists in the options
+          const languageValue = userProfile.preferred_language || "English"
+          const optionExists = Array.from(preferredLanguageSelect.options).some(
+            (option) => option.value === languageValue,
+          )
 
-        //   preferredLanguageSelect.value = optionExists ? languageValue : "English";
-        // }
+          preferredLanguageSelect.value = optionExists ? languageValue : "English"
+        }
 
         // Set notification preferences
         if (notifyEducationalCheckbox) {
@@ -202,29 +201,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Set button loading state
-    function setButtonLoading(button, isLoading) {
-      if (!button) return
-
-      const textSpan = button.querySelector(".btn-text")
-      const loadingSpan = button.querySelector(".btn-loading")
-
-      if (!textSpan || !loadingSpan) {
-        console.warn("Button spans not found:", button.id)
-        return
-      }
-
-      if (isLoading) {
-        textSpan.hidden = true
-        loadingSpan.hidden = false
-        button.disabled = true
-      } else {
-        textSpan.hidden = false
-        loadingSpan.hidden = true
-        button.disabled = false
-      }
-    }
-
     // Save profile data to both Supabase and localStorage
     async function saveProfileData(profileData) {
       let success = false
@@ -276,15 +252,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (profileForm) {
       profileForm.addEventListener("submit", async (e) => {
         e.preventDefault()
-        setButtonLoading(saveProfileBtn, true)
 
         try {
-          // Check network connectivity
-          if (!navigator.onLine) {
-            console.warn("User is offline")
-          }
-
-          // In the profileForm submit handler, change the updatedProfile object to:
           const updatedProfile = {
             id: currentUser.id,
             name: fullNameInput.value.trim(),
@@ -316,20 +285,9 @@ document.addEventListener("DOMContentLoaded", () => {
           if (!navigator.onLine) {
             errorMessage = "You appear to be offline. Changes saved locally and will sync when you're back online."
             showNotification(errorMessage, "warning")
-          } else if (error.message.includes("network")) {
-            errorMessage = "Network error. Please check your connection and try again."
-            showNotification(errorMessage, "error")
-          } else if (error.message.includes("timeout")) {
-            errorMessage = "Request timed out. Please try again later."
-            showNotification(errorMessage, "error")
-          } else if (error.code === "23505") {
-            errorMessage = "This phone number is already in use by another account."
-            showNotification(errorMessage, "error")
           } else {
             showNotification(errorMessage, "error")
           }
-        } finally {
-          setButtonLoading(saveProfileBtn, false)
         }
       })
     }
@@ -338,14 +296,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (notificationForm) {
       notificationForm.addEventListener("submit", async (e) => {
         e.preventDefault()
-        setButtonLoading(saveNotificationsBtn, true)
 
         try {
-          // Check network connectivity
-          if (!navigator.onLine) {
-            console.warn("User is offline")
-          }
-
           const updatedPreferences = {
             id: currentUser.id,
             notify_educational: notifyEducationalCheckbox.checked,
@@ -365,24 +317,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showNotification("Notification preferences updated successfully", "success")
         } catch (error) {
           console.error("Error updating notification preferences:", error)
-
-          let errorMessage = "Failed to update notification preferences"
-
-          // Provide more specific error messages
-          if (!navigator.onLine) {
-            errorMessage = "You appear to be offline. Changes saved locally and will sync when you're back online."
-            showNotification(errorMessage, "warning")
-          } else if (error.message.includes("network")) {
-            errorMessage = "Network error. Please check your connection and try again."
-            showNotification(errorMessage, "error")
-          } else if (error.message.includes("timeout")) {
-            errorMessage = "Request timed out. Please try again later."
-            showNotification(errorMessage, "error")
-          } else {
-            showNotification(errorMessage, "error")
-          }
-        } finally {
-          setButtonLoading(saveNotificationsBtn, false)
+          showNotification("Failed to update notification preferences", "error")
         }
       })
     }
@@ -391,7 +326,6 @@ document.addEventListener("DOMContentLoaded", () => {
     if (passwordForm) {
       passwordForm.addEventListener("submit", async (e) => {
         e.preventDefault()
-        setButtonLoading(changePasswordBtn, true)
 
         const currentPassword = document.getElementById("current-password").value
         const newPassword = document.getElementById("new-password").value
@@ -400,23 +334,16 @@ document.addEventListener("DOMContentLoaded", () => {
         // Validate passwords match
         if (newPassword !== confirmPassword) {
           showNotification("New passwords do not match", "error")
-          setButtonLoading(changePasswordBtn, false)
           return
         }
 
         // Validate password strength
         if (newPassword.length < 6) {
           showNotification("Password must be at least 6 characters long", "error")
-          setButtonLoading(changePasswordBtn, false)
           return
         }
 
         try {
-          // Check network connectivity
-          if (!navigator.onLine) {
-            throw new Error("You appear to be offline. Please check your internet connection.")
-          }
-
           if (!supabaseClient) {
             throw new Error("Authentication service not available")
           }
@@ -434,25 +361,7 @@ document.addEventListener("DOMContentLoaded", () => {
           showNotification("Password updated successfully", "success")
         } catch (error) {
           console.error("Error updating password:", error)
-
-          let errorMessage = "Failed to update password. Make sure your current password is correct."
-
-          // Provide more specific error messages
-          if (!navigator.onLine) {
-            errorMessage = "You appear to be offline. Please check your internet connection."
-          } else if (error.message.includes("network")) {
-            errorMessage = "Network error. Please check your connection and try again."
-          } else if (error.message.includes("timeout")) {
-            errorMessage = "Request timed out. Please try again later."
-          } else if (error.message.includes("weak")) {
-            errorMessage = "Password is too weak. Please choose a stronger password."
-          } else if (error.message.includes("auth")) {
-            errorMessage = "Authentication error. Please try logging in again."
-          }
-
-          showNotification(errorMessage, "error")
-        } finally {
-          setButtonLoading(changePasswordBtn, false)
+          showNotification("Failed to update password. Make sure your current password is correct.", "error")
         }
       })
     }
