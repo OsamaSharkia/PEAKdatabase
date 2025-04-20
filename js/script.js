@@ -1,18 +1,6 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Script.js loaded")
 
-  // Check if we're on a protected page
-  const currentPath = window.location.pathname
-  const currentPage = currentPath.split("/").pop() || "index.html"
-  const protectedPages = ["profile.html", "dashboard.html"]
-
-  // Immediate check for protected pages
-  if (protectedPages.includes(currentPage) && sessionStorage.getItem("isLoggedIn") !== "true") {
-    console.log("Protected page accessed without login, redirecting")
-    window.location.href = "login.html"
-    return
-  }
-
   // Toggle mobile menu
   const menuToggle = document.getElementById("menu-toggle")
   const navLinks = document.getElementById("nav-links")
@@ -53,12 +41,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   console.log("Script.js loaded")
 
-  // Check if user is logged in (use sessionStorage for tab-specific login)
-  const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true" || localStorage.getItem("isLoggedIn") === "true"
-  const isAdmin = sessionStorage.getItem("isAdmin") === "true" || localStorage.getItem("isAdmin") === "true"
-  const currentUser = JSON.parse(sessionStorage.getItem("currentUser") || localStorage.getItem("currentUser") || "null")
-
-  // Check Supabase session if available
+  // Check if Supabase session is available
   if (window.supabaseClient) {
     try {
       // Check current session
@@ -98,9 +81,14 @@ document.addEventListener("DOMContentLoaded", () => {
                   sessionStorage.setItem("isAdmin", "true")
                 }
 
-                // Update navigation
-                updateNavigation()
+                // Use the centralized navigation update function
+                if (window.updateNavigation) {
+                  window.updateNavigation(true)
+                }
               }
+            })
+            .catch(error => {
+              console.error("Error fetching profile:", error)
             })
         }
       })
@@ -108,97 +96,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Session check error:", error)
     }
   }
-
-  // Store current authentication state in sessionStorage to make it tab-specific
-  if (localStorage.getItem("isLoggedIn") === "true") {
-    sessionStorage.setItem("isLoggedIn", "true")
-    sessionStorage.setItem("currentUser", localStorage.getItem("currentUser"))
-    if (localStorage.getItem("isAdmin") === "true") {
-      sessionStorage.setItem("isAdmin", "true")
-    }
-  }
-
-  console.log("Login status:", isLoggedIn)
-  console.log("Admin status:", isAdmin)
-  console.log("Current user:", currentUser)
-
-  // Update navigation based on login status
-  function updateNavigation() {
-    const navLinks = document.getElementById("nav-links")
-    if (!navLinks) {
-      console.error("Navigation element not found")
-      return
-    }
-
-    let navItems = `
-      <li><a href="index.html">Home</a></li>
-      <li><a href="pathways.html">Education Pathways</a></li>
-      <li><a href="resources.html">Resources</a></li>
-      <li><a href="faq.html">FAQ</a></li>
-      <li><a href="contact.html">Contact</a></li>
-      <li><a href="about.html">About Us</a></li>
-    `
-
-    if (isLoggedIn && currentUser) {
-      navItems += `
-        <li><a href="profile.html">My Profile (${currentUser.name || "User"})</a></li>
-        <li><a href="#" id="logout-link">Logout</a></li>
-      `
-
-      // Add admin link if user is admin
-      if (isAdmin || (currentUser && currentUser.isAdmin)) {
-        navItems += `<li><a href="admin.html">Admin</a></li>`
-        console.log("Added admin link to navigation")
-      }
-    } else {
-      navItems += `
-        <li><a href="login.html">Login</a></li>
-        <li><a href="register.html">Register</a></li>
-      `
-    }
-
-    navLinks.innerHTML = navItems
-    console.log("Navigation updated")
-
-    // Set active class for current page
-    const currentPage = window.location.pathname.split("/").pop() || "index.html"
-    const links = navLinks.querySelectorAll("a")
-    links.forEach((link) => {
-      if (link.getAttribute("href") === currentPage) {
-        link.classList.add("active")
-      }
-    })
-
-    // Update logout functionality to clear both localStorage and sessionStorage
-    const logoutLink = document.getElementById("logout-link")
-    if (logoutLink) {
-      logoutLink.addEventListener("click", async (e) => {
-        e.preventDefault()
-
-        // Sign out from Supabase if available
-        if (window.supabaseClient) {
-          try {
-            await window.supabaseClient.auth.signOut()
-          } catch (error) {
-            console.error("Supabase logout error:", error)
-          }
-        }
-
-        // Clear both sessionStorage and localStorage
-        sessionStorage.removeItem("isLoggedIn")
-        sessionStorage.removeItem("currentUser")
-        sessionStorage.removeItem("isAdmin")
-        localStorage.removeItem("isLoggedIn")
-        localStorage.removeItem("currentUser")
-        localStorage.removeItem("isAdmin")
-        console.log("User logged out successfully")
-        window.location.href = "index.html"
-      })
-    }
-  }
-
-  // Call the function to update navigation
-  updateNavigation()
 
   // Mobile menu toggle
   const menuToggle2 = document.getElementById("menu-toggle")
