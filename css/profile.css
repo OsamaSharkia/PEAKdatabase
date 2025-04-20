@@ -59,7 +59,6 @@
 
 .profile-menu {
     padding: 1rem 0;
-    flex: 1;
 }
 
 .profile-menu-item {
@@ -104,16 +103,6 @@
     color: var(--primary-color);
 }
 
-.profile-menu-footer {
-    padding: 1rem 1.5rem;
-    border-top: 1px solid var(--border-color);
-}
-
-.btn-sm {
-    padding: 0.5rem 1rem;
-    font-size: 0.9rem;
-}
-
 /* Profile Content */
 .profile-content {
     background-color: white;
@@ -122,16 +111,16 @@
     overflow: hidden;
 }
 
-.tab-pane {
+.profile-tab {
     display: none;
     padding: 2rem;
 }
 
-.tab-pane.active {
+.profile-tab.active {
     display: block;
 }
 
-.tab-pane h2 {
+.profile-tab h2 {
     color: var(--primary-color);
     margin-bottom: 0.5rem;
     font-size: 1.5rem;
@@ -359,10 +348,6 @@
         border-left: none;
         border-bottom: 3px solid var(--primary-color);
     }
-    
-    .profile-menu-footer {
-        display: none;
-    }
 }
 
 @media (max-width: 768px) {
@@ -376,7 +361,7 @@
         font-size: 2rem;
     }
     
-    .tab-pane {
+    .profile-tab {
         padding: 1.5rem;
     }
     
