@@ -1,46 +1,24 @@
 <!DOCTYPE html>
-<html lang="en" class="smooth-scroll">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pathway to Education Access in Kent (PEAK)</title>
     <meta name="description" content="Supporting refugees in Kent, UK to access higher education opportunities">
     <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="css/enhanced-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <!-- Skip to content link for accessibility -->
-    <a href="#main-content" class="skip-to-content">Skip to main content</a>
-
     <!-- Add authentication handling script -->
     <script>
         // Check if we have authentication parameters in the URL hash
         if (window.location.hash && (window.location.hash.includes('access_token') || window.location.hash.includes('token_hash'))) {
             // Create a success message element
             const successMessage = document.createElement('div');
-            successMessage.className = 'toast toast-success';
-            successMessage.innerHTML = `
-                <div class="toast-header">
-                    <h4>Success!</h4>
-                    <button class="toast-close" aria-label="Close" onclick="this.parentElement.parentElement.remove()">
-                        <i class="fas fa-times"></i>
-                    </button>
-                </div>
-                <div class="toast-body">
-                    <p>Email verified successfully! Redirecting to login page...</p>
-                </div>
-            `;
-            
-            // Create toast container if it doesn't exist
-            let toastContainer = document.querySelector('.toast-container');
-            if (!toastContainer) {
-                toastContainer = document.createElement('div');
-                toastContainer.className = 'toast-container';
-                document.body.appendChild(toastContainer);
-            }
-            
-            toastContainer.appendChild(successMessage);
+            successMessage.className = 'auth-success-message';
+            successMessage.style.cssText = 'background-color: #4CAF50; color: white; text-align: center; padding: 15px; position: fixed; top: 0; left: 0; right: 0; z-index: 1000;';
+            successMessage.innerHTML = '<p>Email verified successfully! Redirecting to login page...</p>';
+            document.body.prepend(successMessage);
             
             // Redirect to login page after 3 seconds
             setTimeout(() => {
@@ -55,7 +33,7 @@
                 <h1>PEAK</h1>
                 <p class="tagline">Pathway to Education Access in Kent</p>
             </div>
-            <nav>
+            <nav id="navbar">
                 <button id="menu-toggle" aria-label="Toggle menu">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -72,135 +50,94 @@
                     <li><a href="login.html">Login</a></li>
                     <li><a href="register.html">Register</a></li>
                 </ul>
-                <div class="nav-right">
-                    <div class="dark-mode-toggle" id="dark-mode-toggle" role="switch" aria-checked="false" tabindex="0">
-                        <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
-                        <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
-                    </div>
-                </div>
             </nav>
         </div>
     </header>
 
-    <main id="main-content">
+    <main>
         <section class="hero">
-            <div class="hero-pattern"></div>
             <div class="container">
                 <div class="hero-content">
-                    <h2 class="animate animate-fade-in-up">Supporting Refugees in Higher Education</h2>
-                    <p class="animate animate-fade-in-up animate-delay-1">Navigating the path to university education in Kent, UK</p>
-                    <div class="hero-buttons animate animate-fade-in-up animate-delay-2">
-                        <a href="pathways.html" class="btn btn-primary">
-                            <span>Explore Pathways</span>
-                            <i class="fas fa-compass" aria-hidden="true"></i>
-                        </a>
-                        <a href="contact.html" class="btn btn-light">
-                            <span>Get Support</span>
-                            <i class="fas fa-hands-helping" aria-hidden="true"></i>
-                        </a>
+                    <h2>Supporting Refugees in Higher Education</h2>
+                    <p>Navigating the path to university education in Kent, UK</p>
+                    <div class="hero-buttons">
+                        <a href="pathways.html" class="btn btn-primary">Explore Pathways</a>
+                        <a href="contact.html" class="btn btn-secondary">Get Support</a>
                     </div>
                 </div>
             </div>
-            <div class="hero-shape">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
-                    <path fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
-                </svg>
-            </div>
         </section>
 
-        <section class="features section">
+        <section class="features">
             <div class="container">
                 <h2 class="section-title">How We Can Help</h2>
-                <p class="section-subtitle">We provide comprehensive support and resources to help refugees navigate the UK higher education system.</p>
                 <div class="feature-grid">
-                    <div class="feature-card animate-on-scroll from-bottom">
+                    <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                            <i class="fas fa-graduation-cap"></i>
                         </div>
                         <h3>University Access</h3>
                         <p>Learn about admission processes, access courses, and foundation years at Kent universities.</p>
-                        <div class="feature-card-action">
-                            <a href="pathways.html#university-access" class="btn-text">Learn more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-                        </div>
                     </div>
-                    <div class="feature-card animate-on-scroll from-bottom">
+                    <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-language" aria-hidden="true"></i>
+                            <i class="fas fa-language"></i>
                         </div>
                         <h3>Language Support</h3>
                         <p>Information on IELTS requirements and English language courses available in Kent.</p>
-                        <div class="feature-card-action">
-                            <a href="resources.html#language" class="btn-text">Learn more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-                        </div>
                     </div>
-                    <div class="feature-card animate-on-scroll from-bottom">
+                    <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-certificate" aria-hidden="true"></i>
+                            <i class="fas fa-certificate"></i>
                         </div>
                         <h3>Qualification Recognition</h3>
                         <p>Guidance on NARIC and how to get your overseas qualifications recognized in the UK.</p>
-                        <div class="feature-card-action">
-                            <a href="resources.html#qualifications" class="btn-text">Learn more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-                        </div>
                     </div>
-                    <div class="feature-card animate-on-scroll from-bottom">
+                    <div class="feature-card">
                         <div class="feature-icon">
-                            <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                            <i class="fas fa-hands-helping"></i>
                         </div>
                         <h3>Support Services</h3>
                         <p>Connect with organizations and services that can help you on your educational journey.</p>
-                        <div class="feature-card-action">
-                            <a href="resources.html#support" class="btn-text">Learn more <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
-                        </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="pathways-preview section section-bg-light">
+        <section class="pathways-preview">
             <div class="container">
                 <h2 class="section-title">Educational Pathways</h2>
-                <p class="section-subtitle">Discover different routes to higher education that match your circumstances and goals.</p>
                 <div class="pathways-grid">
-                    <div class="pathway-card animate-on-scroll from-left">
-                        <span class="pathway-card-badge new">Popular</span>
+                    <div class="pathway-card">
                         <h3>Access Courses & Foundation Years</h3>
                         <p>Prepare for undergraduate studies through specialized programs designed to build essential academic skills.</p>
-                        <a href="pathways.html#access-courses" class="btn btn-text">Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="pathways.html#access-courses" class="btn btn-text">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
-                    <div class="pathway-card animate-on-scroll from-bottom">
+                    <div class="pathway-card">
                         <h3>Direct University Entry</h3>
                         <p>Apply directly to undergraduate programs through UCAS, utilizing the Clearing system or standard application cycle.</p>
-                        <a href="pathways.html#direct-entry" class="btn btn-text">Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="pathways.html#direct-entry" class="btn btn-text">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
-                    <div class="pathway-card animate-on-scroll from-right">
-                        <span class="pathway-card-badge">Flexible</span>
+                    <div class="pathway-card">
                         <h3>Part-Time Study</h3>
                         <p>Flexible learning options that allow you to balance education with work and other commitments.</p>
-                        <a href="pathways.html#part-time" class="btn btn-text">Learn More <i class="fas fa-arrow-right" aria-hidden="true"></i></a>
+                        <a href="pathways.html#part-time" class="btn btn-text">Learn More <i class="fas fa-arrow-right"></i></a>
                     </div>
                 </div>
                 <div class="center-btn">
-                    <a href="pathways.html" class="btn btn-primary">
-                        <span>View All Pathways</span>
-                        <i class="fas fa-route" aria-hidden="true"></i>
-                    </a>
+                    <a href="pathways.html" class="btn btn-primary">View All Pathways</a>
                 </div>
             </div>
         </section>
 
-        <section class="testimonials section">
+        <section class="testimonials">
             <div class="container">
                 <h2 class="section-title">Success Stories</h2>
-                <p class="section-subtitle">Hear from refugees who have successfully navigated their educational journey in Kent.</p>
                 <div class="testimonial-slider" id="testimonial-slider">
                     <div class="testimonial">
                         <div class="testimonial-content">
                             <p>"This platform helped me understand how to get my Syrian qualifications recognized in the UK. I'm now studying Computer Science at the University of Kent."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <img src="/placeholder.svg?height=60&width=60" alt="" aria-hidden="true">
-                            <div class="testimonial-author-info">
+                            <div class="testimonial-author">
                                 <h4>Ahmed</h4>
                                 <p>From Syria, now studying at University of Kent</p>
                             </div>
@@ -209,10 +146,7 @@
                     <div class="testimonial">
                         <div class="testimonial-content">
                             <p>"I was confused about how to improve my English for university. The resources here guided me to the right courses, and I've now achieved the IELTS score I needed."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <img src="/placeholder.svg?height=60&width=60" alt="" aria-hidden="true">
-                            <div class="testimonial-author-info">
+                            <div class="testimonial-author">
                                 <h4>Fatima</h4>
                                 <p>From Afghanistan, preparing for university</p>
                             </div>
@@ -221,10 +155,7 @@
                     <div class="testimonial">
                         <div class="testimonial-content">
                             <p>"The information about scholarships was invaluable. I received funding for my foundation year and am now on track to start my degree next year."</p>
-                        </div>
-                        <div class="testimonial-author">
-                            <img src="/placeholder.svg?height=60&width=60" alt="" aria-hidden="true">
-                            <div class="testimonial-author-info">
+                            <div class="testimonial-author">
                                 <h4>Emmanuel</h4>
                                 <p>From Sudan, foundation year student</p>
                             </div>
@@ -232,27 +163,18 @@
                     </div>
                 </div>
                 <div class="slider-controls">
-                    <button id="prev-testimonial" aria-label="Previous testimonial"><i class="fas fa-chevron-left" aria-hidden="true"></i></button>
-                    <button id="next-testimonial" aria-label="Next testimonial"><i class="fas fa-chevron-right" aria-hidden="true"></i></button>
+                    <button id="prev-testimonial" aria-label="Previous testimonial"><i class="fas fa-chevron-left"></i></button>
+                    <button id="next-testimonial" aria-label="Next testimonial"><i class="fas fa-chevron-right"></i></button>
                 </div>
             </div>
         </section>
 
-        <section class="cta section-bg-gradient">
+        <section class="cta">
             <div class="container">
                 <div class="cta-content">
-                    <h2 class="animate-on-scroll from-bottom">Ready to Start Your Educational Journey?</h2>
-                    <p class="animate-on-scroll from-bottom animate-delay-1">Get personalized guidance and support for accessing higher education in Kent.</p>
-                    <div class="cta-buttons animate-on-scroll from-bottom animate-delay-2">
-                        <a href="contact.html" class="btn btn-light">
-                            <span>Contact Us Today</span>
-                            <i class="fas fa-paper-plane" aria-hidden="true"></i>
-                        </a>
-                        <a href="resources.html" class="btn btn-outline-light">
-                            <span>Browse Resources</span>
-                            <i class="fas fa-book" aria-hidden="true"></i>
-                        </a>
-                    </div>
+                    <h2>Ready to Start Your Educational Journey?</h2>
+                    <p>Get personalized guidance and support for accessing higher education in Kent.</p>
+                    <a href="contact.html" class="btn btn-light">Contact Us Today</a>
                 </div>
             </div>
         </section>
@@ -262,52 +184,26 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <div class="footer-logo">
-                        <h2>PEAK</h2>
-                        <p>Pathway to Education Access in Kent</p>
-                    </div>
+                    <h3>PEAK</h3>
                     <p>Supporting refugees in Kent to access higher education opportunities.</p>
-                    <div class="social-icons">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
-                    </div>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="index.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Home</a></li>
-                        <li><a href="pathways.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Education Pathways</a></li>
-                        <li><a href="resources.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Resources</a></li>
-                        <li><a href="faq.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> FAQ</a></li>
-                        <li><a href="contact.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Contact</a></li>
-                        <li><a href="about.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> About Us</a></li>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pathways.html">Education Pathways</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Contact Us</h3>
-                    <div class="footer-contact-info">
-                        <div class="footer-contact-item">
-                            <i class="fas fa-envelope" aria-hidden="true"></i>
-                            <p><a href="mailto:os146@canterbury.ac.uk">os146@canterbury.ac.uk</a></p>
-                        </div>
-                        <div class="footer-contact-item">
-                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
-                            <p>Canterbury, Kent, United Kingdom</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="footer-section">
-                    <h3>Newsletter</h3>
-                    <p>Subscribe to our newsletter for updates on educational opportunities and resources.</p>
-                    <form class="footer-newsletter-form">
-                        <input type="email" placeholder="Your email address" aria-label="Your email address">
-                        <button type="submit" aria-label="Subscribe"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
-                    </form>
+                    <!-- Fixed email typo -->
+                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
                 </div>
             </div>
-            <div class="footer-divider"></div>
             <div class="footer-bottom">
                 <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
                 <p>Developed by Osama Sharkia</p>
@@ -317,23 +213,23 @@
 
     <div class="chat-widget" id="chat-widget">
         <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
-            <i class="fas fa-comments" aria-hidden="true"></i>
+            <i class="fas fa-comments"></i>
         </button>
         <div class="chat-box" id="chat-box">
             <div class="chat-header">
                 <h3>Need Help?</h3>
                 <button class="close-chat" id="close-chat" aria-label="Close chat">
-                    <i class="fas fa-times" aria-hidden="true"></i>
+                    <i class="fas fa-times"></i>
                 </button>
             </div>
-            <div class="chat-messages custom-scrollbar" id="chat-messages">
+            <div class="chat-messages" id="chat-messages">
                 <div class="message received">
                     <p>Hello! How can we help you with your education journey today?</p>
                 </div>
             </div>
             <form id="chat-form" class="chat-form">
                 <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
-                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
             </form>
         </div>
     </div>
@@ -398,64 +294,6 @@
                     });
                 }
             }
-            
-            // Initialize dark mode toggle
-            const darkModeToggle = document.getElementById('dark-mode-toggle');
-            if (darkModeToggle) {
-                // Check for saved preference
-                const darkModePreference = localStorage.getItem('darkMode') === 'true';
-                
-                // Apply dark mode if preferred
-                if (darkModePreference) {
-                    document.body.classList.add('dark-mode');
-                    darkModeToggle.setAttribute('aria-checked', 'true');
-                }
-                
-                // Add event listener for toggle
-                darkModeToggle.addEventListener('click', () => {
-                    document.body.classList.toggle('dark-mode');
-                    const isDarkMode = document.body.classList.contains('dark-mode');
-                    localStorage.setItem('darkMode', isDarkMode);
-                    darkModeToggle.setAttribute('aria-checked', isDarkMode.toString());
-                });
-                
-                // Keyboard accessibility
-                darkModeToggle.addEventListener('keydown', (e) => {
-                    if (e.key === 'Enter' || e.key === ' ') {
-                        e.preventDefault();
-                        darkModeToggle.click();
-                    }
-                });
-            }
-            
-            // Initialize scroll animations
-            const animateOnScrollElements = document.querySelectorAll('.animate-on-scroll');
-            
-            const checkIfInView = () => {
-                const windowHeight = window.innerHeight;
-                const windowTopPosition = window.scrollY;
-                const windowBottomPosition = windowTopPosition + windowHeight;
-                
-                animateOnScrollElements.forEach(element => {
-                    const elementHeight = element.offsetHeight;
-                    const elementTopPosition = element.offsetTop;
-                    const elementBottomPosition = elementTopPosition + elementHeight;
-                    
-                    // Check if element is in viewport
-                    if (
-                        (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) ||
-                        (elementTopPosition <= windowBottomPosition && elementBottomPosition >= windowTopPosition)
-                    ) {
-                        element.classList.add('visible');
-                    }
-                });
-            };
-            
-            // Check elements on load
-            checkIfInView();
-            
-            // Check elements on scroll
-            window.addEventListener('scroll', checkIfInView);
         });
     </script>
 </body>
