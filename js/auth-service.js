@@ -7,8 +7,12 @@
 const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co";
 const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0";
 
-// Create and export the Supabase client
-window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+// Create and export the Supabase client if available
+if (window.supabase) {
+  window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
+} else {
+  console.warn("Supabase library not loaded. Authentication features will be limited.");
+}
 
 // Authentication state management
 const authService = {
@@ -31,6 +35,12 @@ const authService = {
   async initialize() {
     try {
       console.log("Auth service initializing");
+      
+      // If Supabase client is not available, just use session storage
+      if (!window.supabaseClient) {
+        console.warn("Supabase client not available, using session storage only");
+        return this.isLoggedIn();
+      }
       
       // Get current session
       const { data: { session }, error } = await window.supabaseClient.auth.getSession();
@@ -90,6 +100,10 @@ const authService = {
   // Sign in user
   async login(email, password) {
     try {
+      if (!window.supabaseClient) {
+        return { success: false, error: { message: "Authentication service not available" } };
+      }
+      
       const { data, error } = await window.supabaseClient.auth.signInWithPassword({
         email,
         password
@@ -130,6 +144,10 @@ const authService = {
   // Register new user
   async register(email, password, name) {
     try {
+      if (!window.supabaseClient) {
+        return { success: false, error: { message: "Authentication service not available" } };
+      }
+      
       const { data, error } = await window.supabaseClient.auth.signUp({
         email,
         password,
@@ -150,7 +168,9 @@ const authService = {
   // Sign out user
   async logout() {
     try {
-      await window.supabaseClient.auth.signOut();
+      if (window.supabaseClient) {
+        await window.supabaseClient.auth.signOut();
+      }
       this.clearSession();
       return { success: true };
     } catch (error) {
@@ -173,70 +193,116 @@ const authService = {
     const isAdmin = this.isAdmin();
     const currentUser = this.getCurrentUser();
     
-    // Get all navigation containers
-    const navContainers = document.querySelectorAll("#nav-links, .nav-links, nav ul");
+    // Get navigation container
+    const navContainer = document.querySelector("#nav-links, .nav-links, nav ul");
     
-    if (navContainers.length === 0) {
-      console.warn("No navigation containers found");
+    if (!navContainer) {
+      console.warn("Navigation container not found");
       return;
     }
     
-    const currentPage = window.location.pathname.split("/").pop() || "index.html";
+    console.log("Updating navigation. Login status:", isLoggedIn);
     
-    navContainers.forEach(navContainer => {
-      // Find existing links
-      const links = navContainer.getElementsByTagName("a");
-      let loginLink, registerLink, profileLink, logoutLink, adminLink;
+    // First, ensure the standard navigation items exist
+    const standardLinks = [
+      { href: "index.html", text: "Home" },
+      { href: "pathways.html", text: "Education Pathways" },
+      { href: "resources.html", text: "Resources" },
+      { href: "faq.html", text: "FAQ" },
+      { href: "contact.html", text: "Contact" },
+      { href: "about.html", text: "About Us" }
+    ];
+    
+    // Check if standard links exist, add them if they don't
+    if (navContainer.children.length === 0) {
+      console.log("Adding standard navigation links");
+      standardLinks.forEach(link => {
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = link.href;
+        a.textContent = link.text;
+        li.appendChild(a);
+        navContainer.appendChild(li);
+      });
+    }
+    
+    // Now handle auth links
+    // First, check if auth links already exist
+    let loginLi = null;
+    let registerLi = null;
+    let adminLi = null;
+    
+    // Find existing auth links
+    Array.from(navContainer.children).forEach(li => {
+      const a = li.querySelector("a");
+      if (!a) return;
       
-      // Find relevant links
-      for (let i = 0; i < links.length; i++) {
-        const link = links[i];
-        const linkText = link.textContent.trim();
-        if (linkText === "Login") loginLink = link;
-        if (linkText === "Register") registerLink = link;
-        if (linkText === "My Profile" || linkText === "Profile") profileLink = link;
-        if (linkText === "Logout") logoutLink = link;
-        if (linkText === "Admin") adminLink = link;
-      }
+      const href = a.getAttribute("href");
+      const text = a.textContent;
       
-      if (isLoggedIn) {
-        // User is logged in - show profile and logout
-        if (loginLink) {
-          loginLink.textContent = "My Profile";
-          loginLink.href = "profile.html";
-        }
-        
-        if (registerLink) {
-          registerLink.textContent = "Logout";
-          registerLink.href = "#";
-          registerLink.id = "logout-btn";
-        }
-        
-        // Add admin link if user is admin
-        if (isAdmin && !adminLink) {
-          const adminLi = document.createElement("li");
-          adminLi.innerHTML = `<a href="admin.html">Admin</a>`;
-          navContainer.appendChild(adminLi);
-        }
-      } else {
-        // User is logged out - show login and register
-        if (profileLink) {
-          profileLink.textContent = "Login";
-          profileLink.href = "login.html";
-        }
-        
-        if (logoutLink) {
-          logoutLink.textContent = "Register";
-          logoutLink.href = "register.html";
-          logoutLink.id = "";
-        }
-        
-        // Remove admin link if it exists
-        if (adminLink) {
-          adminLink.parentElement.remove();
-        }
+      if (href === "login.html" || href === "profile.html" || text === "Login" || text === "My Profile") {
+        loginLi = li;
+      } else if (href === "register.html" || href === "#" && text === "Logout") {
+        registerLi = li;
+      } else if (href === "admin.html") {
+        adminLi = li;
       }
     });
+    
+    // Add or update login/profile link
+    if (!loginLi) {
+      loginLi = document.createElement("li");
+      loginLi.className = "auth-link";
+      navContainer.appendChild(loginLi);
+    }
+    
+    const loginLink = loginLi.querySelector("a") || document.createElement("a");
+    loginLink.href = isLoggedIn ? "profile.html" : "login.html";
+    loginLink.textContent = isLoggedIn ? "My Profile" : "Login";
+    if (!loginLink.parentNode) {
+      loginLi.appendChild(loginLink);
+    }
+    
+    // Add or update register/logout link
+    if (!registerLi) {
+      registerLi = document.createElement("li");
+      registerLi.className = "auth-link";
+      navContainer.appendChild(registerLi);
+    }
+    
+    const registerLink = registerLi.querySelector("a") || document.createElement("a");
+    registerLink.href = isLoggedIn ? "#" : "register.html";
+    registerLink.textContent = isLoggedIn ? "Logout" : "Register";
+    registerLink.id = isLoggedIn ? "logout-link" : "";
+    if (!registerLink.parentNode) {
+      registerLi.appendChild(registerLink);
+    }
+    
+    // Add logout event listener
+    if (isLoggedIn && registerLink) {
+      registerLink.onclick = async (e) => {
+        e.preventDefault();
+        await this.logout();
+        window.location.href = "index.html";
+      };
+    }
+    
+    // Handle admin link
+    if (isLoggedIn && isAdmin) {
+      if (!adminLi) {
+        adminLi = document.createElement("li");
+        adminLi.className = "auth-link";
+        const adminLink = document.createElement("a");
+        adminLink.href = "admin.html";
+        adminLink.textContent = "Admin";
+        adminLi.appendChild(adminLink);
+        navContainer.appendChild(adminLi);
+      }
+    } else if (adminLi) {
+      adminLi.remove();
+    }
+    
+    console.log("Navigation updated successfully");
   },
   
   // Database utility functions
@@ -244,6 +310,8 @@ const authService = {
     // Record login activity
     async recordLoginActivity() {
       try {
+        if (!window.supabaseClient) return;
+        
         const { data: { user } } = await window.supabaseClient.auth.getUser();
         if (user) {
           await window.supabaseClient.rpc("record_login_activity");
@@ -256,7 +324,8 @@ const authService = {
     // Record resource view
     async recordResourceView(resourceId) {
       try {
-        if (!resourceId) return;
+        if (!window.supabaseClient || !resourceId) return;
+        
         await window.supabaseClient.rpc("increment_resource_view", { resource_id: resourceId });
       } catch (error) {
         console.error("Error recording resource view:", error);
@@ -266,6 +335,8 @@ const authService = {
     // Get user profile
     async getUserProfile() {
       try {
+        if (!window.supabaseClient) return null;
+        
         const { data: { user } } = await window.supabaseClient.auth.getUser();
         if (!user) return null;
         
@@ -286,6 +357,8 @@ const authService = {
     // Update user profile
     async updateUserProfile(profileData) {
       try {
+        if (!window.supabaseClient) return { success: false, error: "Supabase client not initialized" };
+        
         const { data: { user } } = await window.supabaseClient.auth.getUser();
         if (!user) return { success: false, error: "User not authenticated" };
         
@@ -312,11 +385,15 @@ const authService = {
 // Initialize auth on page load
 document.addEventListener("DOMContentLoaded", async () => {
   await authService.initialize();
-  authService.updateNavigation();
+  
+  // Update navigation after a short delay to ensure DOM is fully loaded
+  setTimeout(() => {
+    authService.updateNavigation();
+  }, 100);
   
   // Check if current page requires authentication
   const currentPage = window.location.pathname.split("/").pop() || "index.html";
-  const authRequiredPages = ["profile.html", "dashboard.html"];
+  const authRequiredPages = ["profile.html", "dashboard.html", "admin.html"];
   
   if (authRequiredPages.includes(currentPage) && !authService.isLoggedIn()) {
     // Store the page they were trying to access for redirect after login

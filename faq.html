@@ -372,7 +372,13 @@
             </div>
             <nav>
                 <ul id="nav-links">
-                    <!-- Navigation will be populated by script.js -->
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="pathways.html">Education Pathways</a></li>
+                    <li><a href="resources.html">Resources</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="about.html">About Us</a></li>
+                    <!-- Auth links will be added by JavaScript -->
                 </ul>
                 <button id="menu-toggle" aria-label="Toggle navigation menu">
                     <span class="bar"></span>
@@ -541,6 +547,85 @@
             
             // Set up search and filter functionality
             setupSearchAndFilter();
+            
+            // Make sure navigation is updated
+            if (window.authService && typeof window.authService.updateNavigation === 'function') {
+                console.log("Calling updateNavigation from page script");
+                window.authService.updateNavigation();
+            } else {
+                console.warn("Auth service not available or missing updateNavigation method");
+                
+                // Fallback navigation update if auth service is not available
+                const navLinks = document.getElementById('nav-links');
+                const isLoggedIn = sessionStorage.getItem('isLoggedIn') === 'true' || localStorage.getItem('isLoggedIn') === 'true';
+                const isAdmin = sessionStorage.getItem('isAdmin') === 'true' || localStorage.getItem('isAdmin') === 'true';
+                
+                if (navLinks) {
+                    // Check if auth links already exist
+                    let hasLoginLink = false;
+                    let hasRegisterLink = false;
+                    
+                    Array.from(navLinks.querySelectorAll('a')).forEach(link => {
+                        if (link.textContent === 'Login' || link.textContent === 'My Profile') hasLoginLink = true;
+                        if (link.textContent === 'Register' || link.textContent === 'Logout') hasRegisterLink = true;
+                    });
+                    
+                    // Add auth links if they don't exist
+                    if (!hasLoginLink) {
+                        const loginLi = document.createElement('li');
+                        const loginA = document.createElement('a');
+                        loginA.href = isLoggedIn ? 'profile.html' : 'login.html';
+                        loginA.textContent = isLoggedIn ? 'My Profile' : 'Login';
+                        loginLi.appendChild(loginA);
+                        navLinks.appendChild(loginLi);
+                    }
+                    
+                    if (!hasRegisterLink) {
+                        const registerLi = document.createElement('li');
+                        const registerA = document.createElement('a');
+                        registerA.href = isLoggedIn ? '#' : 'register.html';
+                        registerA.textContent = isLoggedIn ? 'Logout' : 'Register';
+                        if (isLoggedIn) registerA.id = 'logout-link';
+                        registerLi.appendChild(registerA);
+                        navLinks.appendChild(registerLi);
+                        
+                        // Add logout event listener
+                        if (isLoggedIn) {
+                            registerA.addEventListener('click', function(e) {
+                                e.preventDefault();
+                                // Clear session data
+                                sessionStorage.removeItem('isLoggedIn');
+                                sessionStorage.removeItem('currentUser');
+                                sessionStorage.removeItem('isAdmin');
+                                localStorage.removeItem('isLoggedIn');
+                                localStorage.removeItem('currentUser');
+                                localStorage.removeItem('isAdmin');
+                                
+                                // Redirect to home page
+                                window.location.href = 'index.html';
+                            });
+                        }
+                    }
+                    
+                    // Add admin link if user is admin
+                    if (isLoggedIn && isAdmin) {
+                        let hasAdminLink = false;
+                        
+                        Array.from(navLinks.querySelectorAll('a')).forEach(link => {
+                            if (link.textContent === 'Admin') hasAdminLink = true;
+                        });
+                        
+                        if (!hasAdminLink) {
+                            const adminLi = document.createElement('li');
+                            const adminA = document.createElement('a');
+                            adminA.href = 'admin.html';
+                            adminA.textContent = 'Admin';
+                            adminLi.appendChild(adminA);
+                            navLinks.appendChild(adminLi);
+                        }
+                    }
+                }
+            }
         });
         
         function setupImageUpload() {
