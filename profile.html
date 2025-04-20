@@ -6,6 +6,7 @@
     <title>My Profile - PEAK</title>
     <meta name="description" content="Manage your PEAK account and preferences">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/profile.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script>
         // Immediate redirect if not logged in
@@ -35,7 +36,7 @@
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <li><a href="profile.html" class="active">My Profile</a></li>
-                    <li><a href="#" id="logout-btn">Logout</a></li>
+                    <li><a href="#" id="logout-link">Logout</a></li>
                 </ul>
             </nav>
         </div>
@@ -51,12 +52,14 @@
 
         <section class="profile-section">
             <div class="container">
-                <div id="alert-box" class="alert" style="display: none;"></div>
+                <!-- Notification Area -->
+                <div id="notification-area"></div>
                 
                 <div class="profile-container">
+                    <!-- Profile Sidebar -->
                     <div class="profile-sidebar">
                         <div class="profile-avatar">
-                            <div class="avatar-circle" id="profile-avatar-circle">
+                            <div class="avatar-circle">
                                 <span id="profile-initials">U</span>
                             </div>
                             <h3 id="profile-name">User</h3>
@@ -64,90 +67,131 @@
                             <p class="member-since">Member since <span id="profile-date">January 1, 2023</span></p>
                         </div>
                         <div class="profile-menu">
-                            <button class="profile-menu-item active" data-tab="profile-info">
+                            <button class="tab-button profile-menu-item active" data-tab="profile-info">
                                 <i class="fas fa-user"></i> Profile Information
                             </button>
-                            <button class="profile-menu-item" data-tab="notification-settings">
+                            <button class="tab-button profile-menu-item" data-tab="notification-settings">
                                 <i class="fas fa-bell"></i> Notification Settings
                             </button>
-                            <button class="profile-menu-item" data-tab="account-settings">
+                            <button class="tab-button profile-menu-item" data-tab="account-settings">
                                 <i class="fas fa-cog"></i> Account Settings
+                            </button>
+                        </div>
+                        <div class="profile-menu-footer">
+                            <button id="logout-button" class="btn btn-secondary btn-sm">
+                                <i class="fas fa-sign-out-alt"></i> Logout
                             </button>
                         </div>
                     </div>
                     
+                    <!-- Profile Content -->
                     <div class="profile-content">
                         <!-- Profile Information Tab -->
-                        <div class="profile-tab active" id="profile-info">
+                        <div class="tab-pane active" id="profile-info">
                             <h2>Profile Information</h2>
-                            <form id="profile-form">
+                            <p class="tab-description">Update your personal information</p>
+                            
+                            <form id="profile-form" class="profile-form">
                                 <div class="form-group">
                                     <label for="full-name">Full Name</label>
-                                    <input type="text" id="full-name" name="name" class="form-control">
+                                    <input type="text" id="full-name" name="name" class="form-control" placeholder="Your full name">
                                 </div>
+                                
                                 <div class="form-group">
                                     <label for="email-address">Email Address</label>
                                     <input type="email" id="email-address" name="email" class="form-control" disabled>
+                                    <p class="field-note">To change your email, please contact support</p>
                                 </div>
+                                
                                 <div class="form-group">
                                     <label for="phone-number">Phone Number (optional)</label>
-                                    <input type="tel" id="phone-number" name="phone" class="form-control">
+                                    <input type="tel" id="phone-number" name="phone" class="form-control" placeholder="Your phone number">
                                 </div>
+                                
                                 <div class="form-group">
                                     <label for="preferred-language">Preferred Language</label>
                                     <select id="preferred-language" name="language" class="form-control">
-                                        <option value="en">English</option>
-                                        <option value="ar">Arabic</option>
-                                        <option value="fr">French</option>
-                                        <option value="fa">Farsi</option>
-                                        <option value="ku">Kurdish</option>
-                                        <option value="tr">Turkish</option>
+                                        <option value="English">English</option>
+                                        <option value="Arabic">Arabic</option>
+                                        <option value="French">French</option>
+                                        <option value="Farsi">Farsi</option>
+                                        <option value="Kurdish">Kurdish</option>
+                                        <option value="Turkish">Turkish</option>
                                     </select>
                                 </div>
-                                <button type="submit" class="btn btn-primary" id="save-profile-btn">Save Changes</button>
+                                
+                                <button type="submit" class="btn btn-primary" id="save-profile-btn">
+                                    <span class="btn-text">Save Changes</span>
+                                    <span class="btn-loading" hidden><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                                </button>
                             </form>
                         </div>
                         
                         <!-- Notification Settings Tab -->
-                        <div class="profile-tab" id="notification-settings">
+                        <div class="tab-pane" id="notification-settings">
                             <h2>Notification Settings</h2>
-                            <form id="notification-form">
+                            <p class="tab-description">Manage what information you receive from us</p>
+                            
+                            <form id="notification-form" class="profile-form">
                                 <div class="form-group checkbox-group">
-                                    <input type="checkbox" id="notify-updates" name="updates" checked>
-                                    <label for="notify-updates">Receive updates about educational opportunities</label>
+                                    <input type="checkbox" id="notify-educational" name="educational" checked>
+                                    <div>
+                                        <label for="notify-educational">Receive updates about educational opportunities</label>
+                                        <p class="field-note">Get notified about new courses, scholarships, and admission deadlines</p>
+                                    </div>
                                 </div>
+                                
                                 <div class="form-group checkbox-group">
                                     <input type="checkbox" id="notify-resources" name="resources" checked>
-                                    <label for="notify-resources">Receive notifications about new resources</label>
+                                    <div>
+                                        <label for="notify-resources">Receive notifications about new resources</label>
+                                        <p class="field-note">Stay updated when new guides, documents, and learning materials are added</p>
+                                    </div>
                                 </div>
+                                
                                 <div class="form-group checkbox-group">
                                     <input type="checkbox" id="notify-events" name="events" checked>
-                                    <label for="notify-events">Receive information about events and workshops</label>
+                                    <div>
+                                        <label for="notify-events">Receive information about events and workshops</label>
+                                        <p class="field-note">Get notified about upcoming workshops, webinars, and community events</p>
+                                    </div>
                                 </div>
-                                <button type="submit" class="btn btn-primary" id="save-notifications-btn">Save Preferences</button>
+                                
+                                <button type="submit" class="btn btn-primary" id="save-notifications-btn">
+                                    <span class="btn-text">Save Preferences</span>
+                                    <span class="btn-loading" hidden><i class="fas fa-spinner fa-spin"></i> Saving...</span>
+                                </button>
                             </form>
                         </div>
                         
                         <!-- Account Settings Tab -->
-                        <div class="profile-tab" id="account-settings">
+                        <div class="tab-pane" id="account-settings">
                             <h2>Account Settings</h2>
+                            <p class="tab-description">Manage your account security</p>
                             
                             <div class="account-section">
                                 <h3>Change Password</h3>
-                                <form id="password-form">
+                                <form id="password-form" class="profile-form">
                                     <div class="form-group">
                                         <label for="current-password">Current Password</label>
                                         <input type="password" id="current-password" name="currentPassword" class="form-control" required>
                                     </div>
+                                    
                                     <div class="form-group">
                                         <label for="new-password">New Password</label>
                                         <input type="password" id="new-password" name="newPassword" class="form-control" required>
+                                        <p class="field-note">Password must be at least 6 characters long</p>
                                     </div>
+                                    
                                     <div class="form-group">
                                         <label for="confirm-password">Confirm New Password</label>
                                         <input type="password" id="confirm-password" name="confirmPassword" class="form-control" required>
                                     </div>
-                                    <button type="submit" class="btn btn-primary" id="change-password-btn">Update Password</button>
+                                    
+                                    <button type="submit" class="btn btn-primary" id="update-password-btn">
+                                        <span class="btn-text">Update Password</span>
+                                        <span class="btn-loading" hidden><i class="fas fa-spinner fa-spin"></i> Updating...</span>
+                                    </button>
                                 </form>
                             </div>
                             
@@ -214,490 +258,6 @@
 
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/script.js"></script>
-    <script src="js/auth-handler.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', async function() {
-            // Initialize Supabase
-            const supabaseUrl = 'https://znyoofmcjiknvevezbhb.supabase.co';
-            const supabaseKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0';
-            window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey);
-            
-            // Elements
-            const profileForm = document.getElementById('profile-form');
-            const notificationForm = document.getElementById('notification-form');
-            const passwordForm = document.getElementById('password-form');
-            const deleteBtn = document.getElementById('delete-account-btn');
-            const deleteModal = document.getElementById('delete-modal');
-            const closeModal = document.getElementById('close-delete-modal');
-            const cancelDelete = document.getElementById('cancel-delete');
-            const confirmDelete = document.getElementById('confirm-delete');
-            const deleteConfirmation = document.getElementById('delete-confirmation');
-            const alertBox = document.getElementById('alert-box');
-            
-            // Profile tab navigation
-            const tabButtons = document.querySelectorAll('.profile-menu-item');
-            const tabContents = document.querySelectorAll('.profile-tab');
-            
-            tabButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    // Remove active class from all buttons and tabs
-                    tabButtons.forEach(btn => btn.classList.remove('active'));
-                    tabContents.forEach(tab => tab.classList.remove('active'));
-                    
-                    // Add active class to clicked button
-                    button.classList.add('active');
-                    
-                    // Show corresponding tab
-                    const tabId = button.getAttribute('data-tab');
-                    document.getElementById(tabId).classList.add('active');
-                });
-            });
-            
-            // Show alert message
-            function showAlert(message, type = 'success') {
-                alertBox.textContent = message;
-                alertBox.style.display = 'block';
-                
-                if (type === 'success') {
-                    alertBox.className = 'alert alert-success';
-                } else {
-                    alertBox.className = 'alert alert-error';
-                }
-                
-                // Hide after 5 seconds
-                setTimeout(() => {
-                    alertBox.style.display = 'none';
-                }, 5000);
-            }
-            
-            // Load user profile
-            async function loadProfile() {
-                try {
-                    // Get user session
-                    const { data: { session }, error: sessionError } = await window.supabaseClient.auth.getSession();
-                    
-                    if (sessionError || !session) {
-                        // Not logged in, redirect to login
-                        window.location.href = 'login.html';
-                        return;
-                    }
-                    
-                    // Get user profile
-                    const { data: profile, error: profileError } = await window.supabaseClient
-                        .from('user_profiles')
-                        .select('*')
-                        .eq('id', session.user.id)
-                        .single();
-                    
-                    if (profileError && profileError.code !== 'PGRST116') {
-                        showAlert('Error loading profile: ' + profileError.message, 'error');
-                        console.error(profileError);
-                        return;
-                    }
-                    
-                    // Set profile data
-                    const fullNameInput = document.getElementById('full-name');
-                    const emailInput = document.getElementById('email-address');
-                    const phoneInput = document.getElementById('phone-number');
-                    const languageSelect = document.getElementById('preferred-language');
-                    const notifyUpdates = document.getElementById('notify-updates');
-                    const notifyResources = document.getElementById('notify-resources');
-                    const notifyEvents = document.getElementById('notify-events');
-                    
-                    // Set profile sidebar info
-                    const profileName = document.getElementById('profile-name');
-                    const profileEmail = document.getElementById('profile-email');
-                    const profileDate = document.getElementById('profile-date');
-                    const profileInitials = document.getElementById('profile-initials');
-                    
-                    if (profile) {
-                        // Populate form fields
-                        if (fullNameInput) fullNameInput.value = profile.name || '';
-                        if (emailInput) emailInput.value = session.user.email;
-                        if (phoneInput) phoneInput.value = profile.phone || '';
-                        
-                        if (languageSelect && profile.language) {
-                            languageSelect.value = profile.language;
-                        }
-                        
-                        // Set notification preferences
-                        if (profile.preferences) {
-                            try {
-                                const prefs = JSON.parse(profile.preferences);
-                                if (notifyUpdates) notifyUpdates.checked = prefs.updates !== false;
-                                if (notifyResources) notifyResources.checked = prefs.resources !== false;
-                                if (notifyEvents) notifyEvents.checked = prefs.events !== false;
-                            } catch (e) {
-                                console.error('Error parsing preferences', e);
-                            }
-                        }
-                        
-                        // Set profile sidebar
-                        if (profileName) profileName.textContent = profile.name || 'User';
-                        if (profileEmail) profileEmail.textContent = session.user.email;
-                        
-                        // Set initials
-                        if (profileInitials && profile.name) {
-                            const initials = profile.name
-                                .split(' ')
-                                .map(n => n[0])
-                                .join('')
-                                .substring(0, 2)
-                                .toUpperCase();
-                            profileInitials.textContent = initials;
-                        }
-                        
-                        // Format date
-                        if (profileDate) {
-                            const createdAt = new Date(profile.created_at || session.user.created_at);
-                            profileDate.textContent = createdAt.toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            });
-                        }
-                    } else {
-                        // No profile found, but we have a session
-                        if (emailInput) emailInput.value = session.user.email;
-                        if (profileEmail) profileEmail.textContent = session.user.email;
-                        
-                        // Format date for session creation
-                        if (profileDate) {
-                            const createdAt = new Date(session.user.created_at);
-                            profileDate.textContent = createdAt.toLocaleDateString('en-US', {
-                                year: 'numeric',
-                                month: 'long',
-                                day: 'numeric'
-                            });
-                        }
-                    }
-                } catch (error) {
-                    console.error('Unexpected error:', error);
-                    showAlert('An unexpected error occurred', 'error');
-                }
-            }
-            
-            // Profile form submission
-            if (profileForm) {
-                profileForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    const saveBtn = document.getElementById('save-profile-btn');
-                    if (saveBtn) {
-                        saveBtn.disabled = true;
-                        saveBtn.textContent = 'Saving...';
-                    }
-                    
-                    try {
-                        const { data: { session }, error: sessionError } = await window.supabaseClient.auth.getSession();
-                        
-                        if (sessionError || !session) {
-                            throw new Error('You must be logged in to update your profile');
-                        }
-                        
-                        const formData = {
-                            name: document.getElementById('full-name').value.trim(),
-                            phone: document.getElementById('phone-number').value.trim(),
-                            language: document.getElementById('preferred-language').value,
-                            updated_at: new Date().toISOString()
-                        };
-                        
-                        // Check if profile exists
-                        const { data: existingProfile, error: checkError } = await window.supabaseClient
-                            .from('user_profiles')
-                            .select('id')
-                            .eq('id', session.user.id)
-                            .single();
-                        
-                        let result;
-                        
-                        if (existingProfile) {
-                            // Update existing profile
-                            result = await window.supabaseClient
-                                .from('user_profiles')
-                                .update(formData)
-                                .eq('id', session.user.id);
-                        } else {
-                            // Insert new profile
-                            result = await window.supabaseClient
-                                .from('user_profiles')
-                                .insert([{
-                                    id: session.user.id,
-                                    ...formData,
-                                    created_at: new Date().toISOString()
-                                }]);
-                        }
-                        
-                        if (result.error) {
-                            throw result.error;
-                        }
-                        
-                        // Update profile sidebar
-                        const profileName = document.getElementById('profile-name');
-                        const profileInitials = document.getElementById('profile-initials');
-                        
-                        if (profileName) {
-                            profileName.textContent = formData.name || 'User';
-                        }
-                        
-                        if (profileInitials && formData.name) {
-                            const initials = formData.name
-                                .split(' ')
-                                .map(n => n[0])
-                                .join('')
-                                .substring(0, 2)
-                                .toUpperCase();
-                            profileInitials.textContent = initials;
-                        }
-                        
-                        showAlert('Profile updated successfully');
-                        
-                        // Update session storage
-                        const userData = JSON.parse(sessionStorage.getItem('currentUser') || '{}');
-                        userData.name = formData.name;
-                        sessionStorage.setItem('currentUser', JSON.stringify(userData));
-                        
-                    } catch (error) {
-                        console.error('Error updating profile:', error);
-                        showAlert('Failed to update profile: ' + error.message, 'error');
-                    } finally {
-                        if (saveBtn) {
-                            saveBtn.disabled = false;
-                            saveBtn.textContent = 'Save Changes';
-                        }
-                    }
-                });
-            }
-            
-            // Notification form submission
-            if (notificationForm) {
-                notificationForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    const saveBtn = document.getElementById('save-notifications-btn');
-                    if (saveBtn) {
-                        saveBtn.disabled = true;
-                        saveBtn.textContent = 'Saving...';
-                    }
-                    
-                    try {
-                        const { data: { session }, error: sessionError } = await window.supabaseClient.auth.getSession();
-                        
-                        if (sessionError || !session) {
-                            throw new Error('You must be logged in to update your preferences');
-                        }
-                        
-                        const preferences = {
-                            updates: document.getElementById('notify-updates').checked,
-                            resources: document.getElementById('notify-resources').checked,
-                            events: document.getElementById('notify-events').checked
-                        };
-                        
-                        // Check if profile exists
-                        const { data: existingProfile, error: checkError } = await window.supabaseClient
-                            .from('user_profiles')
-                            .select('id')
-                            .eq('id', session.user.id)
-                            .single();
-                        
-                        let result;
-                        
-                        if (existingProfile) {
-                            // Update existing profile
-                            result = await window.supabaseClient
-                                .from('user_profiles')
-                                .update({
-                                    preferences: JSON.stringify(preferences),
-                                    updated_at: new Date().toISOString()
-                                })
-                                .eq('id', session.user.id);
-                        } else {
-                            // Insert new profile
-                            result = await window.supabaseClient
-                                .from('user_profiles')
-                                .insert([{
-                                    id: session.user.id,
-                                    preferences: JSON.stringify(preferences),
-                                    created_at: new Date().toISOString(),
-                                    updated_at: new Date().toISOString()
-                                }]);
-                        }
-                        
-                        if (result.error) {
-                            throw result.error;
-                        }
-                        
-                        showAlert('Notification preferences updated successfully');
-                        
-                    } catch (error) {
-                        console.error('Error updating preferences:', error);
-                        showAlert('Failed to update preferences: ' + error.message, 'error');
-                    } finally {
-                        if (saveBtn) {
-                            saveBtn.disabled = false;
-                            saveBtn.textContent = 'Save Preferences';
-                        }
-                    }
-                });
-            }
-            
-            // Password form submission
-            if (passwordForm) {
-                passwordForm.addEventListener('submit', async function(e) {
-                    e.preventDefault();
-                    
-                    const currentPassword = document.getElementById('current-password').value;
-                    const newPassword = document.getElementById('new-password').value;
-                    const confirmPassword = document.getElementById('confirm-password').value;
-                    const changeBtn = document.getElementById('change-password-btn');
-                    
-                    if (changeBtn) {
-                        changeBtn.disabled = true;
-                        changeBtn.textContent = 'Updating...';
-                    }
-                    
-                    try {
-                        // Validate passwords
-                        if (newPassword !== confirmPassword) {
-                            throw new Error('New passwords do not match');
-                        }
-                        
-                        if (newPassword.length < 6) {
-                            throw new Error('Password must be at least 6 characters');
-                        }
-                        
-                        const { data: { session }, error: sessionError } = await window.supabaseClient.auth.getSession();
-                        
-                        if (sessionError || !session) {
-                            throw new Error('You must be logged in to change your password');
-                        }
-                        
-                        // First verify current password
-                        const { error: signInError } = await window.supabaseClient.auth.signInWithPassword({
-                            email: session.user.email,
-                            password: currentPassword
-                        });
-                        
-                        if (signInError) {
-                            throw new Error('Current password is incorrect');
-                        }
-                        
-                        // Update password
-                        const { error: updateError } = await window.supabaseClient.auth.updateUser({
-                            password: newPassword
-                        });
-                        
-                        if (updateError) {
-                            throw updateError;
-                        }
-                        
-                        // Clear form
-                        passwordForm.reset();
-                        
-                        showAlert('Password updated successfully');
-                        
-                    } catch (error) {
-                        console.error('Error updating password:', error);
-                        showAlert('Failed to update password: ' + error.message, 'error');
-                    } finally {
-                        if (changeBtn) {
-                            changeBtn.disabled = false;
-                            changeBtn.textContent = 'Update Password';
-                        }
-                    }
-                });
-            }
-            
-            // Delete account modal
-            if (deleteBtn && deleteModal) {
-                // Open modal
-                deleteBtn.addEventListener('click', () => {
-                    deleteModal.style.display = 'block';
-                    if (deleteConfirmation) {
-                        deleteConfirmation.value = '';
-                        confirmDelete.disabled = true;
-                    }
-                });
-                
-                // Close modal
-                if (closeModal) {
-                    closeModal.addEventListener('click', () => {
-                        deleteModal.style.display = 'none';
-                    });
-                }
-                
-                if (cancelDelete) {
-                    cancelDelete.addEventListener('click', () => {
-                        deleteModal.style.display = 'none';
-                    });
-                }
-                
-                // Check confirmation text
-                if (deleteConfirmation && confirmDelete) {
-                    deleteConfirmation.addEventListener('input', () => {
-                        confirmDelete.disabled = deleteConfirmation.value.toLowerCase() !== 'delete my account';
-                    });
-                }
-                
-                // Handle account deletion
-                if (confirmDelete) {
-                    confirmDelete.addEventListener('click', async () => {
-                        confirmDelete.disabled = true;
-                        confirmDelete.textContent = 'Deleting...';
-                        
-                        try {
-                            const { data: { session }, error: sessionError } = await window.supabaseClient.auth.getSession();
-                            
-                            if (sessionError || !session) {
-                                throw new Error('You must be logged in to delete your account');
-                            }
-                            
-                            // First delete user profile data
-                            const { error: profileError } = await window.supabaseClient
-                                .from('user_profiles')
-                                .delete()
-                                .eq('id', session.user.id);
-                            
-                            if (profileError) {
-                                console.error('Error deleting profile:', profileError);
-                                // Continue anyway - the important part is signing out
-                            }
-                            
-                            // Sign out
-                            await window.supabaseClient.auth.signOut();
-                            
-                            // Clear session data
-                            sessionStorage.removeItem('isLoggedIn');
-                            sessionStorage.removeItem('currentUser');
-                            sessionStorage.removeItem('isAdmin');
-                            localStorage.removeItem('isLoggedIn');
-                            localStorage.removeItem('currentUser');
-                            localStorage.removeItem('isAdmin');
-                            
-                            alert('Your account has been deleted successfully');
-                            window.location.href = 'index.html';
-                            
-                        } catch (error) {
-                            console.error('Error deleting account:', error);
-                            showAlert('Failed to delete account: ' + error.message, 'error');
-                            confirmDelete.disabled = false;
-                            confirmDelete.textContent = 'Delete Account';
-                            deleteModal.style.display = 'none';
-                        }
-                    });
-                }
-            }
-            
-            // Close modal when clicking outside
-            window.addEventListener('click', (event) => {
-                if (event.target === deleteModal) {
-                    deleteModal.style.display = 'none';
-                }
-            });
-            
-            // Load profile on page load
-            loadProfile();
-        });
-    </script>
+    <script src="js/profile.js"></script>
 </body>
 </html>
