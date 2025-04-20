@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         .single()
 
       if (!profileError && profile) {
-        // Store user data in sessionStorage
+        // Store user data in sessionStorage only
         sessionStorage.setItem("isLoggedIn", "true")
         sessionStorage.setItem(
           "currentUser",
@@ -100,25 +100,38 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateNavigation(!!session)
   } catch (err) {
     console.error("Unexpected error in auth check:", err)
+    // Show user-friendly error message
+    const errorMessage = document.createElement('div');
+    errorMessage.className = 'auth-error-message';
+    errorMessage.style.cssText = 'background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin: 10px 0; text-align: center;';
+    errorMessage.innerHTML = '<p>There was a problem connecting to the authentication service. Please try refreshing the page.</p>';
+    
+    // Insert at the top of the body
+    document.body.insertBefore(errorMessage, document.body.firstChild);
   }
 })
 
-// Update navigation based on auth status
+// Update navigation based on auth status - Centralized function
 function updateNavigation(isLoggedIn) {
   const navLinks = document.getElementById("nav-links")
   if (!navLinks) return
 
+  const currentUser = JSON.parse(sessionStorage.getItem("currentUser") || "{}")
+  const isAdmin = sessionStorage.getItem("isAdmin") === "true"
+
   // Find all links
   const links = navLinks.getElementsByTagName("a")
-  let loginLink, registerLink, profileLink, logoutLink
+  let loginLink, registerLink, profileLink, logoutLink, adminLink
 
   // Find relevant links
   for (let i = 0; i < links.length; i++) {
     const link = links[i]
-    if (link.textContent.trim() === "Login") loginLink = link
-    if (link.textContent.trim() === "Register") registerLink = link
-    if (link.textContent.trim() === "My Profile") profileLink = link
-    if (link.textContent.trim() === "Logout") logoutLink = link
+    const linkText = link.textContent.trim()
+    if (linkText === "Login") loginLink = link
+    if (linkText === "Register") registerLink = link
+    if (linkText === "My Profile" || linkText === "Profile") profileLink = link
+    if (linkText === "Logout") logoutLink = link
+    if (linkText === "Admin") adminLink = link
   }
 
   if (isLoggedIn) {
@@ -136,18 +149,27 @@ function updateNavigation(isLoggedIn) {
       // Add logout functionality
       registerLink.addEventListener("click", async (e) => {
         e.preventDefault()
-        await supabaseClient.auth.signOut()
+        try {
+          await supabaseClient.auth.signOut()
+          
+          // Clear session data
+          sessionStorage.removeItem("isLoggedIn")
+          sessionStorage.removeItem("currentUser")
+          sessionStorage.removeItem("isAdmin")
 
-        // Clear session data
-        sessionStorage.removeItem("isLoggedIn")
-        sessionStorage.removeItem("currentUser")
-        sessionStorage.removeItem("isAdmin")
-        localStorage.removeItem("isLoggedIn")
-        localStorage.removeItem("currentUser")
-        localStorage.removeItem("isAdmin")
-
-        window.location.href = "index.html"
+          window.location.href = "index.html"
+        } catch (error) {
+          console.error("Error during logout:", error)
+          alert("Failed to log out. Please try again.")
+        }
       })
+    }
+
+    // Add admin link if user is admin
+    if (isAdmin && !adminLink) {
+      const adminLi = document.createElement('li')
+      adminLi.innerHTML = `<a href="admin.html">Admin</a>`
+      navLinks.appendChild(adminLi)
     }
   } else {
     // User is logged out - show login and register
@@ -160,6 +182,11 @@ function updateNavigation(isLoggedIn) {
       logoutLink.textContent = "Register"
       logoutLink.href = "register.html"
       logoutLink.id = ""
+    }
+
+    // Remove admin link if it exists
+    if (adminLink) {
+      adminLink.parentElement.remove()
     }
   }
 }
@@ -183,6 +210,11 @@ if (document.getElementById("login-form")) {
 
       if (errorElement) errorElement.style.display = "none"
 
+      // Check network connectivity first
+      if (!navigator.onLine) {
+        throw new Error("You appear to be offline. Please check your internet connection and try again.")
+      }
+
       // Attempt login
       const { data, error } = await supabaseClient.auth.signInWithPassword({
         email: email,
@@ -190,13 +222,7 @@ if (document.getElementById("login-form")) {
       })
 
       if (error) {
-        if (errorElement) {
-          errorElement.textContent = error.message || "Login failed. Please check your credentials."
-          errorElement.style.display = "block"
-        } else {
-          alert("Login failed: " + (error.message || "Please check your credentials."))
-        }
-        return
+        throw error
       }
 
       // Get user profile
@@ -206,7 +232,12 @@ if (document.getElementById("login-form")) {
         .eq("id", data.user.id)
         .single()
 
-      // Store user data
+      if (profileError) {
+        console.warn("Could not fetch user profile:", profileError)
+        // Continue anyway, as this is not critical
+      }
+
+      // Store user data in sessionStorage only
       sessionStorage.setItem("isLoggedIn", "true")
 
       const userData = {
@@ -227,12 +258,24 @@ if (document.getElementById("login-form")) {
       // Redirect to profile page after successful login
       window.location.href = "profile.html"
     } catch (err) {
-      console.error("Unexpected error during login:", err)
+      console.error("Login error:", err)
+      
+      let errorMessage = "An unexpected error occurred. Please try again."
+      
+      // Handle specific error cases
+      if (err.message.includes("Invalid login credentials")) {
+        errorMessage = "Invalid email or password. Please check your credentials and try again."
+      } else if (err.message.includes("offline")) {
+        errorMessage = err.message
+      } else if (err.status === 429) {
+        errorMessage = "Too many login attempts. Please try again later."
+      }
+      
       if (errorElement) {
-        errorElement.textContent = "An unexpected error occurred. Please try again."
+        errorElement.textContent = errorMessage
         errorElement.style.display = "block"
       } else {
-        alert("An unexpected error occurred. Please try again.")
+        alert(errorMessage)
       }
     } finally {
       // Reset button state
@@ -255,9 +298,6 @@ document.addEventListener("click", async (e) => {
       sessionStorage.removeItem("isLoggedIn")
       sessionStorage.removeItem("currentUser")
       sessionStorage.removeItem("isAdmin")
-      localStorage.removeItem("isLoggedIn")
-      localStorage.removeItem("currentUser")
-      localStorage.removeItem("isAdmin")
 
       console.log("User logged out successfully")
       window.location.href = "index.html"
@@ -267,3 +307,6 @@ document.addEventListener("click", async (e) => {
     }
   }
 })
+
+// Export the updateNavigation function for use in other scripts
+window.updateNavigation = updateNavigation
