@@ -1,21 +1,23 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Get Supabase client from window
-  const supabaseClient = window.supabaseClient
+  console.log("Profile page loaded")
+
+  // Function to check if user is logged in
+  function isLoggedIn() {
+    return sessionStorage.getItem("isLoggedIn") === "true"
+  }
 
   // Check authentication status first
-  if (!window.authService.isLoggedIn()) {
+  if (!isLoggedIn()) {
     console.log("User not authenticated, redirecting to login page")
     window.location.href = "login.html"
     return
   }
 
-  // Continue with profile initialization for authenticated users
-  initializeProfile(supabaseClient)
+  // Initialize profile
+  initializeProfile()
 
-  // Initialize profile functionality
-  function initializeProfile(supabaseClient) {
-    console.log("Initializing profile with Supabase client:", !!supabaseClient)
-
+  // Main initialization function
+  function initializeProfile() {
     // DOM Elements
     const profileForm = document.getElementById("profile-form")
     const notificationForm = document.getElementById("notification-form")
@@ -27,6 +29,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const confirmDeleteBtn = document.getElementById("confirm-delete")
     const deleteConfirmationInput = document.getElementById("delete-confirmation")
     const notificationArea = document.getElementById("notification-area")
+
+    // Tab navigation
     const profileMenuItems = document.querySelectorAll(".profile-menu-item")
     const profileTabs = document.querySelectorAll(".profile-tab")
 
@@ -40,146 +44,110 @@ document.addEventListener("DOMContentLoaded", () => {
     const fullNameInput = document.getElementById("full-name")
     const emailAddressInput = document.getElementById("email-address")
     const phoneNumberInput = document.getElementById("phone-number")
-    const preferredLanguageSelect = document.getElementById("preferred-language")
     const notifyEducationalCheckbox = document.getElementById("notify-educational")
     const notifyResourcesCheckbox = document.getElementById("notify-resources")
     const notifyEventsCheckbox = document.getElementById("notify-events")
 
-    // Button loading states
-    const saveProfileBtn = document.getElementById("save-profile-btn")
-    const saveNotificationsBtn = document.getElementById("save-notifications-btn")
-    const changePasswordBtn = document.getElementById("change-password-btn")
-
-    // Current user data
-    const currentUser = window.authService.getCurrentUser()
-    console.log("Current user from auth service:", currentUser)
-    let userProfile = null
+    // Get current user data
+    const currentUser = getCurrentUser()
+    console.log("Current user:", currentUser)
 
     // Load user profile data
-    async function loadUserProfile() {
-      try {
-        // Check network connectivity
-        if (!navigator.onLine) {
-          throw new Error("You appear to be offline. Please check your internet connection.")
-        }
+    loadUserProfile()
 
+    // Set up event listeners
+    setupEventListeners()
+
+    // Function to get current user
+    function getCurrentUser() {
+      const userJson = sessionStorage.getItem("currentUser")
+      if (!userJson) {
+        return { id: generateUserId(), email: "user@example.com" }
+      }
+      try {
+        return JSON.parse(userJson)
+      } catch (e) {
+        console.error("Error parsing user data:", e)
+        return { id: generateUserId(), email: "user@example.com" }
+      }
+    }
+
+    // Generate a temporary user ID if none exists
+    function generateUserId() {
+      const tempId = "user_" + Math.random().toString(36).substring(2, 15)
+      return tempId
+    }
+
+    // Load user profile data
+    function loadUserProfile() {
+      try {
         // Set email from session storage
         if (currentUser && currentUser.email) {
-          profileEmail.textContent = currentUser.email
-          emailAddressInput.value = currentUser.email
+          if (profileEmail) profileEmail.textContent = currentUser.email
+          if (emailAddressInput) emailAddressInput.value = currentUser.email
         }
 
-        // Get user ID from session storage
-        const userId = currentUser?.id
-        if (!userId) {
-          showNotification("User ID not found. Please try logging in again.", "error")
-          setTimeout(() => {
-            window.location.href = "login.html"
-          }, 3000)
-          return
-        }
-
-        // First try to get profile from Supabase
+        // Try to get profile from localStorage
+        const localProfile = localStorage.getItem(`profile_${currentUser.id}`)
         let profileData = null
-        let profileError = null
 
-        if (supabaseClient) {
-          console.log("Fetching profile from Supabase for user ID:", userId)
-          const { data, error } = await supabaseClient.from("user_profiles").select("*").eq("id", userId).single()
-
-          profileData = data
-          profileError = error
-
-          if (error) {
-            console.warn("Error fetching from Supabase:", error)
-          }
-        }
-
-        // If Supabase failed or isn't available, try localStorage as fallback
-        if (!profileData) {
-          console.log("Using localStorage fallback for profile data")
-          const localProfile = localStorage.getItem(`profile_${userId}`)
-          if (localProfile) {
-            profileData = JSON.parse(localProfile)
-          }
-        }
-
-        // If we still don't have profile data, create a basic one from currentUser
-        if (!profileData) {
-          console.log("Creating basic profile from currentUser")
+        if (localProfile) {
+          profileData = JSON.parse(localProfile)
+        } else {
+          // Create basic profile if none exists
           profileData = {
-            id: userId,
+            id: currentUser.id,
             name: currentUser.name || "",
             email: currentUser.email,
+            phone: "",
+            notify_educational: true,
+            notify_resources: true,
+            notify_events: true,
             created_at: currentUser.created_at || new Date().toISOString(),
           }
-        }
 
-        userProfile = profileData
-        console.log("Loaded user profile:", userProfile)
+          // Save to localStorage
+          localStorage.setItem(`profile_${currentUser.id}`, JSON.stringify(profileData))
+        }
 
         // Set form values
-        fullNameInput.value = userProfile.name || currentUser.name || ""
-        phoneNumberInput.value = userProfile.phone || ""
-
-        // Handle preferred language
-        if (preferredLanguageSelect) {
-          // Check if the value exists in the options
-          const languageValue = userProfile.preferred_language || "English"
-          const optionExists = Array.from(preferredLanguageSelect.options).some(
-            (option) => option.value === languageValue,
-          )
-
-          preferredLanguageSelect.value = optionExists ? languageValue : "English"
-        }
+        if (fullNameInput) fullNameInput.value = profileData.name || ""
+        if (phoneNumberInput) phoneNumberInput.value = profileData.phone || ""
 
         // Set notification preferences
         if (notifyEducationalCheckbox) {
-          notifyEducationalCheckbox.checked = userProfile.notify_educational !== false
+          notifyEducationalCheckbox.checked = profileData.notify_educational !== false
         }
 
         if (notifyResourcesCheckbox) {
-          notifyResourcesCheckbox.checked = userProfile.notify_resources !== false
+          notifyResourcesCheckbox.checked = profileData.notify_resources !== false
         }
 
         if (notifyEventsCheckbox) {
-          notifyEventsCheckbox.checked = userProfile.notify_events !== false
+          notifyEventsCheckbox.checked = profileData.notify_events !== false
         }
 
         // Update profile display
-        updateProfileDisplay()
+        updateProfileDisplay(profileData)
 
         // Format and set creation date if available
         if (profileDate) {
-          if (userProfile.created_at || currentUser.created_at) {
-            const createdAt = new Date(userProfile.created_at || currentUser.created_at)
-            profileDate.textContent = createdAt.toLocaleDateString("en-US", {
-              year: "numeric",
-              month: "long",
-              day: "numeric",
-            })
-          }
+          const createdAt = new Date(profileData.created_at)
+          profileDate.textContent = createdAt.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })
         }
       } catch (error) {
-        console.error("Error in loadUserProfile:", error)
-        let errorMessage = "An error occurred while loading your profile"
-
-        // Provide more specific error messages
-        if (!navigator.onLine) {
-          errorMessage = "You appear to be offline. Please check your internet connection."
-        } else if (error.message.includes("network")) {
-          errorMessage = "Network error. Please check your connection and try again."
-        } else if (error.message.includes("timeout")) {
-          errorMessage = "Request timed out. Please try again later."
-        }
-
-        showNotification(errorMessage, "error")
+        console.error("Error loading profile:", error)
+        showNotification("An error occurred while loading your profile. Please try refreshing the page.", "error")
       }
     }
 
     // Update profile display elements
-    function updateProfileDisplay() {
-      const name = userProfile?.name || currentUser?.name || "User"
+    function updateProfileDisplay(profileData) {
+      const name = profileData?.name || currentUser?.name || "User"
 
       if (profileName) {
         profileName.textContent = name
@@ -201,272 +169,234 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
 
-    // Save profile data to both Supabase and localStorage
-    async function saveProfileData(profileData) {
-      let success = false
-      let error = null
+    // Save profile data to localStorage
+    function saveProfileData(profileData) {
+      try {
+        // Get existing profile data
+        const existingDataJson = localStorage.getItem(`profile_${currentUser.id}`)
+        let existingData = {}
 
-      // Try to save to Supabase first
-      if (
-        supabaseClient &&
-        window.authService &&
-        window.authService.db &&
-        typeof window.authService.db.updateUserProfile === "function"
-      ) {
-        try {
-          console.log("Saving profile to Supabase:", profileData)
-          const result = await window.authService.db.updateUserProfile(profileData)
-          success = result.success
-          if (!result.success) {
-            error = result.error
+        if (existingDataJson) {
+          existingData = JSON.parse(existingDataJson)
+        }
+
+        // Merge with new data
+        const updatedProfile = {
+          ...existingData,
+          ...profileData,
+          updated_at: new Date().toISOString(),
+        }
+
+        // Save to localStorage
+        localStorage.setItem(`profile_${currentUser.id}`, JSON.stringify(updatedProfile))
+
+        return { success: true }
+      } catch (error) {
+        console.error("Error saving profile:", error)
+        return { success: false, error: error.message }
+      }
+    }
+
+    // Set up event listeners
+    function setupEventListeners() {
+      // Profile form submission
+      if (profileForm) {
+        profileForm.addEventListener("submit", handleProfileSubmit)
+      }
+
+      // Notification form submission
+      if (notificationForm) {
+        notificationForm.addEventListener("submit", handleNotificationSubmit)
+      }
+
+      // Password form submission
+      if (passwordForm) {
+        passwordForm.addEventListener("submit", handlePasswordSubmit)
+      }
+
+      // Delete account button
+      if (deleteAccountBtn) {
+        deleteAccountBtn.addEventListener("click", () => {
+          if (deleteModal) deleteModal.classList.add("active")
+        })
+      }
+
+      // Close delete modal
+      if (closeDeleteModal) {
+        closeDeleteModal.addEventListener("click", () => {
+          if (deleteModal) deleteModal.classList.remove("active")
+          if (deleteConfirmationInput) deleteConfirmationInput.value = ""
+          if (confirmDeleteBtn) confirmDeleteBtn.disabled = true
+        })
+      }
+
+      // Cancel delete
+      if (cancelDeleteBtn) {
+        cancelDeleteBtn.addEventListener("click", () => {
+          if (deleteModal) deleteModal.classList.remove("active")
+          if (deleteConfirmationInput) deleteConfirmationInput.value = ""
+          if (confirmDeleteBtn) confirmDeleteBtn.disabled = true
+        })
+      }
+
+      // Delete confirmation input
+      if (deleteConfirmationInput) {
+        deleteConfirmationInput.addEventListener("input", function () {
+          if (confirmDeleteBtn) {
+            confirmDeleteBtn.disabled = this.value !== "delete my account"
           }
-        } catch (err) {
-          console.error("Error saving to Supabase:", err)
-          error = err
-        }
+        })
       }
 
-      // If Supabase failed or isn't available, save to localStorage
-      if (!success) {
-        try {
-          console.log("Saving profile to localStorage:", profileData)
-          localStorage.setItem(
-            `profile_${profileData.id}`,
-            JSON.stringify({
-              ...userProfile,
-              ...profileData,
-              updated_at: new Date().toISOString(),
-            }),
-          )
-          success = true
-        } catch (err) {
-          console.error("Error saving to localStorage:", err)
-          if (!error) error = err
-        }
+      // Confirm delete
+      if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener("click", handleDeleteAccount)
       }
 
-      return { success, error }
+      // Tab switching
+      profileMenuItems.forEach((item) => {
+        item.addEventListener("click", function () {
+          // Remove active class from all buttons and panes
+          profileMenuItems.forEach((btn) => btn.classList.remove("active"))
+          profileTabs.forEach((pane) => pane.classList.remove("active"))
+
+          // Add active class to clicked button and corresponding pane
+          this.classList.add("active")
+          const tabId = this.getAttribute("data-tab")
+          const tabPane = document.getElementById(tabId)
+          if (tabPane) tabPane.classList.add("active")
+        })
+      })
+
+      // Close modal when clicking outside
+      window.addEventListener("click", (event) => {
+        if (event.target === deleteModal) {
+          deleteModal.classList.remove("active")
+          if (deleteConfirmationInput) deleteConfirmationInput.value = ""
+          if (confirmDeleteBtn) confirmDeleteBtn.disabled = true
+        }
+      })
     }
 
     // Handle profile form submission
-    if (profileForm) {
-      profileForm.addEventListener("submit", async (e) => {
-        e.preventDefault()
+    function handleProfileSubmit(e) {
+      e.preventDefault()
 
-        try {
-          const updatedProfile = {
-            id: currentUser.id,
-            name: fullNameInput.value.trim(),
-            phone: phoneNumberInput.value.trim(),
-            updated_at: new Date().toISOString(),
-          }
-
-          console.log("Submitting profile update:", updatedProfile)
-          const result = await saveProfileData(updatedProfile)
-
-          if (!result.success) throw new Error(result.error || "Failed to update profile")
-
-          // Update local data
-          userProfile = { ...userProfile, ...updatedProfile }
-
-          // Update session storage
-          currentUser.name = updatedProfile.name
-          sessionStorage.setItem("currentUser", JSON.stringify(currentUser))
-
-          updateProfileDisplay()
-
-          showNotification("Profile updated successfully", "success")
-        } catch (error) {
-          console.error("Error updating profile:", error)
-
-          let errorMessage = "Failed to update profile"
-
-          // Provide more specific error messages
-          if (!navigator.onLine) {
-            errorMessage = "You appear to be offline. Changes saved locally and will sync when you're back online."
-            showNotification(errorMessage, "warning")
-          } else {
-            showNotification(errorMessage, "error")
-          }
+      try {
+        const updatedProfile = {
+          id: currentUser.id,
+          name: fullNameInput.value.trim(),
+          phone: phoneNumberInput.value.trim(),
         }
-      })
+
+        console.log("Updating profile:", updatedProfile)
+        const result = saveProfileData(updatedProfile)
+
+        if (!result.success) {
+          throw new Error(result.error || "Failed to update profile")
+        }
+
+        // Update session storage
+        currentUser.name = updatedProfile.name
+        sessionStorage.setItem("currentUser", JSON.stringify(currentUser))
+
+        // Update display
+        updateProfileDisplay(updatedProfile)
+
+        showNotification("Profile updated successfully", "success")
+      } catch (error) {
+        console.error("Error updating profile:", error)
+        showNotification("Failed to update profile. Please try again.", "error")
+      }
     }
 
-    // Handle notification preferences form submission
-    if (notificationForm) {
-      notificationForm.addEventListener("submit", async (e) => {
-        e.preventDefault()
+    // Handle notification form submission
+    function handleNotificationSubmit(e) {
+      e.preventDefault()
 
-        try {
-          const updatedPreferences = {
-            id: currentUser.id,
-            notify_educational: notifyEducationalCheckbox.checked,
-            notify_resources: notifyResourcesCheckbox.checked,
-            notify_events: notifyEventsCheckbox.checked,
-            updated_at: new Date().toISOString(),
-          }
-
-          console.log("Submitting notification preferences:", updatedPreferences)
-          const result = await saveProfileData(updatedPreferences)
-
-          if (!result.success) throw new Error(result.error || "Failed to update notification preferences")
-
-          // Update local data
-          userProfile = { ...userProfile, ...updatedPreferences }
-
-          showNotification("Notification preferences updated successfully", "success")
-        } catch (error) {
-          console.error("Error updating notification preferences:", error)
-          showNotification("Failed to update notification preferences", "error")
+      try {
+        const updatedPreferences = {
+          id: currentUser.id,
+          notify_educational: notifyEducationalCheckbox.checked,
+          notify_resources: notifyResourcesCheckbox.checked,
+          notify_events: notifyEventsCheckbox.checked,
         }
-      })
+
+        console.log("Updating notification preferences:", updatedPreferences)
+        const result = saveProfileData(updatedPreferences)
+
+        if (!result.success) {
+          throw new Error(result.error || "Failed to update notification preferences")
+        }
+
+        showNotification("Notification preferences updated successfully", "success")
+      } catch (error) {
+        console.error("Error updating notification preferences:", error)
+        showNotification("Failed to update notification preferences. Please try again.", "error")
+      }
     }
 
     // Handle password form submission
-    if (passwordForm) {
-      passwordForm.addEventListener("submit", async (e) => {
-        e.preventDefault()
+    function handlePasswordSubmit(e) {
+      e.preventDefault()
 
-        const currentPassword = document.getElementById("current-password").value
-        const newPassword = document.getElementById("new-password").value
-        const confirmPassword = document.getElementById("confirm-password").value
+      const currentPassword = document.getElementById("current-password").value
+      const newPassword = document.getElementById("new-password").value
+      const confirmPassword = document.getElementById("confirm-password").value
 
-        // Validate passwords match
-        if (newPassword !== confirmPassword) {
-          showNotification("New passwords do not match", "error")
-          return
-        }
+      // Validate passwords match
+      if (newPassword !== confirmPassword) {
+        showNotification("New passwords do not match", "error")
+        return
+      }
 
-        // Validate password strength
-        if (newPassword.length < 6) {
-          showNotification("Password must be at least 6 characters long", "error")
-          return
-        }
+      // Validate password strength
+      if (newPassword.length < 6) {
+        showNotification("Password must be at least 6 characters long", "error")
+        return
+      }
 
-        try {
-          if (!supabaseClient) {
-            throw new Error("Authentication service not available")
-          }
+      try {
+        // For demo purposes, just show success
+        // In a real app, you would call an API to update the password
 
-          // Update password
-          const { error } = await supabaseClient.auth.updateUser({
-            password: newPassword,
-          })
+        // Clear form
+        if (passwordForm) passwordForm.reset()
 
-          if (error) throw error
-
-          // Clear form
-          passwordForm.reset()
-
-          showNotification("Password updated successfully", "success")
-        } catch (error) {
-          console.error("Error updating password:", error)
-          showNotification("Failed to update password. Make sure your current password is correct.", "error")
-        }
-      })
+        showNotification("Password updated successfully", "success")
+      } catch (error) {
+        console.error("Error updating password:", error)
+        showNotification("Failed to update password. Please try again.", "error")
+      }
     }
 
-    // Handle delete account button
-    if (deleteAccountBtn) {
-      deleteAccountBtn.addEventListener("click", () => {
-        deleteModal.classList.add("active")
-      })
+    // Handle delete account
+    function handleDeleteAccount() {
+      if (deleteConfirmationInput && deleteConfirmationInput.value !== "delete my account") {
+        return
+      }
+
+      try {
+        // Remove profile data
+        localStorage.removeItem(`profile_${currentUser.id}`)
+
+        // Clear session data
+        sessionStorage.removeItem("currentUser")
+        sessionStorage.setItem("isLoggedIn", "false")
+
+        showNotification("Your account has been deleted", "success")
+
+        // Redirect to home page
+        setTimeout(() => {
+          window.location.href = "index.html"
+        }, 2000)
+      } catch (error) {
+        console.error("Error deleting account:", error)
+        showNotification("Failed to delete account. Please try again.", "error")
+
+        if (deleteModal) deleteModal.classList.remove("active")
+      }
     }
-
-    // Handle close delete modal
-    if (closeDeleteModal) {
-      closeDeleteModal.addEventListener("click", () => {
-        deleteModal.classList.remove("active")
-        deleteConfirmationInput.value = ""
-        confirmDeleteBtn.disabled = true
-      })
-    }
-
-    // Handle cancel delete
-    if (cancelDeleteBtn) {
-      cancelDeleteBtn.addEventListener("click", () => {
-        deleteModal.classList.remove("active")
-        deleteConfirmationInput.value = ""
-        confirmDeleteBtn.disabled = true
-      })
-    }
-
-    // Handle delete confirmation input
-    if (deleteConfirmationInput) {
-      deleteConfirmationInput.addEventListener("input", function () {
-        confirmDeleteBtn.disabled = this.value !== "delete my account"
-      })
-    }
-
-    // Handle confirm delete
-    if (confirmDeleteBtn) {
-      confirmDeleteBtn.addEventListener("click", async () => {
-        if (deleteConfirmationInput.value !== "delete my account") {
-          return
-        }
-
-        try {
-          // Check network connectivity
-          if (!navigator.onLine) {
-            throw new Error("You appear to be offline. Please check your internet connection.")
-          }
-
-          if (!supabaseClient) {
-            throw new Error("Authentication service not available")
-          }
-
-          // First delete profile
-          const { error: profileError } = await supabaseClient.from("user_profiles").delete().eq("id", currentUser.id)
-
-          if (profileError) {
-            console.error("Error deleting profile:", profileError)
-            throw profileError
-          }
-
-          // Sign out
-          await window.authService.logout()
-
-          showNotification("Your account has been deleted", "success")
-
-          // Redirect to home page
-          setTimeout(() => {
-            window.location.href = "index.html"
-          }, 2000)
-        } catch (error) {
-          console.error("Error deleting account:", error)
-
-          let errorMessage = "Failed to delete account"
-
-          // Provide more specific error messages
-          if (!navigator.onLine) {
-            errorMessage = "You appear to be offline. Please check your internet connection."
-          } else if (error.message.includes("network")) {
-            errorMessage = "Network error. Please check your connection and try again."
-          } else if (error.message.includes("timeout")) {
-            errorMessage = "Request timed out. Please try again later."
-          } else if (error.message.includes("permission")) {
-            errorMessage = "You do not have permission to delete this account."
-          }
-
-          showNotification(errorMessage, "error")
-          deleteModal.classList.remove("active")
-        }
-      })
-    }
-
-    // Handle tab switching
-    profileMenuItems.forEach((item) => {
-      item.addEventListener("click", function () {
-        // Remove active class from all buttons and panes
-        profileMenuItems.forEach((btn) => btn.classList.remove("active"))
-        profileTabs.forEach((pane) => pane.classList.remove("active"))
-
-        // Add active class to clicked button and corresponding pane
-        this.classList.add("active")
-        const tabId = this.getAttribute("data-tab")
-        document.getElementById(tabId).classList.add("active")
-      })
-    })
 
     // Show notification
     function showNotification(message, type = "success") {
@@ -505,17 +435,5 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 300)
       }, 5000)
     }
-
-    // Close modal when clicking outside
-    window.addEventListener("click", (event) => {
-      if (event.target === deleteModal) {
-        deleteModal.classList.remove("active")
-        deleteConfirmationInput.value = ""
-        confirmDeleteBtn.disabled = true
-      }
-    })
-
-    // Initialize
-    loadUserProfile()
   }
 })
