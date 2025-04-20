@@ -42,6 +42,12 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       } catch (err) {
         console.error("Error verifying session with Supabase:", err);
+        // Check if it's a network error
+        if (!navigator.onLine) {
+          throw new Error("Network connection issue. Please check your internet connection and try again.");
+        } else {
+          throw err;
+        }
       }
     }
     
@@ -96,6 +102,11 @@ document.addEventListener("DOMContentLoaded", function() {
     // Load user profile data
     async function loadUserProfile() {
       try {
+        // Check network connectivity
+        if (!navigator.onLine) {
+          throw new Error("You appear to be offline. Please check your internet connection.");
+        }
+        
         // Set email from session storage
         if (currentUser && currentUser.email) {
           profileEmail.textContent = currentUser.email;
@@ -105,7 +116,10 @@ document.addEventListener("DOMContentLoaded", function() {
         // Get user ID from session storage
         const userId = currentUser?.id;
         if (!userId) {
-          showNotification("User ID not found", "error");
+          showNotification("User ID not found. Please try logging in again.", "error");
+          setTimeout(() => {
+            window.location.href = "login.html";
+          }, 3000);
           return;
         }
 
@@ -118,7 +132,7 @@ document.addEventListener("DOMContentLoaded", function() {
           
         if (error) {
           console.error('Error loading profile:', error);
-          showNotification('Failed to load profile data', 'error');
+          showNotification('Failed to load profile data. Please try again later.', 'error');
           return;
         }
         
@@ -148,7 +162,18 @@ document.addEventListener("DOMContentLoaded", function() {
         }
       } catch (error) {
         console.error('Error in loadUserProfile:', error);
-        showNotification('An error occurred while loading your profile', 'error');
+        let errorMessage = 'An error occurred while loading your profile';
+        
+        // Provide more specific error messages
+        if (!navigator.onLine) {
+          errorMessage = 'You appear to be offline. Please check your internet connection.';
+        } else if (error.message.includes('network')) {
+          errorMessage = 'Network error. Please check your connection and try again.';
+        } else if (error.message.includes('timeout')) {
+          errorMessage = 'Request timed out. Please try again later.';
+        }
+        
+        showNotification(errorMessage, 'error');
       }
     }
 
@@ -194,6 +219,11 @@ document.addEventListener("DOMContentLoaded", function() {
         setButtonLoading(saveProfileBtn, true);
 
         try {
+          // Check network connectivity
+          if (!navigator.onLine) {
+            throw new Error("You appear to be offline. Please check your internet connection.");
+          }
+          
           const updatedProfile = {
             id: currentUser.id,
             name: fullNameInput.value.trim(),
@@ -220,7 +250,21 @@ document.addEventListener("DOMContentLoaded", function() {
           showNotification('Profile updated successfully', 'success');
         } catch (error) {
           console.error('Error updating profile:', error);
-          showNotification('Failed to update profile', 'error');
+          
+          let errorMessage = 'Failed to update profile';
+          
+          // Provide more specific error messages
+          if (!navigator.onLine) {
+            errorMessage = 'You appear to be offline. Please check your internet connection.';
+          } else if (error.message.includes('network')) {
+            errorMessage = 'Network error. Please check your connection and try again.';
+          } else if (error.message.includes('timeout')) {
+            errorMessage = 'Request timed out. Please try again later.';
+          } else if (error.code === '23505') {
+            errorMessage = 'This phone number is already in use by another account.';
+          }
+          
+          showNotification(errorMessage, 'error');
         } finally {
           setButtonLoading(saveProfileBtn, false);
         }
@@ -234,6 +278,11 @@ document.addEventListener("DOMContentLoaded", function() {
         setButtonLoading(saveNotificationsBtn, true);
 
         try {
+          // Check network connectivity
+          if (!navigator.onLine) {
+            throw new Error("You appear to be offline. Please check your internet connection.");
+          }
+          
           const updatedPreferences = {
             id: currentUser.id,
             notify_educational: notifyEducationalCheckbox.checked,
@@ -254,7 +303,19 @@ document.addEventListener("DOMContentLoaded", function() {
           showNotification('Notification preferences updated successfully', 'success');
         } catch (error) {
           console.error('Error updating notification preferences:', error);
-          showNotification('Failed to update notification preferences', 'error');
+          
+          let errorMessage = 'Failed to update notification preferences';
+          
+          // Provide more specific error messages
+          if (!navigator.onLine) {
+            errorMessage = 'You appear to be offline. Please check your internet connection.';
+          } else if (error.message.includes('network')) {
+            errorMessage = 'Network error. Please check your connection and try again.';
+          } else if (error.message.includes('timeout')) {
+            errorMessage = 'Request timed out. Please try again later.';
+          }
+          
+          showNotification(errorMessage, 'error');
         } finally {
           setButtonLoading(saveNotificationsBtn, false);
         }
@@ -277,8 +338,20 @@ document.addEventListener("DOMContentLoaded", function() {
           setButtonLoading(changePasswordBtn, false);
           return;
         }
+        
+        // Validate password strength
+        if (newPassword.length < 8) {
+          showNotification('Password must be at least 8 characters long', 'error');
+          setButtonLoading(changePasswordBtn, false);
+          return;
+        }
 
         try {
+          // Check network connectivity
+          if (!navigator.onLine) {
+            throw new Error("You appear to be offline. Please check your internet connection.");
+          }
+          
           // Update password
           const { error } = await supabaseClient.auth.updateUser({
             password: newPassword
@@ -292,7 +365,23 @@ document.addEventListener("DOMContentLoaded", function() {
           showNotification('Password updated successfully', 'success');
         } catch (error) {
           console.error('Error updating password:', error);
-          showNotification('Failed to update password. Make sure your current password is correct.', 'error');
+          
+          let errorMessage = 'Failed to update password. Make sure your current password is correct.';
+          
+          // Provide more specific error messages
+          if (!navigator.onLine) {
+            errorMessage = 'You appear to be offline. Please check your internet connection.';
+          } else if (error.message.includes('network')) {
+            errorMessage = 'Network error. Please check your connection and try again.';
+          } else if (error.message.includes('timeout')) {
+            errorMessage = 'Request timed out. Please try again later.';
+          } else if (error.message.includes('weak')) {
+            errorMessage = 'Password is too weak. Please choose a stronger password.';
+          } else if (error.message.includes('auth')) {
+            errorMessage = 'Authentication error. Please try logging in again.';
+          }
+          
+          showNotification(errorMessage, 'error');
         } finally {
           setButtonLoading(changePasswordBtn, false);
         }
@@ -339,6 +428,11 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         try {
+          // Check network connectivity
+          if (!navigator.onLine) {
+            throw new Error("You appear to be offline. Please check your internet connection.");
+          }
+          
           // First delete profile
           const { error: profileError } = await supabaseClient
             .from('user_profiles')
@@ -347,10 +441,16 @@ document.addEventListener("DOMContentLoaded", function() {
             
           if (profileError) {
             console.error('Error deleting profile:', profileError);
+            throw profileError;
           }
           
           // Sign out
-          await supabaseClient.auth.signOut();
+          const { error: signOutError } = await supabaseClient.auth.signOut();
+          
+          if (signOutError) {
+            console.error('Error signing out:', signOutError);
+            throw signOutError;
+          }
           
           // Clear session data
           sessionStorage.removeItem("isLoggedIn");
@@ -365,7 +465,21 @@ document.addEventListener("DOMContentLoaded", function() {
           }, 2000);
         } catch (error) {
           console.error('Error deleting account:', error);
-          showNotification('Failed to delete account', 'error');
+          
+          let errorMessage = 'Failed to delete account';
+          
+          // Provide more specific error messages
+          if (!navigator.onLine) {
+            errorMessage = 'You appear to be offline. Please check your internet connection.';
+          } else if (error.message.includes('network')) {
+            errorMessage = 'Network error. Please check your connection and try again.';
+          } else if (error.message.includes('timeout')) {
+            errorMessage = 'Request timed out. Please try again later.';
+          } else if (error.message.includes('permission')) {
+            errorMessage = 'You do not have permission to delete this account.';
+          }
+          
+          showNotification(errorMessage, 'error');
           deleteModal.classList.remove('active');
         }
       });
