@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="smooth-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Education Pathways - PEAK</title>
     <meta name="description" content="Discover the different routes to higher education in Kent for refugees">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/enhanced-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
     <header>
         <div class="container">
             <div class="logo">
                 <h1>PEAK</h1>
                 <p class="tagline">Pathway to Education Access in Kent</p>
             </div>
-            <nav id="navbar">
+            <nav>
                 <button id="menu-toggle" aria-label="Toggle menu">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -28,22 +32,38 @@
                     <li><a href="faq.html">FAQ</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About Us</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
                 </ul>
+                <div class="nav-right">
+                    <div class="dark-mode-toggle" id="dark-mode-toggle" role="switch" aria-checked="false" tabindex="0">
+                        <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
+                        <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
 
-    <main>
-        <section class="page-header">
+    <main id="main-content">
+        <section class="hero section-bg-primary">
+            <div class="hero-pattern"></div>
             <div class="container">
-                <h1>Education Pathways</h1>
-                <p>Discover the different routes to higher education in Kent for refugees</p>
+                <div class="hero-content text-center">
+                    <h1 class="animate animate-fade-in-up">Education Pathways</h1>
+                    <p class="lead animate animate-fade-in-up animate-delay-1">Discover the different routes to higher education in Kent for refugees</p>
+                </div>
+            </div>
+            <div class="hero-shape">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
+                    <path fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
+                </svg>
             </div>
         </section>
 
         <section class="pathways-nav">
             <div class="container">
-                <div class="pathways-nav-container">
+                <div class="pathways-nav-container horizontal-scrollbar">
                     <a href="#access-courses" class="pathway-nav-item">Access Courses</a>
                     <a href="#qualification-recognition" class="pathway-nav-item">Qualification Recognition</a>
                     <a href="#bridging-programmes" class="pathway-nav-item">Bridging Programmes</a>
@@ -58,10 +78,10 @@
 
         <section class="pathway-details">
             <div class="container">
-                <div class="pathway" id="access-courses">
+                <div class="pathway animate-on-scroll from-bottom" id="access-courses">
                     <div class="pathway-content">
                         <h2>1. Access Courses and Foundation Years</h2>
-                        <p>Access courses and foundation years are designed to prepare you for undergraduate studies by covering essential academic skills and subject-specific knowledge.</p>
+                        <p class="lead">Access courses and foundation years are designed to prepare you for undergraduate studies by covering essential academic skills and subject-specific knowledge.</p>
 
                         <h3>What You Need to Know</h3>
                         <ul>
@@ -72,30 +92,45 @@
 
                         <h3>Available Programs in Kent</h3>
                         <div class="program-cards">
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-left">
                                 <h4>University of Kent</h4>
                                 <p>International Foundation Programme (IFP) - a one-year full-time course designed for international students whose qualifications do not meet the entry requirements for undergraduate study.</p>
                                 <p>Successful completion guarantees progression to a range of undergraduate courses at Kent.</p>
-                                <a href="https://www.kent.ac.uk/courses/undergraduate/foundation-programmes" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-calendar-alt" aria-hidden="true"></i> 1 year full-time
+                                    </div>
+                                    <a href="https://www.kent.ac.uk/courses/undergraduate/foundation-programmes" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-bottom">
                                 <h4>Canterbury Christ Church University</h4>
                                 <p>International Foundation Year options to bridge academic and English skill gaps, preparing students for degree-level study.</p>
-                                <a href="https://www.canterbury.ac.uk/study-here/applying/foundation-year" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-calendar-alt" aria-hidden="true"></i> 1 year full-time
+                                    </div>
+                                    <a href="https://www.canterbury.ac.uk/study-here/applying/foundation-year" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-right">
                                 <h4>University for the Creative Arts (UCA)</h4>
                                 <p>International Foundation in Art and Design tailored for creative fields, helping students develop portfolio and skills needed for creative degrees.</p>
-                                <a href="https://www.uca.ac.uk/study/courses/international-foundation/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-calendar-alt" aria-hidden="true"></i> 1 year full-time
+                                    </div>
+                                    <a href="https://www.uca.ac.uk/study/courses/international-foundation/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="pathway" id="qualification-recognition">
+                <div class="pathway animate-on-scroll from-bottom" id="qualification-recognition">
                     <div class="pathway-content">
                         <h2>2. Recognition of Overseas Qualifications through UK ENIC</h2>
-                        <p>UK ENIC (formerly NARIC) helps validate and align your international qualifications with UK standards, simplifying the application process by providing equivalency certification.</p>
+                        <p class="lead">UK ENIC (formerly NARIC) helps validate and align your international qualifications with UK standards, simplifying the application process by providing equivalency certification.</p>
 
                         <h3>What You Need to Know</h3>
                         <ul>
@@ -137,34 +172,49 @@
                         </ol>
 
                         <div class="info-box">
-                            <h4><i class="fas fa-info-circle"></i> Financial Support for ENIC Services</h4>
+                            <h4><i class="fas fa-info-circle" aria-hidden="true"></i> Financial Support for ENIC Services</h4>
                             <p>Some refugee support organizations in Kent may provide financial assistance for UK ENIC services. Contact our team for more information about available support.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="pathway" id="bridging-programmes">
+                <div class="pathway animate-on-scroll from-bottom" id="bridging-programmes">
                     <div class="pathway-content">
                         <h2>3. University Bridging Programmes</h2>
-                        <p>Bridging programmes are designed to help students transition to higher education by addressing gaps in academic knowledge and skills.</p>
+                        <p class="lead">Bridging programmes are designed to help students transition to higher education by addressing gaps in academic knowledge and skills.</p>
 
                         <h3>Available Bridging Programmes in Kent</h3>
                         <div class="program-cards">
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-left">
                                 <h4>University of Kent</h4>
                                 <p>The University of Kent offers the International Foundation Programme (IFP), a one-year full-time course designed for international students whose qualifications do not meet the entry requirements for undergraduate study.</p>
                                 <p>The IFP helps bridge the gap by developing subject-specific knowledge and academic English language skills, ensuring a smooth transition to degree-level studies. Successful completion guarantees progression to a range of undergraduate courses at Kent.</p>
-                                <a href="https://www.kent.ac.uk/courses/undergraduate/foundation-programmes#international-foundation-programmes" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-graduation-cap" aria-hidden="true"></i> Guaranteed progression
+                                    </div>
+                                    <a href="https://www.kent.ac.uk/courses/undergraduate/foundation-programmes#international-foundation-programmes" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-bottom">
                                 <h4>Canterbury Christ Church University</h4>
                                 <p>Offers pre-sessional courses and foundation years to help students develop the necessary skills for university study. These programmes focus on academic writing, critical thinking, and subject-specific knowledge.</p>
-                                <a href="https://www.canterbury.ac.uk/international/improve-your-english-in-canterbury" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-book" aria-hidden="true"></i> Academic skills focus
+                                    </div>
+                                    <a href="https://www.canterbury.ac.uk/international/improve-your-english-in-canterbury" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-right">
                                 <h4>University for the Creative Arts (UCA)</h4>
                                 <p>Provides specialized bridging programmes for creative disciplines, helping students build portfolios and develop the technical skills needed for art and design degrees.</p>
-                                <a href="https://www.uca.ac.uk/study/courses/international-foundation/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-paint-brush" aria-hidden="true"></i> Creative focus
+                                    </div>
+                                    <a href="https://www.uca.ac.uk/study/courses/international-foundation/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
 
@@ -178,28 +228,43 @@
                     </div>
                 </div>
 
-                <div class="pathway" id="english-support">
+                <div class="pathway animate-on-scroll from-bottom" id="english-support">
                     <div class="pathway-content">
                         <h2>4. English Language Support</h2>
-                        <p>For students seeking to enhance their English proficiency, Kent provides various resources and courses aimed at improving academic language skills. These services are designed to support students throughout their studies, ensuring they can fully engage with their coursework and university life.</p>
+                        <p class="lead">For students seeking to enhance their English proficiency, Kent provides various resources and courses aimed at improving academic language skills. These services are designed to support students throughout their studies, ensuring they can fully engage with their coursework and university life.</p>
 
                         <h3>English Language Support Options</h3>
                         <div class="program-cards">
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-left">
                                 <h4>University of Kent</h4>
                                 <p>In-sessional English language support is free for enrolled students, offering workshops, one-to-one tutorials, and online resources to help with academic writing, presentation skills, and more.</p>
                                 <p>Pre-sessional English courses are also available for students who need to improve their English before starting their degree.</p>
-                                <a href="https://student.kent.ac.uk/studies/english-and-academic-skills" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-check-circle" aria-hidden="true"></i> Free for enrolled students
+                                    </div>
+                                    <a href="https://student.kent.ac.uk/studies/english-and-academic-skills" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-bottom">
                                 <h4>Canterbury Christ Church University</h4>
                                 <p>English Language Support includes workshops, tutorials, and online resources to help students develop their academic English skills. The university also offers pre-sessional English courses for international students.</p>
-                                <a href="https://www.canterbury.ac.uk/international/improve-your-english-in-canterbury" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-language" aria-hidden="true"></i> Comprehensive support
+                                    </div>
+                                    <a href="https://www.canterbury.ac.uk/international/improve-your-english-in-canterbury" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-right">
                                 <h4>Community-Based Support</h4>
                                 <p>The English Hub for Refugees offers free English classes specifically for refugees at various levels, from beginner to advanced, at multiple locations across Kent.</p>
-                                <a href="https://www.theenglishhubforrefugees.com" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-users" aria-hidden="true"></i> Refugee-specific
+                                    </div>
+                                    <a href="https://www.theenglishhubforrefugees.com" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
 
@@ -212,16 +277,16 @@
                         </ul>
 
                         <div class="info-box">
-                            <h4><i class="fas fa-info-circle"></i> Tip for Refugees</h4>
+                            <h4><i class="fas fa-info-circle" aria-hidden="true"></i> Tip for Refugees</h4>
                             <p>Many universities will accept slightly lower IELTS scores for refugees if you agree to take additional English language support during your studies. Contact university admissions offices directly to discuss your options.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="pathway" id="direct-entry">
+                <div class="pathway animate-on-scroll from-bottom" id="direct-entry">
                     <div class="pathway-content">
                         <h2>5. Direct Entry via UCAS</h2>
-                        <p>Kent welcomes applications from students who meet the entry requirements for direct admission into undergraduate or postgraduate programs. Most undergraduate applications are made through UCAS (Universities and Colleges Admissions Service).</p>
+                        <p class="lead">Kent welcomes applications from students who meet the entry requirements for direct admission into undergraduate or postgraduate programs. Most undergraduate applications are made through UCAS (Universities and Colleges Admissions Service).</p>
 
                         <h3>Applying Through UCAS</h3>
                         <ol class="steps">
@@ -264,25 +329,40 @@
 
                         <h3>UCAS Institution Codes for Kent Universities</h3>
                         <div class="program-cards">
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-left">
                                 <h4>University of Kent</h4>
                                 <p><strong>UCAS Code:</strong> K24</p>
-                                <a href="documents/kent-ucas-guide.pdf" class="btn btn-text" download>Download Application Guide <i class="fas fa-download"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-file-download" aria-hidden="true"></i> Application guide
+                                    </div>
+                                    <a href="documents/kent-ucas-guide.pdf" class="btn btn-text" download>Download Guide <i class="fas fa-download" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-bottom">
                                 <h4>Canterbury Christ Church University</h4>
                                 <p><strong>UCAS Code:</strong> C10</p>
-                                <a href="documents/cccu-ucas-guide.pdf" class="btn btn-text" download>Download Application Guide <i class="fas fa-download"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-file-download" aria-hidden="true"></i> Application guide
+                                    </div>
+                                    <a href="documents/cccu-ucas-guide.pdf" class="btn btn-text" download>Download Guide <i class="fas fa-download" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-right">
                                 <h4>University for the Creative Arts (UCA)</h4>
                                 <p><strong>UCAS Code:</strong> C93</p>
-                                <a href="documents/uca-ucas-guide.pdf" class="btn btn-text" download>Download Application Guide <i class="fas fa-download"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-file-download" aria-hidden="true"></i> Application guide
+                                    </div>
+                                    <a href="documents/uca-ucas-guide.pdf" class="btn btn-text" download>Download Guide <i class="fas fa-download" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
 
                         <div class="info-box">
-                            <h4><i class="fas fa-info-circle"></i> Support for Refugees Applying Through UCAS</h4>
+                            <h4><i class="fas fa-info-circle" aria-hidden="true"></i> Support for Refugees Applying Through UCAS</h4>
                             <p>If you're a refugee applying through UCAS, you may be eligible for:</p>
                             <ul>
                                 <li><strong>UCAS Fee Waivers:</strong> Contact UCAS directly at refugeesupport@ucas.ac.uk or call 0371 468 0468</li>
@@ -293,68 +373,101 @@
                     </div>
                 </div>
 
-                <div class="pathway" id="scholarships">
+                <div class="pathway animate-on-scroll from-bottom" id="scholarships">
                     <div class="pathway-content">
-                        <h2>7. Refugee-Specific Scholarships</h2>
-                        <p>Several universities and organizations in Kent offer scholarships specifically designed for refugees and asylum seekers to support their higher education journey.</p>
+                        <h2>6. Refugee-Specific Scholarships</h2>
+                        <p class="lead">Several universities and organizations in Kent offer scholarships specifically designed for refugees and asylum seekers to support their higher education journey.</p>
 
                         <h3>Scholarship Opportunities</h3>
                         <div class="program-cards">
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-left">
                                 <h4>University of Kent - Sanctuary Scholarships</h4>
                                 <p>The University of Kent provides comprehensive scholarships to students who achieve outstanding academic merits at both undergraduate and postgraduate levels. These include specific scholarships for refugees and asylum seekers.</p>
                                 <p><strong>Coverage:</strong> Full tuition fees plus £5,000 per year living costs</p>
                                 <p><strong>Eligibility:</strong> Refugee status or asylum seeker</p>
-                                <a href="https://www.kent.ac.uk/scholarships/search" class="btn btn-text" target="_blank" rel="noreferrer noopener">Scholarship Search <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-pound-sign" aria-hidden="true"></i> Full tuition + stipend
+                                    </div>
+                                    <a href="https://www.kent.ac.uk/scholarships/search" class="btn btn-text" target="_blank" rel="noreferrer noopener">Scholarship Search <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-bottom">
                                 <h4>Canterbury Christ Church University - Sanctuary Awards</h4>
                                 <p>Offers scholarships for asylum seekers and refugees to study undergraduate courses.</p>
                                 <p><strong>Coverage:</strong> Full tuition fees</p>
                                 <p><strong>Eligibility:</strong> Refugee status, humanitarian protection, or asylum seeker</p>
-                                <a href="https://www.canterbury.ac.uk/study-here/fees-and-funding/scholarships-and-bursaries/sanctuary-scholarship" class="btn btn-text" target="_blank" rel="noreferrer noopener">Financial Support <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-pound-sign" aria-hidden="true"></i> Full tuition
+                                    </div>
+                                    <a href="https://www.canterbury.ac.uk/study-here/fees-and-funding/scholarships-and-bursaries/sanctuary-scholarship" class="btn btn-text" target="_blank" rel="noreferrer noopener">Financial Support <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-right">
                                 <h4>Refugee Support Network - Educational Grants</h4>
                                 <p>Small grants to help refugees and asylum seekers with educational costs.</p>
                                 <p><strong>Value:</strong> Up to £500</p>
                                 <p><strong>Eligibility:</strong> Refugees and asylum seekers aged 16-25</p>
-                                <a href="https://www.reuk.org/funding" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-pound-sign" aria-hidden="true"></i> Up to £500
+                                    </div>
+                                    <a href="https://www.reuk.org/funding" class="btn btn-text" target="_blank" rel="noreferrer noopener">Learn More <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
 
                         <h3>Government Funding</h3>
                         <p>If you have refugee status or humanitarian protection, you may be eligible for home fee status and student finance support, including tuition fee loans and maintenance loans through Student Finance England.</p>
-                        <a href="https://www.gov.uk/student-finance/who-qualifies" class="btn btn-text" target="_blank" rel="noreferrer noopener">Check Eligibility <i class="fas fa-external-link-alt"></i></a>
+                        <a href="https://www.gov.uk/student-finance/who-qualifies" class="btn btn-primary">
+                            <span>Check Eligibility</span>
+                            <i class="fas fa-external-link-alt" aria-hidden="true"></i>
+                        </a>
 
-                        <div class="info-box">
-                            <h4><i class="fas fa-info-circle"></i> Scholarship Application Tips</h4>
+                        <div class="success-box">
+                            <h4><i class="fas fa-award" aria-hidden="true"></i> Scholarship Application Tips</h4>
                             <p>Apply for multiple funding sources to maximize your chances. Many scholarships are competitive, so it's good to have backup options. Our team can help you identify the most suitable funding opportunities for your situation and assist with applications.</p>
                         </div>
                     </div>
                 </div>
 
-                <div class="pathway" id="part-time">
+                <div class="pathway animate-on-scroll from-bottom" id="part-time">
                     <div class="pathway-content">
-                        <h2>8. Part-Time Study or Distance Learning</h2>
-                        <p>Part-time study options allow you to balance your education with other commitments such as work, family, or community responsibilities.</p>
+                        <h2>7. Part-Time Study or Distance Learning</h2>
+                        <p class="lead">Part-time study options allow you to balance your education with other commitments such as work, family, or community responsibilities.</p>
 
                         <h3>Part-Time Study Options in Kent</h3>
                         <div class="program-cards">
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-left">
                                 <h4>University of Kent</h4>
                                 <p>The university offers part-time study options across various courses, allowing students to balance their education with other commitments. Detailed information on part-time courses, including availability and structure, can be found on Kent's course listings.</p>
-                                <a href="https://www.kent.ac.uk/courses" class="btn btn-text" target="_blank" rel="noreferrer noopener">Part-Time Options <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-clock" aria-hidden="true"></i> Flexible scheduling
+                                    </div>
+                                    <a href="https://www.kent.ac.uk/courses" class="btn btn-text" target="_blank" rel="noreferrer noopener">Part-Time Options <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-bottom">
                                 <h4>Canterbury Christ Church University</h4>
                                 <p>Offers flexible study options including part-time degrees, evening courses, and weekend programs to accommodate different schedules and needs.</p>
-                                <a href="https://www.canterbury.ac.uk/study-here/applying/applying-for-a-part-time-course" class="btn btn-text" target="_blank" rel="noreferrer noopener">Part-Time Courses <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-calendar-alt" aria-hidden="true"></i> Evening & weekend options
+                                    </div>
+                                    <a href="https://www.canterbury.ac.uk/study-here/applying/applying-for-a-part-time-course" class="btn btn-text" target="_blank" rel="noreferrer noopener">Part-Time Courses <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-right">
                                 <h4>Open University</h4>
                                 <p>While not based in Kent, the Open University offers distance learning courses that can be studied from anywhere in the UK, with flexible pacing and part-time options.</p>
-                                <a href="https://www.open.ac.uk" class="btn btn-text" target="_blank" rel="noreferrer noopener">Explore Courses <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-laptop" aria-hidden="true"></i> Distance learning
+                                    </div>
+                                    <a href="https://www.open.ac.uk" class="btn btn-text" target="_blank" rel="noreferrer noopener">Explore Courses <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
 
@@ -375,27 +488,42 @@
                     </div>
                 </div>
 
-                <div class="pathway" id="employer-sponsored">
+                <div class="pathway animate-on-scroll from-bottom" id="employer-sponsored">
                     <div class="pathway-content">
-                        <h2>10. Employer-Sponsored Degrees</h2>
-                        <p>Employer-sponsored degrees and apprenticeships allow you to earn while you learn, combining work experience with academic study.</p>
+                        <h2>8. Employer-Sponsored Degrees</h2>
+                        <p class="lead">Employer-sponsored degrees and apprenticeships allow you to earn while you learn, combining work experience with academic study.</p>
 
                         <h3>Employer-Sponsored Options in Kent</h3>
                         <div class="program-cards">
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-left">
                                 <h4>University of Kent - Degree Apprenticeships</h4>
                                 <p>The University of Kent collaborates with various employers and organizations that may offer sponsorships or funding opportunities for students. Degree apprenticeships combine working with studying part-time at a university.</p>
-                                <a href="https://www.kent.ac.uk/apprenticeships" class="btn btn-text" target="_blank" rel="noreferrer noopener">Degree Apprenticeships <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-briefcase" aria-hidden="true"></i> Work & study
+                                    </div>
+                                    <a href="https://www.kent.ac.uk/apprenticeships" class="btn btn-text" target="_blank" rel="noreferrer noopener">Degree Apprenticeships <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-bottom">
                                 <h4>Canterbury Christ Church University</h4>
                                 <p>Offers apprenticeships and work-based learning programs in partnership with employers, particularly in healthcare, education, and business.</p>
-                                <a href="https://www.canterbury.ac.uk/study-here/apprenticeships" class="btn btn-text" target="_blank" rel="noreferrer noopener">Apprenticeships <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-stethoscope" aria-hidden="true"></i> Healthcare focus
+                                    </div>
+                                    <a href="https://www.canterbury.ac.uk/study-here/apprenticeships" class="btn btn-text" target="_blank" rel="noreferrer noopener">Apprenticeships <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
-                            <div class="program-card">
+                            <div class="program-card animate-on-scroll from-right">
                                 <h4>National Apprenticeship Service</h4>
                                 <p>Find and apply for apprenticeships across Kent and the UK, including higher and degree apprenticeships.</p>
-                                <a href="https://www.gov.uk/apply-apprenticeship" class="btn btn-text" target="_blank" rel="noreferrer noopener">Find Apprenticeships <i class="fas fa-external-link-alt"></i></a>
+                                <div class="program-card-footer">
+                                    <div class="program-card-meta">
+                                        <i class="fas fa-search" aria-hidden="true"></i> Search tool
+                                    </div>
+                                    <a href="https://www.gov.uk/apply-apprenticeship" class="btn btn-text" target="_blank" rel="noreferrer noopener">Find Apprenticeships <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
                             </div>
                         </div>
 
@@ -441,40 +569,57 @@
                     </div>
                 </div>
 
-                <div class="pathway-summary">
-                    <h3>Additional Considerations for All Pathways</h3>
-                    <div class="considerations">
-                        <div class="consideration">
-                            <i class="fas fa-passport"></i>
-                            <h4>Visa Status</h4>
-                            <p>Refugees with limited leave to remain or pending asylum applications may face restricted access to funding and programs.</p>
+                <div class="pathway-summary container-box animate-on-scroll from-bottom">
+                    <h3 class="container-box-title">Additional Considerations for All Pathways</h3>
+                    <div class="grid grid-cols-2 gap-lg">
+                        <div class="consideration container-box container-box-light">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-passport text-primary fa-2x mr-3" aria-hidden="true"></i>
+                                <h4 class="container-box-subtitle mb-0">Visa Status</h4>
+                            </div>
+                            <p class="container-box-content">Refugees with limited leave to remain or pending asylum applications may face restricted access to funding and programs.</p>
                         </div>
-                        <div class="consideration">
-                            <i class="fas fa-pound-sign"></i>
-                            <h4>Financial Aid</h4>
-                            <p>Scholarships, maintenance loans, and hardship grants are vital for supporting tuition and living costs.</p>
+                        <div class="consideration container-box container-box-light">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-pound-sign text-primary fa-2x mr-3" aria-hidden="true"></i>
+                                <h4 class="container-box-subtitle mb-0">Financial Aid</h4>
+                            </div>
+                            <p class="container-box-content">Scholarships, maintenance loans, and hardship grants are vital for supporting tuition and living costs.</p>
                         </div>
-                        <div class="consideration">
-                            <i class="fas fa-users"></i>
-                            <h4>Support Services</h4>
-                            <p>Universities offer tailored support, including mentoring, counselling, and access to student networks.</p>
+                        <div class="consideration container-box container-box-light">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-users text-primary fa-2x mr-3" aria-hidden="true"></i>
+                                <h4 class="container-box-subtitle mb-0">Support Services</h4>
+                            </div>
+                            <p class="container-box-content">Universities offer tailored support, including mentoring, counselling, and access to student networks.</p>
                         </div>
-                        <div class="consideration">
-                            <i class="fas fa-balance-scale"></i>
-                            <h4>Legal Considerations</h4>
-                            <p>Compliance with UK immigration and data protection laws is critical when handling refugee information.</p>
+                        <div class="consideration container-box container-box-light">
+                            <div class="d-flex align-items-center mb-3">
+                                <i class="fas fa-balance-scale text-primary fa-2x mr-3" aria-hidden="true"></i>
+                                <h4 class="container-box-subtitle mb-0">Legal Considerations</h4>
+                            </div>
+                            <p class="container-box-content">Compliance with UK immigration and data protection laws is critical when handling refugee information.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="cta">
+        <section class="cta section-bg-gradient">
             <div class="container">
                 <div class="cta-content">
-                    <h2>Need Personalized Guidance?</h2>
-                    <p>Our team can help you identify the best educational pathway based on your specific situation.</p>
-                    <a href="contact.html" class="btn btn-light">Contact Us Today</a>
+                    <h2 class="animate-on-scroll from-bottom">Need Personalized Guidance?</h2>
+                    <p class="animate-on-scroll from-bottom animate-delay-1">Our team can help you identify the best educational pathway based on your specific situation.</p>
+                    <div class="cta-buttons animate-on-scroll from-bottom animate-delay-2">
+                        <a href="contact.html" class="btn btn-light">
+                            <span>Contact Us Today</span>
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                        </a>
+                        <a href="resources.html" class="btn btn-outline-light">
+                            <span>Browse Resources</span>
+                            <i class="fas fa-book" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -484,41 +629,56 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>PEAK</h3>
+                    <div class="footer-logo">
+                        <h2>PEAK</h2>
+                        <p>Pathway to Education Access in Kent</p>
+                    </div>
                     <p>Supporting refugees in Kent to access higher education opportunities.</p>
                     <div class="social-icons">
-                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
                     </div>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="pathways.html">Education Pathways</a></li>
-                        <li><a href="resources.html">Resources</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="index.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Home</a></li>
+                        <li><a href="pathways.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Education Pathways</a></li>
+                        <li><a href="resources.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Resources</a></li>
+                        <li><a href="faq.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> FAQ</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Contact</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> About Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-map-marker-alt"></i> Canterbury Christ Church University, North Holmes Road, Canterbury, Kent, CT1 1QU</p>
-                    <p><i class="fas fa-phone"></i> +44 1227 123456</p>
-                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
+                    <div class="footer-contact-info">
+                        <div class="footer-contact-item">
+                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                            <p>Canterbury Christ Church University, North Holmes Road, Canterbury, Kent, CT1 1QU</p>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="fas fa-phone" aria-hidden="true"></i>
+                            <p><a href="tel:+441227123456">+44 1227 123456</a></p>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <p><a href="mailto:os146@canterbury.ac.uk">os146@canterbury.ac.uk</a></p>
+                        </div>
+                    </div>
                 </div>
                 <div class="footer-section">
                     <h3>Newsletter</h3>
                     <p>Subscribe to our newsletter to receive updates on new resources and opportunities.</p>
-                    <form>
-                        <input type="email" placeholder="Your email">
-                        <button type="submit">Subscribe</button>
+                    <form class="footer-newsletter-form">
+                        <input type="email" placeholder="Your email address" aria-label="Your email address">
+                        <button type="submit" aria-label="Subscribe"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
                     </form>
                 </div>
             </div>
+            <div class="footer-divider"></div>
             <div class="footer-bottom">
                 <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
                 <p>Developed by Osama Sharkia</p>
@@ -528,23 +688,23 @@
 
     <div class="chat-widget" id="chat-widget">
         <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
-            <i class="fas fa-comments"></i>
+            <i class="fas fa-comments" aria-hidden="true"></i>
         </button>
         <div class="chat-box" id="chat-box">
             <div class="chat-header">
                 <h3>Need Help?</h3>
                 <button class="close-chat" id="close-chat" aria-label="Close chat">
-                    <i class="fas fa-times"></i>
+                    <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
             </div>
-            <div class="chat-messages" id="chat-messages">
+            <div class="chat-messages custom-scrollbar" id="chat-messages">
                 <div class="message received">
                     <p>Hello! How can we help you with your education journey today?</p>
                 </div>
             </div>
             <form id="chat-form" class="chat-form">
                 <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
-                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
             </form>
         </div>
     </div>
@@ -554,5 +714,95 @@
     <script src="js/auth-service.js"></script>
     <script src="js/script.js"></script>
     <script src="js/nav-handler.js"></script>
+    
+    <!-- Script for scroll animations and dark mode -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Initialize dark mode toggle
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            if (darkModeToggle) {
+                // Check for saved preference
+                const darkModePreference = localStorage.getItem('darkMode') === 'true';
+                
+                // Apply dark mode if preferred
+                if (darkModePreference) {
+                    document.body.classList.add('dark-mode');
+                    darkModeToggle.setAttribute('aria-checked', 'true');
+                }
+                
+                // Add event listener for toggle
+                darkModeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    localStorage.setItem('darkMode', isDarkMode);
+                    darkModeToggle.setAttribute('aria-checked', isDarkMode.toString());
+                });
+                
+                // Keyboard accessibility
+                darkModeToggle.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        darkModeToggle.click();
+                    }
+                });
+            }
+            
+            // Initialize scroll animations
+            const animateOnScrollElements = document.querySelectorAll('.animate-on-scroll');
+            
+            const checkIfInView = () => {
+                const windowHeight = window.innerHeight;
+                const windowTopPosition = window.scrollY;
+                const windowBottomPosition = windowTopPosition + windowHeight;
+                
+                animateOnScrollElements.forEach(element => {
+                    const elementHeight = element.offsetHeight;
+                    const elementTopPosition = element.offsetTop;
+                    const elementBottomPosition = elementTopPosition + elementHeight;
+                    
+                    // Check if element is in viewport
+                    if (
+                        (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) ||
+                        (elementTopPosition <= windowBottomPosition && elementBottomPosition >= windowTopPosition)
+                    ) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Check elements on load
+            checkIfInView();
+            
+            // Check elements on scroll
+            window.addEventListener('scroll', checkIfInView);
+            
+            // Make pathway navigation sticky and highlight active section
+            const pathwayNav = document.querySelector('.pathways-nav');
+            const pathwaySections = document.querySelectorAll('.pathway');
+            const pathwayNavItems = document.querySelectorAll('.pathway-nav-item');
+            
+            if (pathwayNav && pathwaySections.length > 0 && pathwayNavItems.length > 0) {
+                const highlightActiveSection = () => {
+                    const scrollPosition = window.scrollY + pathwayNav.offsetHeight + 50;
+                    
+                    pathwaySections.forEach((section, index) => {
+                        const sectionTop = section.offsetTop;
+                        const sectionBottom = sectionTop + section.offsetHeight;
+                        
+                        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                            pathwayNavItems.forEach(item => item.classList.remove('active'));
+                            pathwayNavItems[index].classList.add('active');
+                        }
+                    });
+                };
+                
+                // Check active section on scroll
+                window.addEventListener('scroll', highlightActiveSection);
+                
+                // Initial check
+                highlightActiveSection();
+            }
+        });
+    </script>
 </body>
 </html>
