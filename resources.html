@@ -1,21 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="smooth-scroll">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Resources - PEAK</title>
     <meta name="description" content="Helpful resources and support services for refugees seeking higher education in Kent">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/enhanced-styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Skip to content link for accessibility -->
+    <a href="#main-content" class="skip-to-content">Skip to main content</a>
+
     <header>
         <div class="container">
             <div class="logo">
                 <h1>PEAK</h1>
                 <p class="tagline">Pathway to Education Access in Kent</p>
             </div>
-            <nav id="navbar">
+            <nav>
                 <button id="menu-toggle" aria-label="Toggle menu">
                     <span class="bar"></span>
                     <span class="bar"></span>
@@ -28,22 +32,38 @@
                     <li><a href="faq.html">FAQ</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About Us</a></li>
+                    <li><a href="login.html">Login</a></li>
+                    <li><a href="register.html">Register</a></li>
                 </ul>
+                <div class="nav-right">
+                    <div class="dark-mode-toggle" id="dark-mode-toggle" role="switch" aria-checked="false" tabindex="0">
+                        <i class="fas fa-sun sun-icon" aria-hidden="true"></i>
+                        <i class="fas fa-moon moon-icon" aria-hidden="true"></i>
+                    </div>
+                </div>
             </nav>
         </div>
     </header>
 
-    <main>
-        <section class="page-header">
+    <main id="main-content">
+        <section class="hero section-bg-primary">
+            <div class="hero-pattern"></div>
             <div class="container">
-                <h1>Resources</h1>
-                <p>Helpful resources and support services for refugees seeking higher education</p>
+                <div class="hero-content text-center">
+                    <h1 class="animate animate-fade-in-up">Resources</h1>
+                    <p class="lead animate animate-fade-in-up animate-delay-1">Helpful resources and support services for refugees seeking higher education</p>
+                </div>
+            </div>
+            <div class="hero-shape">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 100">
+                    <path fill-opacity="1" d="M0,64L80,69.3C160,75,320,85,480,80C640,75,800,53,960,48C1120,43,1280,53,1360,58.7L1440,64L1440,100L1360,100C1280,100,1120,100,960,100C800,100,640,100,480,100C320,100,160,100,80,100L0,100Z"></path>
+                </svg>
             </div>
         </section>
 
         <section class="resources-nav">
             <div class="container">
-                <div class="resources-nav-container">
+                <div class="resources-nav-container horizontal-scrollbar">
                     <a href="#language-courses" class="resource-nav-item">Language Courses</a>
                     <a href="#funding" class="resource-nav-item">Funding & Scholarships</a>
                     <a href="#support-organizations" class="resource-nav-item">Support Organizations</a>
@@ -56,11 +76,14 @@
         <section class="resource-section" id="language-courses">
             <div class="container">
                 <h2 class="section-title">Language Courses</h2>
-                <p class="section-intro">Improving your English language skills is often the first step towards higher education. Here are resources to help you develop your language proficiency:</p>
+                <p class="section-subtitle">Improving your English language skills is often the first step towards higher education. Here are resources to help you develop your language proficiency:</p>
 
                 <div class="resource-cards">
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                            </div>
                             <h3>University of Kent English Language Unit</h3>
                         </div>
                         <div class="resource-card-body">
@@ -71,13 +94,20 @@
                                 <li><strong>Location:</strong> Canterbury Campus</li>
                                 <li><strong>Entry Requirements:</strong> Varies by course length; lower IELTS scores accepted for longer courses</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Guaranteed progression to your degree course upon successful completion</p>
-                            <a href="https://student.kent.ac.uk/studies/english-and-academic-skills" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-check-circle" aria-hidden="true"></i> Guaranteed progression
+                                </div>
+                                <a href="https://student.kent.ac.uk/studies/english-and-academic-skills" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-users" aria-hidden="true"></i>
+                            </div>
                             <h3>The English Hub for Refugees</h3>
                         </div>
                         <div class="resource-card-body">
@@ -88,13 +118,20 @@
                                 <li><strong>Locations:</strong> Multiple locations across Kent (Dover, Folkestone, Ashford, Canterbury)</li>
                                 <li><strong>Additional Support:</strong> Conversation practice, exam preparation, and cultural orientation</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Classes designed specifically for refugees with trained volunteer teachers</p>
-                            <a href="https://www.theenglishhubforrefugees.com/about/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-pound-sign" aria-hidden="true"></i> Free for refugees
+                                </div>
+                                <a href="https://www.theenglishhubforrefugees.com/about/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-right">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-book" aria-hidden="true"></i>
+                            </div>
                             <h3>Kent Adult Education</h3>
                         </div>
                         <div class="resource-card-body">
@@ -105,13 +142,20 @@
                                 <li><strong>Locations:</strong> 12 centers across Kent county</li>
                                 <li><strong>Qualifications:</strong> Courses lead to nationally recognized ESOL qualifications</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Structured curriculum with qualified ESOL teachers and formal qualifications</p>
-                            <a href="https://www.kentadulteducation.co.uk/course-areas/english-maths-and-esol/esol/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Find Your Nearest Course <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-certificate" aria-hidden="true"></i> Recognized qualifications
+                                </div>
+                                <a href="https://www.kentadulteducation.co.uk/course-areas/english-maths-and-esol/esol/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Find Your Nearest Course <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-laptop" aria-hidden="true"></i>
+                            </div>
                             <h3>Online IELTS Preparation</h3>
                         </div>
                         <div class="resource-card-body">
@@ -122,26 +166,33 @@
                                 <li><a href="https://takeielts.britishcouncil.org/take-ielts/prepare/free-ielts-practice-tests" target="_blank" rel="noreferrer noopener">Free IELTS Practice Tests</a> - Complete practice tests for all sections</li>
                                 <li><a href="https://learnenglish.britishcouncil.org/skills/listening" target="_blank" rel="noreferrer noopener">British Council Learn English</a> - General English skills development</li>
                             </ul>
-                            <p><strong>Pro Tip:</strong> Many Kent universities accept lower IELTS scores for refugees if you agree to take additional English support during your studies.</p>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-info-circle" aria-hidden="true"></i> Pro Tip: Many Kent universities accept lower IELTS scores for refugees
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="resource-tip">
-                    <h4><i class="fas fa-lightbulb"></i> Tip</h4>
+                <div class="info-box animate-on-scroll from-bottom">
+                    <h4><i class="fas fa-lightbulb" aria-hidden="true"></i> Tip</h4>
                     <p>If you're a refugee with limited English, start with free community classes at The English Hub for Refugees, then progress to Kent Adult Education ESOL courses for formal qualifications, and finally to pre-sessional courses if you're planning to attend university. Contact university admissions offices directly to discuss your English language options.</p>
                 </div>
             </div>
         </section>
 
-        <section class="resource-section" id="funding">
+        <section class="resource-section section-bg-light" id="funding">
             <div class="container">
                 <h2 class="section-title">Funding & Scholarships</h2>
-                <p class="section-intro">Financial support is available to help refugees access higher education. Here are some funding options specifically for refugees in Kent:</p>
+                <p class="section-subtitle">Financial support is available to help refugees access higher education. Here are some funding options specifically for refugees in Kent:</p>
 
                 <div class="resource-cards">
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-award" aria-hidden="true"></i>
+                            </div>
                             <h3>University of Kent - Sanctuary Scholarships</h3>
                         </div>
                         <div class="resource-card-body">
@@ -152,13 +203,20 @@
                                 <li><strong>Application Deadline:</strong> 31 May 2025 for the 2025/26 academic year</li>
                                 <li><strong>Number Available:</strong> Limited number awarded annually based on merit</li>
                             </ul>
-                            <p><strong>Application Process:</strong> Apply through the university's scholarship portal after receiving an offer of admission</p>
-                            <a href="https://www.kent.ac.uk/giving/explore-our-projects/sanctuary-fund" class="btn btn-text" target="_blank" rel="noreferrer noopener">Scholarship Details <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-pound-sign" aria-hidden="true"></i> Full tuition + stipend
+                                </div>
+                                <a href="https://www.kent.ac.uk/giving/explore-our-projects/sanctuary-fund" class="btn btn-text" target="_blank" rel="noreferrer noopener">Scholarship Details <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                            </div>
                             <h3>Canterbury Christ Church University - Sanctuary Awards</h3>
                         </div>
                         <div class="resource-card-body">
@@ -169,13 +227,20 @@
                                 <li><strong>Application Deadline:</strong> 30 June 2025 for the 2025/26 academic year</li>
                                 <li><strong>Support Included:</strong> Additional support package including mentoring and study resources</li>
                             </ul>
-                            <p><strong>Application Process:</strong> Separate application form after receiving an offer of admission</p>
-                            <a href="https://www.canterbury.ac.uk/study-here/fees-and-funding/scholarships-and-bursaries/sanctuary-scholarship" class="btn btn-text" target="_blank" rel="noreferrer noopener">Financial Support <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-pound-sign" aria-hidden="true"></i> Full tuition
+                                </div>
+                                <a href="https://www.canterbury.ac.uk/study-here/fees-and-funding/scholarships-and-bursaries/sanctuary-scholarship" class="btn btn-text" target="_blank" rel="noreferrer noopener">Financial Support <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-right">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-hand-holding-usd" aria-hidden="true"></i>
+                            </div>
                             <h3>Refugee Support Network - Educational Grants</h3>
                         </div>
                         <div class="resource-card-body">
@@ -186,13 +251,20 @@
                                 <li><strong>Covered Expenses:</strong> Books, equipment, travel, exam fees, and other educational costs</li>
                                 <li><strong>Application Process:</strong> Through a referral from a support worker</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Can cover costs not included in other scholarship programs</p>
-                            <a href="https://www.reuk.org/funding" class="btn btn-text" target="_blank" rel="noreferrer noopener">Grant Information <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-pound-sign" aria-hidden="true"></i> Up to £500
+                                </div>
+                                <a href="https://www.reuk.org/funding" class="btn btn-text" target="_blank" rel="noreferrer noopener">Grant Information <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-university" aria-hidden="true"></i>
+                            </div>
                             <h3>Student Finance England</h3>
                         </div>
                         <div class="resource-card-body">
@@ -203,13 +275,20 @@
                                 <li><strong>Application Timing:</strong> Apply as early as possible before your course starts</li>
                                 <li><strong>Documentation Required:</strong> Proof of status, identity, and residence</li>
                             </ul>
-                            <p><strong>Important Note:</strong> Those with Discretionary Leave to Remain may have different eligibility criteria</p>
-                            <a href="https://www.gov.uk/student-finance/who-qualifies" class="btn btn-text" target="_blank" rel="noreferrer noopener">Check Eligibility <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-info-circle" aria-hidden="true"></i> Different criteria for Discretionary Leave to Remain
+                                </div>
+                                <a href="https://www.gov.uk/student-finance/who-qualifies" class="btn btn-text" target="_blank" rel="noreferrer noopener">Check Eligibility <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-database" aria-hidden="true"></i>
+                            </div>
                             <h3>STAR Equal Access Scholarship Database</h3>
                         </div>
                         <div class="resource-card-body">
@@ -219,14 +298,18 @@
                                 <li><strong>Updated:</strong> Regularly maintained with the latest scholarship information</li>
                                 <li><strong>Search Options:</strong> Filter by location, study level, and eligibility criteria</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> The most comprehensive list of refugee-specific scholarships in the UK</p>
-                            <a href="https://star-network.org.uk/access-to-university/scholarships/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Search Scholarships <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-search" aria-hidden="true"></i> Comprehensive database
+                                </div>
+                                <a href="https://star-network.org.uk/access-to-university/scholarships/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Search Scholarships <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="resource-tip">
-                    <h4><i class="fas fa-lightbulb"></i> Tip</h4>
+                <div class="success-box animate-on-scroll from-bottom">
+                    <h4><i class="fas fa-lightbulb" aria-hidden="true"></i> Tip</h4>
                     <p>Apply for multiple funding sources to maximize your chances. Many scholarships are competitive, so it's good to have backup options. Start applications early, as many scholarships have deadlines 6-9 months before the academic year begins. Our team can help you identify the most suitable funding opportunities for your situation and assist with applications.</p>
                 </div>
             </div>
@@ -235,11 +318,14 @@
         <section class="resource-section" id="support-organizations">
             <div class="container">
                 <h2 class="section-title">Support Organizations in Kent</h2>
-                <p class="section-intro">These organizations provide valuable support services specifically for refugees and asylum seekers in Kent:</p>
+                <p class="section-subtitle">These organizations provide valuable support services specifically for refugees and asylum seekers in Kent:</p>
 
                 <div class="resource-cards">
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-hands-helping" aria-hidden="true"></i>
+                            </div>
                             <h3>Kent Refugee Action Network (KRAN)</h3>
                         </div>
                         <div class="resource-card-body">
@@ -249,12 +335,20 @@
                                 <li><strong>Advocacy and Support:</strong> Assistance with integration, mental health, and navigating UK systems</li>
                                 <li><strong>Mentoring:</strong> Pairing young people with community volunteers for guidance and support</li>
                             </ul>
-                            <a href="https://kran.org.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-user-graduate" aria-hidden="true"></i> Education focus
+                                </div>
+                                <a href="https://kran.org.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-heart" aria-hidden="true"></i>
+                            </div>
                             <h3>Kent Kindness</h3>
                         </div>
                         <div class="resource-card-body">
@@ -264,12 +358,20 @@
                                 <li><strong>Mentoring:</strong> One-on-one support to navigate daily challenges</li>
                                 <li><strong>Community Integration:</strong> Activities and events fostering a sense of belonging</li>
                             </ul>
-                            <a href="https://kentkindness.org.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-home" aria-hidden="true"></i> Life skills focus
+                                </div>
+                                <a href="https://kentkindness.org.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-right">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-door-open" aria-hidden="true"></i>
+                            </div>
                             <h3>Canterbury Welcomes Refugees</h3>
                         </div>
                         <div class="resource-card-body">
@@ -279,12 +381,20 @@
                                 <li><strong>Volunteer Support:</strong> Offering English conversation practice and friendship</li>
                                 <li><strong>Community Events:</strong> Organizing activities to promote inclusion and cultural exchange</li>
                             </ul>
-                            <a href="https://www.canterbury-refugees.com/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-users" aria-hidden="true"></i> Community focus
+                                </div>
+                                <a href="https://www.canterbury-refugees.com/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-network-wired" aria-hidden="true"></i>
+                            </div>
                             <h3>East Kent Network of Sanctuary</h3>
                         </div>
                         <div class="resource-card-body">
@@ -294,12 +404,20 @@
                                 <li><strong>Coordinate Support Efforts:</strong> Sharing resources and best practices among member organizations</li>
                                 <li><strong>Expand Networks:</strong> Establishing new branches in areas like Dover, Canterbury, and Thanet</li>
                             </ul>
-                            <a href="https://eastkentnetwork.cityofsanctuary.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-handshake" aria-hidden="true"></i> Coordination focus
+                                </div>
+                                <a href="https://eastkentnetwork.cityofsanctuary.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-life-ring" aria-hidden="true"></i>
+                            </div>
                             <h3>Migrant Help</h3>
                         </div>
                         <div class="resource-card-body">
@@ -309,12 +427,20 @@
                                 <li><strong>Resettlement Programs:</strong> Support for Syrian refugees and other resettlement initiatives</li>
                                 <li><strong>Victim Support:</strong> Aid for victims of modern-day slavery and human trafficking</li>
                             </ul>
-                            <a href="https://www.migranthelpuk.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-phone" aria-hidden="true"></i> 24/7 helpline available
+                                </div>
+                                <a href="https://www.migranthelpuk.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-right">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-balance-scale" aria-hidden="true"></i>
+                            </div>
                             <h3>Refugee Action</h3>
                         </div>
                         <div class="resource-card-body">
@@ -324,12 +450,20 @@
                                 <li><strong>Resettlement Assistance:</strong> Helping refugees integrate into UK society</li>
                                 <li><strong>Campaigning:</strong> Advocating for a fairer asylum system and refugee rights</li>
                             </ul>
-                            <a href="https://www.refugee-action.org.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-gavel" aria-hidden="true"></i> Advocacy focus
+                                </div>
+                                <a href="https://www.refugee-action.org.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-home" aria-hidden="true"></i>
+                            </div>
                             <h3>Refugees at Home</h3>
                         </div>
                         <div class="resource-card-body">
@@ -339,12 +473,20 @@
                                 <li><strong>Support Services:</strong> Ongoing assistance to both hosts and guests during placements</li>
                                 <li><strong>Collaborations:</strong> Working with organizations like the British Red Cross and Refugee Council</li>
                             </ul>
-                            <a href="https://refugeesathome.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-bed" aria-hidden="true"></i> Accommodation focus
+                                </div>
+                                <a href="https://refugeesathome.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-female" aria-hidden="true"></i>
+                            </div>
                             <h3>Women for Refugee Women</h3>
                         </div>
                         <div class="resource-card-body">
@@ -354,26 +496,34 @@
                                 <li><strong>Educational Programs:</strong> Offering English lessons and confidence-building activities</li>
                                 <li><strong>Advocacy:</strong> Campaigning against injustices faced by refugee women in the UK</li>
                             </ul>
-                            <a href="https://www.refugeewomen.co.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-venus" aria-hidden="true"></i> Women-specific support
+                                </div>
+                                <a href="https://www.refugeewomen.co.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="resource-tip">
-                    <h4><i class="fas fa-lightbulb"></i> Tip</h4>
+                <div class="info-box animate-on-scroll from-bottom">
+                    <h4><i class="fas fa-lightbulb" aria-hidden="true"></i> Tip</h4>
                     <p>Many of these organizations offer specialized support for education access. Don't hesitate to reach out to multiple organizations, as they often collaborate and can refer you to the most appropriate services for your specific needs.</p>
                 </div>
             </div>
         </section>
 
-        <section class="resource-section" id="digital-tools">
+        <section class="resource-section section-bg-light" id="digital-tools">
             <div class="container">
                 <h2 class="section-title">Digital Tools</h2>
-                <p class="section-intro">These digital resources can help you develop essential skills for education and everyday life in the UK:</p>
+                <p class="section-subtitle">These digital resources can help you develop essential skills for education and everyday life in the UK:</p>
 
                 <div class="resource-cards">
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-laptop" aria-hidden="true"></i>
+                            </div>
                             <h3>Learn My Way – Free Digital Skills Courses</h3>
                         </div>
                         <div class="resource-card-body">
@@ -385,13 +535,20 @@
                                 <li>Searching safely online</li>
                                 <li>Accessing public services and education tools</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Self-paced, simple lessons with translation support available in some languages.</p>
-                            <a href="https://www.learnmyway.com/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-check-circle" aria-hidden="true"></i> Self-paced learning
+                                </div>
+                                <a href="https://www.learnmyway.com/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-desktop" aria-hidden="true"></i>
+                            </div>
                             <h3>Digital Kent – Digital Skills for Refugees</h3>
                         </div>
                         <div class="resource-card-body">
@@ -402,13 +559,20 @@
                                 <li>Free training in using devices and digital tools</li>
                                 <li>Help with accessing government and educational services online</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Offers face-to-face support tailored to refugees in Kent.</p>
-                            <a href="https://www.digitalkent.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-map-marker-alt" aria-hidden="true"></i> Local in-person support
+                                </div>
+                                <a href="https://www.digitalkent.uk/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-right">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-tv" aria-hidden="true"></i>
+                            </div>
                             <h3>BBC Learning – Digital Literacy for Adults</h3>
                         </div>
                         <div class="resource-card-body">
@@ -420,13 +584,20 @@
                                 <li>Searching and using email</li>
                                 <li>Managing your digital identity</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Very accessible and easy-to-understand videos and articles.</p>
-                            <a href="https://www.bbc.co.uk/learning" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-closed-captioning" aria-hidden="true"></i> Accessible content
+                                </div>
+                                <a href="https://www.bbc.co.uk/learning" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-language" aria-hidden="true"></i>
+                            </div>
                             <h3>British Council – Learn English Online</h3>
                         </div>
                         <div class="resource-card-body">
@@ -438,13 +609,20 @@
                                 <li>Games and quizzes</li>
                                 <li>Access to IELTS preparation materials</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Structured English learning for all levels with refugee-specific support tips.</p>
-                            <a href="https://learnenglish.britishcouncil.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-globe" aria-hidden="true"></i> Multiple language levels
+                                </div>
+                                <a href="https://learnenglish.britishcouncil.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-graduation-cap" aria-hidden="true"></i>
+                            </div>
                             <h3>Coursera – Free University-Level Courses</h3>
                         </div>
                         <div class="resource-card-body">
@@ -455,13 +633,20 @@
                                 <li>"Coursera for Refugees" programs</li>
                                 <li>Certificates in job-ready skills</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Boost your qualifications and skills from home with a recognized global platform.</p>
-                            <a href="https://www.coursera.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-certificate" aria-hidden="true"></i> Recognized certificates
+                                </div>
+                                <a href="https://www.coursera.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-right">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-university" aria-hidden="true"></i>
+                            </div>
                             <h3>FutureLearn – Short Online Courses from UK Universities</h3>
                         </div>
                         <div class="resource-card-body">
@@ -472,13 +657,20 @@
                                 <li>Learning English for academic purposes</li>
                                 <li>Refugee integration and social support</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> Courses are made for international learners and include certificates.</p>
-                            <a href="https://www.futurelearn.com/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-flag-checkered" aria-hidden="true"></i> UK-specific content
+                                </div>
+                                <a href="https://www.futurelearn.com/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-chalkboard-teacher" aria-hidden="true"></i>
+                            </div>
                             <h3>Khan Academy – Free Learning for Everyone</h3>
                         </div>
                         <div class="resource-card-body">
@@ -490,14 +682,18 @@
                                 <li>Science (biology, chemistry, physics)</li>
                                 <li>Life skills and personal finance</li>
                             </ul>
-                            <p><strong>Key Benefit:</strong> No account needed; easy-to-use lessons in multiple languages.</p>
-                            <a href="https://www.khanacademy.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-globe-americas" aria-hidden="true"></i> Multiple languages available
+                                </div>
+                                <a href="https://www.khanacademy.org/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="resource-tip">
-                    <h4><i class="fas fa-lightbulb"></i> Tip</h4>
+                <div class="info-box animate-on-scroll from-bottom">
+                    <h4><i class="fas fa-lightbulb" aria-hidden="true"></i> Tip</h4>
                     <p>Many libraries in Kent offer free computer and internet access, as well as support with using digital tools. Ask at your local library about digital skills workshops and free access sessions.</p>
                 </div>
             </div>
@@ -506,11 +702,14 @@
         <section class="resource-section" id="documents">
             <div class="container">
                 <h2 class="section-title">Documents & Guides</h2>
-                <p class="section-intro">Access essential documents and guides to help you navigate the UK higher education system:</p>
+                <p class="section-subtitle">Access essential documents and guides to help you navigate the UK higher education system:</p>
 
                 <div class="resource-cards">
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-left">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-file-alt" aria-hidden="true"></i>
+                            </div>
                             <h3>Essential Documents for University Applications</h3>
                         </div>
                         <div class="resource-card-body">
@@ -522,63 +721,86 @@
                                 <li><strong>Personal Statement:</strong> A written statement explaining your interest in the course, your background, and your aspirations.</li>
                                 <li><strong>Reference Letter:</strong> Typically from a teacher, tutor, or someone who can attest to your academic abilities and character.</li>
                             </ul>
-                            <p>For more detailed information on required documents, you can refer to the following resources:</p>
-                            <ul class="resource-links">
-                                <li><a href="https://www.reuk.org/hefaq-qualifications" target="_blank" rel="noreferrer noopener">Refugee Education UK – Qualifications and Documents Guide</a></li>
-                                <li><a href="https://www.reuk.org/hefaq-howtoapplytouniversity" target="_blank" rel="noreferrer noopener">Refugee Education UK – How to Apply to University</a></li>
-                                <li><a href="https://star-network.org.uk/access-to-university/faqs/" target="_blank" rel="noreferrer noopener">Student Action for Refugees – Access to University FAQs</a></li>
-                            </ul>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-info-circle" aria-hidden="true"></i> Essential information
+                                </div>
+                                <div class="resource-links">
+                                    <a href="https://www.reuk.org/hefaq-qualifications" class="btn btn-text" target="_blank" rel="noreferrer noopener">Qualifications Guide <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                    <a href="https://www.reuk.org/hefaq-howtoapplytouniversity" class="btn btn-text" target="_blank" rel="noreferrer noopener">Application Guide <i class="fas fa-external-link-alt" aria-hidden="true"></i></a>
+                                </div>
+                            </div>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-bottom">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-book" aria-hidden="true"></i>
+                            </div>
                             <h3>Helpful Guides for Refugee and Asylum-Seeking Students</h3>
                         </div>
                         <div class="resource-card-body">
                             <p>Several organizations offer comprehensive guides to assist refugees and asylum seekers in applying to UK universities:</p>
                             <ul class="resource-links">
                                 <li><strong>Student Action for Refugees (STAR):</strong> Provides a step-by-step guide to applying to university, information on scholarships, and pre-university courses.<br>
-                                <a href="https://star-network.org.uk/access-to-university/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a></li>
+                                <a href="https://star-network.org.uk/access-to-university/" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
                                 <li><strong>Refugee Education UK (REUK):</strong> Offers FAQs on qualifications, application processes, and funding options tailored for refugee and asylum-seeking students.<br>
-                                <a href="https://www.reuk.org/hefaq-howtoapplytouniversity" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a></li>
+                                <a href="https://www.reuk.org/hefaq-howtoapplytouniversity" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
                                 <li><strong>University of Leicester – Sanctuary Seekers' Unit:</strong> Provides guidance for applicants with refugee or asylum-seeking status, including course choices and funding options.<br>
-                                <a href="https://le.ac.uk/cite/sanctuary-seekers-unit/study/applicants/guidance" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a></li>
+                                <a href="https://le.ac.uk/cite/sanctuary-seekers-unit/study/applicants/guidance" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
                                 <li><strong>Cambridge Refugee Hub:</strong> Offers resources for refugees and asylum seekers considering higher education, including application guidance and support services.<br>
-                                <a href="https://www.humanmovement.cam.ac.uk/cambridge-refugee-hub/applying-university-cambridge-resources-refugees-asylum-seekers-and-other" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt"></i></a></li>
+                                <a href="https://www.humanmovement.cam.ac.uk/cambridge-refugee-hub/applying-university-cambridge-resources-refugees-asylum-seekers-and-other" class="btn btn-text" target="_blank" rel="noreferrer noopener">Visit Website <i class="fas fa-external-link-alt" aria-hidden="true"></i></a></li>
                             </ul>
                         </div>
                     </div>
 
-                    <div class="resource-card">
+                    <div class="resource-card animate-on-scroll from-right">
                         <div class="resource-card-header">
+                            <div class="resource-card-icon">
+                                <i class="fas fa-file-pdf" aria-hidden="true"></i>
+                            </div>
                             <h3>Printable Guides</h3>
                         </div>
                         <div class="resource-card-body">
                             <p>For a comprehensive overview, you can download the following PDF guides:</p>
                             <ul class="resource-links">
                                 <li><strong>A Guide to Studying in the UK for Asylum Seekers and Refugees:</strong> Provides detailed information on qualifications, application processes, and support services.<br>
-                                <a href="https://n-somerset.gov.uk/sites/default/files/2023-11/A%20guide%20to%20studying%20in%20the%20UK%20for%20asylum%20seekers%20and%20refugees%20-%20English%20%281%29.pdf" class="btn btn-text" target="_blank" rel="noreferrer noopener">Download Guide <i class="fas fa-download"></i></a></li>
+                                <a href="https://n-somerset.gov.uk/sites/default/files/2023-11/A%20guide%20to%20studying%20in%20the%20UK%20for%20asylum%20seekers%20and%20refugees%20-%20English%20%281%29.pdf" class="btn btn-text" target="_blank" rel="noreferrer noopener">Download Guide <i class="fas fa-download" aria-hidden="true"></i></a></li>
                                 <li><strong>University Entry for Asylum Seekers and Refugees:</strong> Offers guidance on entry requirements, funding, and support available for asylum seekers and refugees.<br>
-                                <a href="documents/university-entry-guide.pdf" class="btn btn-text" download>Download Guide <i class="fas fa-download"></i></a></li>
+                                <a href="documents/university-entry-guide.pdf" class="btn btn-text" download>Download Guide <i class="fas fa-download" aria-hidden="true"></i></a></li>
                             </ul>
+                            <div class="resource-card-footer">
+                                <div class="resource-card-meta">
+                                    <i class="fas fa-print" aria-hidden="true"></i> Printable resources
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="resource-tip">
-                    <h4><i class="fas fa-lightbulb"></i> Tip</h4>
+                <div class="success-box animate-on-scroll from-bottom">
+                    <h4><i class="fas fa-lightbulb" aria-hidden="true"></i> Tip</h4>
                     <p>Keep digital copies of all your important documents in a secure cloud storage service (like Google Drive or OneDrive). This ensures you can access them from any device and won't lose them if your physical copies are misplaced.</p>
                 </div>
             </div>
         </section>
 
-        <section class="cta">
+        <section class="cta section-bg-gradient">
             <div class="container">
                 <div class="cta-content">
-                    <h2>Need Personalized Resource Recommendations?</h2>
-                    <p>Our team can help you identify the most relevant resources for your specific situation.</p>
-                    <a href="contact.html" class="btn btn-light">Contact Us Today</a>
+                    <h2 class="animate-on-scroll from-bottom">Need Personalized Resource Recommendations?</h2>
+                    <p class="animate-on-scroll from-bottom animate-delay-1">Our team can help you identify the most relevant resources for your specific situation.</p>
+                    <div class="cta-buttons animate-on-scroll from-bottom animate-delay-2">
+                        <a href="contact.html" class="btn btn-light">
+                            <span>Contact Us Today</span>
+                            <i class="fas fa-paper-plane" aria-hidden="true"></i>
+                        </a>
+                        <a href="faq.html" class="btn btn-outline-light">
+                            <span>View FAQs</span>
+                            <i class="fas fa-question-circle" aria-hidden="true"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
         </section>
@@ -588,25 +810,56 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>PEAK</h3>
+                    <div class="footer-logo">
+                        <h2>PEAK</h2>
+                        <p>Pathway to Education Access in Kent</p>
+                    </div>
                     <p>Supporting refugees in Kent to access higher education opportunities.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram" aria-hidden="true"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in" aria-hidden="true"></i></a>
+                    </div>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="pathways.html">Education Pathways</a></li>
-                        <li><a href="resources.html">Resources</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="index.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Home</a></li>
+                        <li><a href="pathways.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Education Pathways</a></li>
+                        <li><a href="resources.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Resources</a></li>
+                        <li><a href="faq.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> FAQ</a></li>
+                        <li><a href="contact.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> Contact</a></li>
+                        <li><a href="about.html"><i class="fas fa-chevron-right" aria-hidden="true"></i> About Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
+                    <div class="footer-contact-info">
+                        <div class="footer-contact-item">
+                            <i class="fas fa-map-marker-alt" aria-hidden="true"></i>
+                            <p>Canterbury Christ Church University, North Holmes Road, Canterbury, Kent, CT1 1QU</p>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="fas fa-phone" aria-hidden="true"></i>
+                            <p><a href="tel:+441227123456">+44 1227 123456</a></p>
+                        </div>
+                        <div class="footer-contact-item">
+                            <i class="fas fa-envelope" aria-hidden="true"></i>
+                            <p><a href="mailto:os146@canterbury.ac.uk">os146@canterbury.ac.uk</a></p>
+                        </div>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter to receive updates on new resources and opportunities.</p>
+                    <form class="footer-newsletter-form">
+                        <input type="email" placeholder="Your email address" aria-label="Your email address">
+                        <button type="submit" aria-label="Subscribe"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
+                    </form>
                 </div>
             </div>
+            <div class="footer-divider"></div>
             <div class="footer-bottom">
                 <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
                 <p>Developed by Osama Sharkia</p>
@@ -616,23 +869,23 @@
 
     <div class="chat-widget" id="chat-widget">
         <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
-            <i class="fas fa-comments"></i>
+            <i class="fas fa-comments" aria-hidden="true"></i>
         </button>
         <div class="chat-box" id="chat-box">
             <div class="chat-header">
                 <h3>Need Help?</h3>
                 <button class="close-chat" id="close-chat" aria-label="Close chat">
-                    <i class="fas fa-times"></i>
+                    <i class="fas fa-times" aria-hidden="true"></i>
                 </button>
             </div>
-            <div class="chat-messages" id="chat-messages">
+            <div class="chat-messages custom-scrollbar" id="chat-messages">
                 <div class="message received">
                     <p>Hello! How can we help you with your education journey today?</p>
                 </div>
             </div>
             <form id="chat-form" class="chat-form">
                 <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
-                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane" aria-hidden="true"></i></button>
             </form>
         </div>
     </div>
@@ -641,5 +894,96 @@
     <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
     <script src="js/auth-service.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/nav-handler.js"></script>
+    
+    <!-- Script for scroll animations and dark mode -->
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            // Initialize dark mode toggle
+            const darkModeToggle = document.getElementById('dark-mode-toggle');
+            if (darkModeToggle) {
+                // Check for saved preference
+                const darkModePreference = localStorage.getItem('darkMode') === 'true';
+                
+                // Apply dark mode if preferred
+                if (darkModePreference) {
+                    document.body.classList.add('dark-mode');
+                    darkModeToggle.setAttribute('aria-checked', 'true');
+                }
+                
+                // Add event listener for toggle
+                darkModeToggle.addEventListener('click', () => {
+                    document.body.classList.toggle('dark-mode');
+                    const isDarkMode = document.body.classList.contains('dark-mode');
+                    localStorage.setItem('darkMode', isDarkMode);
+                    darkModeToggle.setAttribute('aria-checked', isDarkMode.toString());
+                });
+                
+                // Keyboard accessibility
+                darkModeToggle.addEventListener('keydown', (e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                        e.preventDefault();
+                        darkModeToggle.click();
+                    }
+                });
+            }
+            
+            // Initialize scroll animations
+            const animateOnScrollElements = document.querySelectorAll('.animate-on-scroll');
+            
+            const checkIfInView = () => {
+                const windowHeight = window.innerHeight;
+                const windowTopPosition = window.scrollY;
+                const windowBottomPosition = windowTopPosition + windowHeight;
+                
+                animateOnScrollElements.forEach(element => {
+                    const elementHeight = element.offsetHeight;
+                    const elementTopPosition = element.offsetTop;
+                    const elementBottomPosition = elementTopPosition + elementHeight;
+                    
+                    // Check if element is in viewport
+                    if (
+                        (elementBottomPosition >= windowTopPosition && elementTopPosition <= windowBottomPosition) ||
+                        (elementTopPosition <= windowBottomPosition && elementBottomPosition >= windowTopPosition)
+                    ) {
+                        element.classList.add('visible');
+                    }
+                });
+            };
+            
+            // Check elements on load
+            checkIfInView();
+            
+            // Check elements on scroll
+            window.addEventListener('scroll', checkIfInView);
+            
+            // Make resource navigation sticky and highlight active section
+            const resourceNav = document.querySelector('.resources-nav');
+            const resourceSections = document.querySelectorAll('.resource-section');
+            const resourceNavItems = document.querySelectorAll('.resource-nav-item');
+            
+            if (resourceNav && resourceSections.length > 0 && resourceNavItems.length > 0) {
+                const highlightActiveSection = () => {
+                    const scrollPosition = window.scrollY + resourceNav.offsetHeight + 50;
+                    
+                    resourceSections.forEach((section, index) => {
+                        const sectionTop = section.offsetTop;
+                        const sectionBottom = sectionTop + section.offsetHeight;
+                        
+                        if (scrollPosition >= sectionTop && scrollPosition < sectionBottom) {
+                            resourceNavItems.forEach(item => item.classList.remove('active'));
+                            resourceNavItems[index].classList.add('active');
+                        }
+                    });
+                };
+                
+                // Check active section on scroll
+                window.addEventListener('scroll', highlightActiveSection);
+                
+                // Initial check
+                highlightActiveSection();
+            }
+        });
+    </script>
 </body>
 </html>
