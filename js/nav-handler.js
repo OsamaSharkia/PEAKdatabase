@@ -51,10 +51,25 @@ document.addEventListener("DOMContentLoaded", () => {
       }
   
       navContainers.forEach((navContainer) => {
-        // Clear existing navigation to rebuild it consistently
-        navContainer.innerHTML = ""
+        // Find existing auth-related links
+        const existingLinks = navContainer.querySelectorAll("li a")
+        let loginLink, registerLink, profileLink, logoutLink, adminLink
+        let authLinksContainer = null
   
-        // Add standard navigation items that appear on all pages
+        // Find auth-related links and their container
+        existingLinks.forEach(link => {
+          const text = link.textContent.trim()
+          if (text === "Login") {
+            loginLink = link
+            authLinksContainer = link.parentElement.parentElement
+          }
+          if (text === "Register") registerLink = link
+          if (text === "My Profile" || text === "Profile") profileLink = link
+          if (text === "Logout") logoutLink = link
+          if (text === "Admin") adminLink = link
+        })
+  
+        // Standard links to ensure they exist
         const standardLinks = [
           { href: "index.html", text: "Home" },
           { href: "pathways.html", text: "Education Pathways" },
@@ -64,66 +79,104 @@ document.addEventListener("DOMContentLoaded", () => {
           { href: "about.html", text: "About Us" },
         ]
   
-        // Add standard links
-        standardLinks.forEach((link) => {
-          const li = document.createElement("li")
-          const a = document.createElement("a")
-          a.href = link.href
-          a.textContent = link.text
+        // Add any missing standard links
+        standardLinks.forEach(linkData => {
+          let linkExists = false
+          existingLinks.forEach(link => {
+            if (link.textContent.trim() === linkData.text || 
+                link.href.endsWith(linkData.href)) {
+              linkExists = true
+              // Mark current page as active
+              if (currentPage === linkData.href) {
+                link.classList.add("active")
+              } else {
+                link.classList.remove("active")
+              }
+            }
+          })
   
-          // Mark current page as active
-          if (currentPage === link.href) {
-            a.classList.add("active")
+          if (!linkExists) {
+            const li = document.createElement("li")
+            const a = document.createElement("a")
+            a.href = linkData.href
+            a.textContent = linkData.text
+            if (currentPage === linkData.href) {
+              a.classList.add("active")
+            }
+            li.appendChild(a)
+            navContainer.appendChild(li)
           }
-  
-          li.appendChild(a)
-          navContainer.appendChild(li)
         })
   
-        // Add authentication links based on login status
+        // Update auth links based on login status
         if (isLoggedIn) {
-          // User is logged in - show logout
-          const logoutLi = document.createElement("li")
-          const logoutLink = document.createElement("a")
-          logoutLink.href = "#"
-          logoutLink.id = "logout-link"
-          logoutLink.textContent = "Logout"
-          logoutLi.appendChild(logoutLink)
-          navContainer.appendChild(logoutLi)
+          // User is logged in
+          if (loginLink) {
+            loginLink.textContent = "My Profile"
+            loginLink.href = "profile.html"
+            if (currentPage === "profile.html") {
+              loginLink.classList.add("active")
+            } else {
+              loginLink.classList.remove("active")
+            }
+          }
   
-          // Add admin link if user is admin
-          if (isAdmin) {
+          if (registerLink) {
+            registerLink.textContent = "Logout"
+            registerLink.href = "#"
+            registerLink.id = "logout-link"
+            registerLink.classList.remove("active")
+          }
+  
+          // Add admin link if user is admin and it doesn't exist
+          if (isAdmin && !adminLink && authLinksContainer) {
             const adminLi = document.createElement("li")
-            const adminLink = document.createElement("a")
-            adminLink.href = "admin.html"
-            adminLink.textContent = "Admin"
+            const adminA = document.createElement("a")
+            adminA.href = "admin.html"
+            adminA.textContent = "Admin"
+            if (currentPage === "admin.html") {
+              adminA.classList.add("active")
+            }
+            adminLi.appendChild(adminA)
+            authLinksContainer.appendChild(adminLi)
+          } else if (adminLink && !isAdmin) {
+            // Remove admin link if it exists but user is not admin
+            adminLink.parentElement.remove()
+          } else if (adminLink && isAdmin) {
+            // Update active state
             if (currentPage === "admin.html") {
               adminLink.classList.add("active")
+            } else {
+              adminLink.classList.remove("active")
             }
-            adminLi.appendChild(adminLink)
-            navContainer.appendChild(adminLi)
           }
         } else {
-          // User is not logged in - show login and register
-          const loginLi = document.createElement("li")
-          const loginLink = document.createElement("a")
-          loginLink.href = "login.html"
-          loginLink.textContent = "Login"
-          if (currentPage === "login.html") {
-            loginLink.classList.add("active")
+          // User is not logged in
+          if (profileLink) {
+            profileLink.textContent = "Login"
+            profileLink.href = "login.html"
+            if (currentPage === "login.html") {
+              profileLink.classList.add("active")
+            } else {
+              profileLink.classList.remove("active")
+            }
           }
-          loginLi.appendChild(loginLink)
-          navContainer.appendChild(loginLi)
   
-          const registerLi = document.createElement("li")
-          const registerLink = document.createElement("a")
-          registerLink.href = "register.html"
-          registerLink.textContent = "Register"
-          if (currentPage === "register.html") {
-            registerLink.classList.add("active")
+          if (logoutLink) {
+            logoutLink.textContent = "Register"
+            logoutLink.href = "register.html"
+            logoutLink.id = ""
+            if (currentPage === "register.html") {
+              logoutLink.classList.add("active")
+            } else {
+              logoutLink.classList.remove("active")
+            }
           }
-          registerLi.appendChild(registerLink)
-          navContainer.appendChild(registerLi)
+  
+          // Remove admin link if it exists
+          if (adminLink) {
+            adminLink.parentElement.remove()
+          }
         }
       })
     }
@@ -150,4 +203,3 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     }
   })
-  
