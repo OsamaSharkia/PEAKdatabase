@@ -486,6 +486,12 @@
                 <div class="footer-section">
                     <h3>PEAK</h3>
                     <p>Supporting refugees in Kent to access higher education opportunities.</p>
+                    <div class="social-icons">
+                        <a href="#" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
@@ -500,7 +506,17 @@
                 </div>
                 <div class="footer-section">
                     <h3>Contact Us</h3>
-                    <p><i class="fas fa-envelope"></i> os146@canterbuy.ac.uk</p>
+                    <p><i class="fas fa-map-marker-alt"></i> Canterbury Christ Church University, North Holmes Road, Canterbury, Kent, CT1 1QU</p>
+                    <p><i class="fas fa-phone"></i> +44 1227 123456</p>
+                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Newsletter</h3>
+                    <p>Subscribe to our newsletter to receive updates on new resources and opportunities.</p>
+                    <form>
+                        <input type="email" placeholder="Your email">
+                        <button type="submit">Subscribe</button>
+                    </form>
                 </div>
             </div>
             <div class="footer-bottom">
@@ -533,6 +549,11 @@
         </div>
     </div>
 
+    <!-- Add Supabase client before other scripts -->
+    <script src="https://unpkg.com/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    <script src="js/auth-handler.js"></script>
     <script src="js/script.js"></script>
+    <script src="js/nav-handler.js"></script>
 </body>
 </html>

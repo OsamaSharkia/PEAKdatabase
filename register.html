@@ -1,201 +1,196 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register - PEAK</title>
-    <meta name="description" content="Create an account with PEAK to access personalized education pathway guidance">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Register - PEAK</title>
+  <meta name="description" content="Create an account with PEAK to access personalized education pathway guidance" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <h1>PEAK</h1>
-                <p class="tagline">Pathway to Education Access in Kent</p>
-            </div>
-            <nav id="navbar">
-                <button id="menu-toggle" aria-label="Toggle menu">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-                <ul id="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="pathways.html">Education Pathways</a></li>
-                    <li><a href="resources.html">Resources</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="login.html">Login</a></li>
-                    <li><a href="register.html" class="active">Register</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        <section class="page-header">
-            <div class="container">
-                <h1>Create an Account</h1>
-                <p>Join PEAK to access personalized education pathway guidance and resources</p>
-            </div>
-        </section>
-
-        <section class="form-section">
-            <div class="container">
-                <div class="form-container">
-                    <div class="form-tabs">
-                        <a href="login.html" class="form-tab">Login</a>
-                        <a href="register.html" class="form-tab active">Register</a>
-                    </div>
-                    <div class="form-content">
-                        <div id="register-error" class="error-message" style="display: none;"></div>
-                        
-                        <form id="register-form" class="auth-form">
-                            <div class="form-group">
-                                <label for="name">Full Name</label>
-                                <input type="text" id="name" name="name" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" id="password" name="password" required minlength="6">
-                                <small>Password must be at least 6 characters long</small>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="confirm-password">Confirm Password</label>
-                                <input type="password" id="confirm-password" name="confirm-password" required minlength="6">
-                            </div>
-                            
-                            <div class="form-group checkbox-group">
-                                <input type="checkbox" id="terms" name="terms" required>
-                                <label for="terms">I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a></label>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary">Register</button>
-                        </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>PEAK</h3>
-                    <p>Supporting refugees in Kent to access higher education opportunities.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="pathways.html">Education Pathways</a></li>
-                        <li><a href="resources.html">Resources</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
-                <p>Developed by Osama Sharkia</p>
-            </div>
-        </div>
-    </footer>
-
-    <div class="chat-widget" id="chat-widget">
-        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
-            <i class="fas fa-comments"></i>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <h1>PEAK</h1>
+        <p class="tagline">Pathway to Education Access in Kent</p>
+      </div>
+      <nav id="navbar">
+        <button id="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
         </button>
-        <div class="chat-box" id="chat-box">
-            <div class="chat-header">
-                <h3>Need Help?</h3>
-                <button class="close-chat" id="close-chat" aria-label="Close chat">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="message received">
-                    <p>Hello! How can we help you with your education journey today?</p>
-                </div>
-            </div>
-            <form id="chat-form" class="chat-form">
-                <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
-                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
-            </form>
-        </div>
+        <ul id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="pathways.html">Education Pathways</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="login.html">Login</a></li>
+          <li><a href="register.html" class="active">Register</a></li>
+        </ul>
+      </nav>
     </div>
+  </header>
 
-    <!-- Add this before your closing </body> tag -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/auth-handler.js"></script>
-    <script src="js/script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const registerForm = document.getElementById("register-form");
-            
-            if (registerForm) {
-                registerForm.addEventListener("submit", async (e) => {
-                    e.preventDefault();
-                    
-                    const name = document.getElementById("name").value.trim();
-                    const email = document.getElementById("email").value.trim();
-                    const password = document.getElementById("password").value;
-                    const confirmPassword = document.getElementById("confirm-password").value;
-                    const errorElement = document.getElementById("register-error");
-                    
-                    // Validate passwords match
-                    if (password !== confirmPassword) {
-                        if (errorElement) {
-                            errorElement.textContent = "Passwords do not match";
-                            errorElement.style.display = "block";
-                        }
-                        return;
-                    }
-                    
-                    try {
-                        // Sign up with Supabase
-                        const { data, error } = await supabaseClient.auth.signUp({
-                            email,
-                            password,
-                            options: {
-                                data: {
-                                    name: name
-                                }
-                            }
-                        });
-                        
-                        if (error) throw error;
-                        
-                        // Show success message
-                        alert("Registration successful! Please check your email to confirm your account.");
-                        window.location.href = "login.html";
-                        
-                    } catch (error) {
-                        console.error("Registration error:", error);
-                        if (errorElement) {
-                            errorElement.textContent = error.message || "Registration failed. Please try again.";
-                            errorElement.style.display = "block";
-                        }
-                    }
-                });
-            }
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>Create an Account</h1>
+        <p>Join PEAK to access personalized education pathway guidance and resources</p>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <div class="container">
+        <div class="form-container">
+          <div class="form-tabs">
+            <a href="login.html" class="form-tab">Login</a>
+            <a href="register.html" class="form-tab active">Register</a>
+          </div>
+          <div class="form-content">
+            <div id="register-error" class="error-message" style="display: none;"></div>
+
+            <form id="register-form" class="auth-form">
+              <div class="form-group">
+                <label for="name">Full Name</label>
+                <input type="text" id="name" name="name" required />
+              </div>
+
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required minlength="6" />
+                <small>Password must be at least 6 characters long</small>
+              </div>
+
+              <div class="form-group">
+                <label for="confirm-password">Confirm Password</label>
+                <input type="password" id="confirm-password" name="confirm-password" required minlength="6" />
+              </div>
+
+              <div class="form-group checkbox-group">
+                <input type="checkbox" id="terms" name="terms" required />
+                <label for="terms">I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a></label>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Register</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>PEAK</h3>
+          <p>Supporting refugees in Kent to access higher education opportunities.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pathways.html">Education Pathways</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
+        <p>Developed by Osama Sharkia</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="chat-widget" id="chat-widget">
+    <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
+      <i class="fas fa-comments"></i>
+    </button>
+    <div class="chat-box" id="chat-box">
+      <div class="chat-header">
+        <h3>Need Help?</h3>
+        <button class="close-chat" id="close-chat" aria-label="Close chat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="message received">
+          <p>Hello! How can we help you with your education journey today?</p>
+        </div>
+      </div>
+      <form id="chat-form" class="chat-form">
+        <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message" />
+        <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Supabase Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co";
+      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0";
+      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+      const registerForm = document.getElementById("register-form");
+      const errorElement = document.getElementById("register-error");
+
+      if (registerForm) {
+        registerForm.addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const name = document.getElementById("name").value.trim();
+          const email = document.getElementById("email").value.trim();
+          const password = document.getElementById("password").value;
+          const confirmPassword = document.getElementById("confirm-password").value;
+
+          if (password !== confirmPassword) {
+            errorElement.textContent = "Passwords do not match";
+            errorElement.style.display = "block";
+            return;
+          }
+
+          try {
+            const { data, error } = await supabaseClient.auth.signUp({
+              email,
+              password,
+              options: {
+                data: { name }
+              }
+            });
+
+            if (error) throw error;
+
+            alert("Registration successful! Please check your email to confirm your account.");
+            window.location.href = "login.html";
+
+          } catch (error) {
+            errorElement.textContent = error.message || "Registration failed. Please try again.";
+            errorElement.style.display = "block";
+          }
         });
-    </script>
+      }
+    });
+  </script>
+  <script src="js/auth-handler.js"></script>
+  <script src="js/register.js"></script>
 </body>
 </html>

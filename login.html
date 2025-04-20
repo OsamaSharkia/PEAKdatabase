@@ -1,237 +1,211 @@
-<script>
-  // Redirect to profile if already logged in
-  if (sessionStorage.getItem("isLoggedIn") === "true") {
-    window.location.href = "profile.html";
-  }
-</script>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - PEAK</title>
-    <meta name="description" content="Login to your PEAK account to access personalized education pathway guidance">
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login - PEAK</title>
+  <meta name="description" content="Login to your PEAK account to access personalized education pathway guidance" />
+  <link rel="stylesheet" href="css/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script>
+    // Redirect to profile if already logged in
+    if (sessionStorage.getItem("isLoggedIn") === "true") {
+      window.location.href = "profile.html";
+    }
+  </script>
 </head>
 <body>
-    <header>
-        <div class="container">
-            <div class="logo">
-                <h1>PEAK</h1>
-                <p class="tagline">Pathway to Education Access in Kent</p>
-            </div>
-            <nav id="navbar">
-                <button id="menu-toggle" aria-label="Toggle menu">
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                    <span class="bar"></span>
-                </button>
-                <ul id="nav-links">
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="pathways.html">Education Pathways</a></li>
-                    <li><a href="resources.html">Resources</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
-                    <li><a href="contact.html">Contact</a></li>
-                    <li><a href="about.html">About Us</a></li>
-                    <li><a href="login.html" class="active">Login</a></li>
-                    <li><a href="register.html">Register</a></li>
-                </ul>
-            </nav>
-        </div>
-    </header>
-
-    <main>
-        <section class="page-header">
-            <div class="container">
-                <h1>Login to Your Account</h1>
-                <p>Access personalized education pathway guidance and resources</p>
-            </div>
-        </section>
-
-        <section class="form-section">
-            <div class="container">
-                <div class="form-container">
-                    <div class="form-tabs">
-                        <a href="login.html" class="form-tab active">Login</a>
-                        <a href="register.html" class="form-tab">Register</a>
-                    </div>
-                    <div class="form-content">
-                        <div id="login-error" class="error-message" style="display: none;"></div>
-                        
-                        <form id="login-form" class="auth-form">
-                            <div class="form-group">
-                                <label for="email">Email</label>
-                                <input type="email" id="email" name="email" required>
-                            </div>
-                            
-                            <div class="form-group">
-                                <label for="password">Password</label>
-                                <input type="password" id="password" name="password" required>
-                            </div>
-                            
-                            <div class="form-group checkbox-group">
-                                <input type="checkbox" id="remember" name="remember">
-                                <label for="remember">Remember me</label>
-                            </div>
-                            
-                            <button type="submit" class="btn btn-primary">Login</button>
-                            
-                            <div class="form-links">
-                                <a href="#" id="forgot-password" class="forgot-password">Forgot your password?</a>
-                            </div>
-                        </form>
-                        
-                        <!-- Resend confirmation email section -->
-                        <div id="resend-confirmation" class="resend-confirmation" style="display: none; margin-top: 20px; text-align: center;">
-                            <p>Haven't received the confirmation email?</p>
-                            <button id="resend-btn" class="btn btn-secondary">Resend Confirmation Email</button>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="admin-login-link">
-                    <p>Are you an administrator? <a href="admin-login.html">Login to Admin Panel</a></p>
-                </div>
-            </div>
-        </section>
-    </main>
-
-    <footer>
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3>PEAK</h3>
-                    <p>Supporting refugees in Kent to access higher education opportunities.</p>
-                </div>
-                <div class="footer-section">
-                    <h3>Quick Links</h3>
-                    <ul>
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="pathways.html">Education Pathways</a></li>
-                        <li><a href="resources.html">Resources</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                        <li><a href="about.html">About Us</a></li>
-                    </ul>
-                </div>
-                <div class="footer-section">
-                    <h3>Contact Us</h3>
-                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
-                <p>Developed by Osama Sharkia</p>
-            </div>
-        </div>
-    </footer>
-
-    <div class="chat-widget" id="chat-widget">
-        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
-            <i class="fas fa-comments"></i>
+  <header>
+    <div class="container">
+      <div class="logo">
+        <h1>PEAK</h1>
+        <p class="tagline">Pathway to Education Access in Kent</p>
+      </div>
+      <nav id="navbar">
+        <button id="menu-toggle" aria-label="Toggle menu">
+          <span class="bar"></span>
+          <span class="bar"></span>
+          <span class="bar"></span>
         </button>
-        <div class="chat-box" id="chat-box">
-            <div class="chat-header">
-                <h3>Need Help?</h3>
-                <button class="close-chat" id="close-chat" aria-label="Close chat">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="message received">
-                    <p>Hello! How can we help you with your education journey today?</p>
-                </div>
-            </div>
-            <form id="chat-form" class="chat-form">
-                <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
-                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
-            </form>
-        </div>
+        <ul id="nav-links">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="pathways.html">Education Pathways</a></li>
+          <li><a href="resources.html">Resources</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+          <li><a href="about.html">About Us</a></li>
+          <li><a href="login.html" class="active">Login</a></li>
+          <li><a href="register.html">Register</a></li>
+        </ul>
+      </nav>
     </div>
+  </header>
 
-    <!-- Add this before your closing </body> tag -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/auth-handler.js"></script>
-    <script src="js/script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            // Initialize Supabase client
-            const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co"
-            const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0"
-            window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey)
-            
-            const resendConfirmation = document.getElementById("resend-confirmation")
-            const resendBtn = document.getElementById("resend-btn")
-            const emailInput = document.getElementById("email")
-            const forgotPasswordLink = document.getElementById("forgot-password")
-            const errorElement = document.getElementById("login-error")
-            
-            if (resendBtn) {
-                resendBtn.addEventListener("click", async () => {
-                    const email = emailInput.value.trim()
-                    
-                    if (!email) {
-                        if (errorElement) {
-                            errorElement.textContent = "Please enter your email address"
-                            errorElement.style.display = "block"
-                        }
-                        return
-                    }
-                    
-                    try {
-                        const { error } = await window.supabaseClient.auth.resend({
-                            type: 'signup',
-                            email: email
-                        })
-                        
-                        if (error) throw error
-                        
-                        alert("Confirmation email resent! Please check your inbox.")
-                        
-                    } catch (error) {
-                        console.error("Resend error:", error)
-                        if (errorElement) {
-                            errorElement.textContent = error.message || "Failed to resend confirmation email"
-                            errorElement.style.display = "block"
-                        }
-                    }
-                })
-            }
-            
-            if (forgotPasswordLink) {
-                forgotPasswordLink.addEventListener("click", async (e) => {
-                    e.preventDefault()
-                    
-                    const email = emailInput.value.trim()
-                    
-                    if (!email) {
-                        if (errorElement) {
-                            errorElement.textContent = "Please enter your email address"
-                            errorElement.style.display = "block"
-                        }
-                        return
-                    }
-                    
-                    try {
-                        const { error } = await window.supabaseClient.auth.resetPasswordForEmail(email, {
-                            redirectTo: window.location.origin + '/reset-password.html',
-                        })
-                        
-                        if (error) throw error
-                        
-                        alert("Password reset email sent! Please check your inbox.")
-                        
-                    } catch (error) {
-                        console.error("Password reset error:", error)
-                        if (errorElement) {
-                            errorElement.textContent = error.message || "Failed to send password reset email"
-                            errorElement.style.display = "block"
-                        }
-                    }
-                })
-            }
-        })
-    </script>
+  <main>
+    <section class="page-header">
+      <div class="container">
+        <h1>Login to Your Account</h1>
+        <p>Access personalized education pathway guidance and resources</p>
+      </div>
+    </section>
+
+    <section class="form-section">
+      <div class="container">
+        <div class="form-container">
+          <div class="form-tabs">
+            <a href="login.html" class="form-tab active">Login</a>
+            <a href="register.html" class="form-tab">Register</a>
+          </div>
+          <div class="form-content">
+            <div id="login-error" class="error-message" style="display: none;"></div>
+
+            <form id="login-form" class="auth-form">
+              <div class="form-group">
+                <label for="email">Email</label>
+                <input type="email" id="email" name="email" required />
+              </div>
+
+              <div class="form-group">
+                <label for="password">Password</label>
+                <input type="password" id="password" name="password" required />
+              </div>
+
+              <div class="form-group checkbox-group">
+                <input type="checkbox" id="remember" name="remember" />
+                <label for="remember">Remember me</label>
+              </div>
+
+              <button type="submit" class="btn btn-primary">Login</button>
+
+              <div class="form-links">
+                <a href="#" id="forgot-password" class="forgot-password">Forgot your password?</a>
+              </div>
+            </form>
+
+            <div id="resend-confirmation" class="resend-confirmation" style="display: none; margin-top: 20px; text-align: center;">
+              <p>Haven't received the confirmation email?</p>
+              <button id="resend-btn" class="btn btn-secondary">Resend Confirmation Email</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="admin-login-link">
+          <p>Are you an administrator? <a href="admin-login.html">Login to Admin Panel</a></p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>PEAK</h3>
+          <p>Supporting refugees in Kent to access higher education opportunities.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul>
+            <li><a href="index.html">Home</a></li>
+            <li><a href="pathways.html">Education Pathways</a></li>
+            <li><a href="resources.html">Resources</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact</a></li>
+            <li><a href="about.html">About Us</a></li>
+          </ul>
+        </div>
+        <div class="footer-section">
+          <h3>Contact Us</h3>
+          <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
+        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
+        <p>Developed by Osama Sharkia</p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="chat-widget" id="chat-widget">
+    <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
+      <i class="fas fa-comments"></i>
+    </button>
+    <div class="chat-box" id="chat-box">
+      <div class="chat-header">
+        <h3>Need Help?</h3>
+        <button class="close-chat" id="close-chat" aria-label="Close chat">
+          <i class="fas fa-times"></i>
+        </button>
+      </div>
+      <div class="chat-messages" id="chat-messages">
+        <div class="message received">
+          <p>Hello! How can we help you with your education journey today?</p>
+        </div>
+      </div>
+      <form id="chat-form" class="chat-form">
+        <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message" />
+        <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="js/auth-handler.js"></script>
+  <script src="js/script.js"></script>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co";
+      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0";
+      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+      const resendBtn = document.getElementById("resend-btn");
+      const emailInput = document.getElementById("email");
+      const forgotPasswordLink = document.getElementById("forgot-password");
+      const errorElement = document.getElementById("login-error");
+
+      if (resendBtn) {
+        resendBtn.addEventListener("click", async () => {
+          const email = emailInput.value.trim();
+          if (!email) {
+            errorElement.textContent = "Please enter your email address";
+            errorElement.style.display = "block";
+            return;
+          }
+          try {
+            const { error } = await supabaseClient.auth.resend({ type: "signup", email });
+            if (error) throw error;
+            alert("Confirmation email resent!");
+          } catch (error) {
+            errorElement.textContent = error.message || "Error resending email";
+            errorElement.style.display = "block";
+          }
+        });
+      }
+
+      if (forgotPasswordLink) {
+        forgotPasswordLink.addEventListener("click", async (e) => {
+          e.preventDefault();
+          const email = emailInput.value.trim();
+          if (!email) {
+            errorElement.textContent = "Please enter your email address";
+            errorElement.style.display = "block";
+            return;
+          }
+          try {
+            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+              redirectTo: window.location.origin + "/reset-password.html",
+            });
+            if (error) throw error;
+            alert("Password reset email sent!");
+          } catch (error) {
+            errorElement.textContent = error.message || "Error sending reset email";
+            errorElement.style.display = "block";
+          }
+        });
+      }
+    });
+  </script>
+  <script src="js/login.js"></script>
 </body>
 </html>

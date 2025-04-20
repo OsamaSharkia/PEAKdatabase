@@ -9,6 +9,10 @@
     <h1>FAQ Data Debug</h1>
     <div id="result"></div>
 
+    <!-- Add Supabase JS library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/supabase.js"></script>
+    
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const resultDiv = document.getElementById('result');
@@ -24,6 +28,23 @@
                 .then(data => {
                     resultDiv.innerHTML += '<p style="color:green">✓ Successfully loaded from root directory</p>';
                     resultDiv.innerHTML += '<pre>' + JSON.stringify(data, null, 2) + '</pre>';
+                    
+                    // Try to save to Supabase if available
+                    if (window.supabaseClient) {
+                        resultDiv.innerHTML += '<p>Checking Supabase connection...</p>';
+                        
+                        window.supabaseClient.auth.getSession().then(({ data: { session } }) => {
+                            if (session) {
+                                resultDiv.innerHTML += '<p style="color:green">✓ Supabase authenticated session found</p>';
+                            } else {
+                                resultDiv.innerHTML += '<p style="color:orange">⚠ No authenticated Supabase session</p>';
+                            }
+                        }).catch(error => {
+                            resultDiv.innerHTML += '<p style="color:red">✗ Supabase error: ' + error.message + '</p>';
+                        });
+                    } else {
+                        resultDiv.innerHTML += '<p style="color:orange">⚠ Supabase client not initialized</p>';
+                    }
                 })
                 .catch(error => {
                     resultDiv.innerHTML += '<p style="color:red">✗ Failed to load from root: ' + error.message + '</p>';

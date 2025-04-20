@@ -101,13 +101,15 @@ document.addEventListener("DOMContentLoaded", async () => {
   } catch (err) {
     console.error("Unexpected error in auth check:", err)
     // Show user-friendly error message
-    const errorMessage = document.createElement('div');
-    errorMessage.className = 'auth-error-message';
-    errorMessage.style.cssText = 'background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin: 10px 0; text-align: center;';
-    errorMessage.innerHTML = '<p>There was a problem connecting to the authentication service. Please try refreshing the page.</p>';
-    
+    const errorMessage = document.createElement("div")
+    errorMessage.className = "auth-error-message"
+    errorMessage.style.cssText =
+      "background-color: #f8d7da; color: #721c24; padding: 10px; border-radius: 4px; margin: 10px 0; text-align: center;"
+    errorMessage.innerHTML =
+      "<p>There was a problem connecting to the authentication service. Please try refreshing the page.</p>"
+
     // Insert at the top of the body
-    document.body.insertBefore(errorMessage, document.body.firstChild);
+    document.body.insertBefore(errorMessage, document.body.firstChild)
   }
 })
 
@@ -151,7 +153,7 @@ function updateNavigation(isLoggedIn) {
         e.preventDefault()
         try {
           await supabaseClient.auth.signOut()
-          
+
           // Clear session data
           sessionStorage.removeItem("isLoggedIn")
           sessionStorage.removeItem("currentUser")
@@ -167,7 +169,7 @@ function updateNavigation(isLoggedIn) {
 
     // Add admin link if user is admin
     if (isAdmin && !adminLink) {
-      const adminLi = document.createElement('li')
+      const adminLi = document.createElement("li")
       adminLi.innerHTML = `<a href="admin.html">Admin</a>`
       navLinks.appendChild(adminLi)
     }
@@ -259,9 +261,9 @@ if (document.getElementById("login-form")) {
       window.location.href = "profile.html"
     } catch (err) {
       console.error("Login error:", err)
-      
+
       let errorMessage = "An unexpected error occurred. Please try again."
-      
+
       // Handle specific error cases
       if (err.message.includes("Invalid login credentials")) {
         errorMessage = "Invalid email or password. Please check your credentials and try again."
@@ -270,7 +272,7 @@ if (document.getElementById("login-form")) {
       } else if (err.status === 429) {
         errorMessage = "Too many login attempts. Please try again later."
       }
-      
+
       if (errorElement) {
         errorElement.textContent = errorMessage
         errorElement.style.display = "block"

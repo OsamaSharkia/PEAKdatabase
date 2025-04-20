@@ -39,8 +39,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   })
 
-  console.log("Script.js loaded")
-
   // Check if Supabase session is available
   if (window.supabaseClient) {
     try {
@@ -87,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                 }
               }
             })
-            .catch(error => {
+            .catch((error) => {
               console.error("Error fetching profile:", error)
             })
         }
@@ -96,28 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.error("Session check error:", error)
     }
   }
-
-  // Mobile menu toggle
-  const menuToggle2 = document.getElementById("menu-toggle")
-  const navLinks2 = document.getElementById("nav-links")
-
-  if (menuToggle2 && navLinks2) {
-    menuToggle2.addEventListener("click", () => {
-      navLinks2.classList.toggle("active")
-      menuToggle2.classList.toggle("active")
-    })
-  }
-
-  // Close menu when clicking outside
-  document.addEventListener("click", (event) => {
-    const isClickInsideNav = navLinks2?.contains(event.target)
-    const isClickOnToggle = menuToggle2?.contains(event.target)
-
-    if (navLinks2?.classList.contains("active") && !isClickInsideNav && !isClickOnToggle) {
-      navLinks2.classList.remove("active")
-      menuToggle2?.classList.remove("active")
-    }
-  })
 
   // Testimonial Slider
   const testimonialSlider = document.getElementById("testimonial-slider")
