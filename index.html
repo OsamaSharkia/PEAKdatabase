@@ -7,6 +7,71 @@
     <meta name="description" content="Supporting refugees in Kent, UK to access higher education opportunities">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Enhanced styling similar to about page */
+        .section-divider {
+            height: 4px;
+            width: 100px;
+            background: linear-gradient(to right, #0066cc, #e67e22);
+            margin: 0 auto 2rem;
+            border-radius: 2px;
+        }
+        
+        .hero {
+            background: linear-gradient(135deg, #0066cc, #004080);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/placeholder.svg?height=500&width=1000');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .feature-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .pathway-card {
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        .pathway-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+        
+        .testimonial {
+            transition: transform 0.3s ease;
+        }
+        
+        .testimonial:hover {
+            transform: translateY(-5px);
+        }
+        
+        .cta {
+            background: linear-gradient(135deg, #0066cc, #004080);
+        }
+    </style>
 </head>
 <body>
     <!-- Add authentication handling script -->
@@ -71,6 +136,7 @@
         <section class="features">
             <div class="container">
                 <h2 class="section-title">How We Can Help</h2>
+                <div class="section-divider"></div>
                 <div class="feature-grid">
                     <div class="feature-card">
                         <div class="feature-icon">
@@ -107,6 +173,7 @@
         <section class="pathways-preview">
             <div class="container">
                 <h2 class="section-title">Educational Pathways</h2>
+                <div class="section-divider"></div>
                 <div class="pathways-grid">
                     <div class="pathway-card">
                         <h3>Access Courses & Foundation Years</h3>
@@ -133,6 +200,7 @@
         <section class="testimonials">
             <div class="container">
                 <h2 class="section-title">Success Stories</h2>
+                <div class="section-divider"></div>
                 <div class="testimonial-slider" id="testimonial-slider">
                     <div class="testimonial">
                         <div class="testimonial-content">
