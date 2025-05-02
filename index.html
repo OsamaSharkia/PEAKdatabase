@@ -17,12 +17,43 @@
             border-radius: 2px;
         }
         
+        .animated-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+
+        .animated-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.2s ease;
+        }
+
+        .animated-buttons {
+            animation: fadeInUp 1.4s ease;
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         .hero {
             background: linear-gradient(135deg, #0066cc, #004080);
+            color: white;
+            padding: 5rem 0;
+            margin-bottom: 3rem;
             position: relative;
             overflow: hidden;
+            text-align: center;
         }
-        
+
         .hero::before {
             content: '';
             position: absolute;
@@ -36,10 +67,13 @@
             opacity: 0.1;
             z-index: 0;
         }
-        
+
         .hero-content {
             position: relative;
             z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
         }
         
         .feature-card {
@@ -123,9 +157,9 @@
         <section class="hero">
             <div class="container">
                 <div class="hero-content">
-                    <h2>Supporting Refugees in Higher Education</h2>
-                    <p>Navigating the path to university education in Kent, UK</p>
-                    <div class="hero-buttons">
+                    <h1 class="animated-title">Supporting Refugees in Higher Education</h1>
+                    <p class="animated-subtitle">Navigating the path to university education in Kent, UK</p>
+                    <div class="hero-buttons animated-buttons">
                         <a href="pathways.html" class="btn btn-primary">Explore Pathways</a>
                         <a href="contact.html" class="btn btn-secondary">Get Support</a>
                     </div>
