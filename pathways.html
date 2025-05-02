@@ -17,12 +17,39 @@
         border-radius: 2px;
     }
     
+    .animated-title {
+        font-size: 2.5rem;
+        margin-bottom: 1rem;
+        animation: fadeInUp 1s ease;
+    }
+
+    .animated-subtitle {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        animation: fadeInUp 1.2s ease;
+    }
+
+    @keyframes fadeInUp {
+        from {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
     .page-header {
         background: linear-gradient(135deg, #0066cc, #004080);
+        color: white;
+        padding: 5rem 0;
+        margin-bottom: 3rem;
         position: relative;
         overflow: hidden;
+        text-align: center;
     }
-    
+
     .page-header::before {
         content: '';
         position: absolute;
@@ -36,10 +63,13 @@
         opacity: 0.1;
         z-index: 0;
     }
-    
+
     .page-header .container {
         position: relative;
         z-index: 1;
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
     }
     
     .pathway-content {
@@ -127,8 +157,8 @@
     <main>
         <section class="page-header">
             <div class="container">
-                <h1>Education Pathways</h1>
-                <p>Discover the different routes to higher education in Kent for refugees</p>
+                <h1 class="animated-title">Education Pathways</h1>
+                <p class="animated-subtitle">Discover the different routes to higher education in Kent for refugees</p>
             </div>
         </section>
 
