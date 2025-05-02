@@ -505,6 +505,117 @@
         transform: translateY(-3px);
     }
 </style>
+    <style>
+        /* Chat widget styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .chat-toggle {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 24px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+
+        .chat-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .chat-box {
+            width: 350px;
+            height: 400px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: none;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background-color: #0066cc;
+            color: white;
+            padding: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.2rem;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .message {
+            background-color: #f0f0f0;
+            border-radius: 8px;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            max-width: 80%;
+        }
+
+        .message.received {
+            align-self: flex-start;
+        }
+
+        .message.sent {
+            align-self: flex-end;
+            background-color: #e2f7cb;
+        }
+
+        .chat-form {
+            padding: 1rem;
+            border-top: 1px solid #ddd;
+            display: flex;
+        }
+
+        .chat-form input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
+            font-size: 1rem;
+            margin-right: 0.5rem;
+        }
+
+        .chat-form button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 0.75rem 1rem;
+            border-radius: 0 4px 4px 0;
+            cursor: pointer;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -1367,6 +1478,75 @@
                 year: 'numeric'
             });
         }
+    </script>
+    <div class="chat-widget" id="chat-widget">
+        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-box" id="chat-box">
+            <div class="chat-header">
+                <h3>Need Help?</h3>
+                <button class="close-chat" id="close-chat" aria-label="Close chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message received">
+                    <p>Hello! How can we help you with your education journey today?</p>
+                </div>
+            </div>
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
+                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatWidget = document.getElementById('chat-widget');
+            const chatToggle = document.getElementById('chat-toggle');
+            const chatBox = document.getElementById('chat-box');
+            const closeChat = document.getElementById('close-chat');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+
+            if (chatToggle && chatBox && closeChat && chatForm && chatInput && chatMessages) {
+                chatToggle.addEventListener('click', () => {
+                    chatBox.style.display = chatBox.style.display === 'block' ? 'none' : 'flex';
+                });
+
+                closeChat.addEventListener('click', () => {
+                    chatBox.style.display = 'none';
+                });
+
+                chatForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const messageText = chatInput.value.trim();
+                    if (messageText) {
+                        const message = document.createElement('div');
+                        message.classList.add('message', 'sent');
+                        message.innerHTML = `<p>${messageText}</p>`;
+                        chatMessages.appendChild(message);
+                        chatInput.value = '';
+
+                        // Scroll to bottom of chat messages
+                        chatMessages.scrollTop = chatMessages.scrollHeight;
+
+                        // Basic AI response (replace with actual AI integration)
+                        setTimeout(() => {
+                            const aiMessage = document.createElement('div');
+                            aiMessage.classList.add('message', 'received');
+                            aiMessage.innerHTML = `<p>Thanks for your message! We'll get back to you soon.</p>`;
+                            chatMessages.appendChild(aiMessage);
+
+                            // Scroll to bottom of chat messages
+                            chatMessages.scrollTop = chatMessages.scrollHeight;
+                        }, 1000);
+                    }
+                });
+            }
+        });
     </script>
 </body>
 </html>
