@@ -119,6 +119,101 @@
         background-color: #0052a3;
         transform: translateY(-3px);
     }
+
+    /* Additional styles for universities and appointment sections */
+    .universities-section {
+        background-color: #f8f9fa;
+        padding: 4rem 0;
+        margin-bottom: 3rem;
+    }
+    
+    .university-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+        margin-top: 2rem;
+    }
+    
+    .university-card {
+        background-color: white;
+        border-radius: 8px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .university-card-header {
+        background-color: #0066cc;
+        color: white;
+        padding: 1.5rem;
+    }
+    
+    .university-card-header h3 {
+        margin: 0;
+        font-size: 1.3rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+    }
+    
+    .university-card-body {
+        padding: 1.5rem;
+    }
+    
+    .university-links {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 1rem;
+        margin-top: 1.5rem;
+    }
+    
+    .appointment-section {
+        background: linear-gradient(to right, #f0f7ff, #f8f9fa);
+        padding: 4rem 0;
+        border-radius: 8px;
+        margin-bottom: 3rem;
+    }
+    
+    .appointment-types {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+        gap: 2rem;
+        margin: 2rem 0;
+    }
+    
+    .appointment-type {
+        background-color: white;
+        border-radius: 8px;
+        padding: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        text-align: center;
+    }
+    
+    .appointment-type h3 {
+        color: #0066cc;
+        margin-top: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 0.5rem;
+        margin-bottom: 1.5rem;
+    }
+    
+    .appointment-cta {
+        text-align: center;
+        margin-top: 2rem;
+    }
+    
+    .booking-form-container {
+        background-color: white;
+        border-radius: 8px;
+        padding: 2rem;
+        margin-top: 2rem;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        max-width: 600px;
+        margin-left: auto;
+        margin-right: auto;
+    }
 </style>
 </head>
 <body>
@@ -305,9 +400,9 @@
                     </div>
                 </div>
                 
+                <!-- Fix the broken HTML in the appointment-cta div -->
                 <div class="appointment-cta">
                     <a href="#" class="btn btn-primary" id="open-booking-form">Book a Consultation</a>
-                </div  class="btn btn-primary" id="open-booking-form">Book a Consultation</a>
                 </div>
                 
                 <div id="booking-form-container" class="booking-form-container" style="display: none;">
