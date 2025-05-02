@@ -13,6 +13,27 @@
       window.location.href = "profile.html";
     }
   </script>
+  <style>
+    /* Additional styles for error message */
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      padding: 15px;
+      border-radius: 5px;
+      margin-bottom: 20px;
+      text-align: center;
+    }
+    
+    /* Style for resend confirmation section */
+    .resend-confirmation {
+      background-color: #f8f9fa;
+      border: 1px solid #e9ecef;
+      border-radius: 5px;
+      padding: 15px;
+      margin-top: 20px;
+      text-align: center;
+    }
+  </style>
 </head>
 <body>
   <header>
@@ -82,9 +103,10 @@
               </div>
             </form>
 
-            <div id="resend-confirmation" class="resend-confirmation" style="display: none; margin-top: 20px; text-align: center;">
-              <p>Haven't received the confirmation email?</p>
-              <button id="resend-btn" class="btn btn-secondary">Resend Confirmation Email</button>
+            <div id="resend-confirmation" class="resend-confirmation" style="display: none;">
+              <p><strong>Haven't received the verification email?</strong></p>
+              <p>We can send you a new verification link to activate your account.</p>
+              <button id="resend-btn" class="btn btn-secondary">Resend Verification Email</button>
             </div>
           </div>
         </div>
@@ -153,59 +175,7 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth-service.js"></script>
   <script src="js/script.js"></script>
-  <script>
-    document.addEventListener("DOMContentLoaded", () => {
-      const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co";
-      const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0";
-      const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
-
-      const resendBtn = document.getElementById("resend-btn");
-      const emailInput = document.getElementById("email");
-      const forgotPasswordLink = document.getElementById("forgot-password");
-      const errorElement = document.getElementById("login-error");
-
-      if (resendBtn) {
-        resendBtn.addEventListener("click", async () => {
-          const email = emailInput.value.trim();
-          if (!email) {
-            errorElement.textContent = "Please enter your email address";
-            errorElement.style.display = "block";
-            return;
-          }
-          try {
-            const { error } = await supabaseClient.auth.resend({ type: "signup", email });
-            if (error) throw error;
-            alert("Confirmation email resent!");
-          } catch (error) {
-            errorElement.textContent = error.message || "Error resending email";
-            errorElement.style.display = "block";
-          }
-        });
-      }
-
-      if (forgotPasswordLink) {
-        forgotPasswordLink.addEventListener("click", async (e) => {
-          e.preventDefault();
-          const email = emailInput.value.trim();
-          if (!email) {
-            errorElement.textContent = "Please enter your email address";
-            errorElement.style.display = "block";
-            return;
-          }
-          try {
-            const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
-              redirectTo: window.location.origin + "/reset-password.html",
-            });
-            if (error) throw error;
-            alert("Password reset email sent!");
-          } catch (error) {
-            errorElement.textContent = error.message || "Error sending reset email";
-            errorElement.style.display = "block";
-          }
-        });
-      }
-    });
-  </script>
+  <!-- Remove the inline script that's conflicting with login.js -->
   <script src="js/login.js"></script>
 </body>
 </html>
