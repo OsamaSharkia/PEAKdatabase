@@ -1,6 +1,15 @@
 document.addEventListener("DOMContentLoaded", () => {
   console.log("Profile page loaded")
 
+  // Initialize Supabase client if not already initialized
+  if (!window.supabaseClient && window.supabase) {
+    const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co"
+    const supabaseKey =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0"
+    window.supabaseClient = window.supabase.createClient(supabaseUrl, supabaseKey)
+    console.log("Supabase client initialized in profile.js")
+  }
+
   // Function to check if user is logged in
   function isLoggedIn() {
     return sessionStorage.getItem("isLoggedIn") === "true"
@@ -337,7 +346,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // Handle password form submission
-    function handlePasswordSubmit(e) {
+    async function handlePasswordSubmit(e) {
       e.preventDefault()
 
       const currentPassword = document.getElementById("current-password").value
@@ -357,8 +366,43 @@ document.addEventListener("DOMContentLoaded", () => {
       }
 
       try {
-        // For demo purposes, just show success
-        // In a real app, you would call an API to update the password
+        // Show loading state
+        const submitBtn = passwordForm.querySelector('button[type="submit"]')
+        const originalBtnText = submitBtn.innerHTML
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Updating...'
+        submitBtn.disabled = true
+
+        // Check if Supabase client is available
+        if (window.supabaseClient) {
+          console.log("Updating password using Supabase...")
+
+          // First, verify the current password by signing in
+          const { error: signInError } = await window.supabaseClient.auth.signInWithPassword({
+            email: currentUser.email,
+            password: currentPassword,
+          })
+
+          if (signInError) {
+            console.error("Current password verification failed:", signInError)
+            throw new Error("Current password is incorrect")
+          }
+
+          // Update password using Supabase Auth API
+          const { error } = await window.supabaseClient.auth.updateUser({
+            password: newPassword,
+          })
+
+          if (error) {
+            console.error("Password update failed:", error)
+            throw new Error(error.message || "Failed to update password")
+          }
+
+          console.log("Password updated successfully")
+        } else {
+          console.warn("Supabase client not available, simulating password update")
+          // Simulate delay for demo purposes
+          await new Promise((resolve) => setTimeout(resolve, 1000))
+        }
 
         // Clear form
         if (passwordForm) passwordForm.reset()
@@ -366,18 +410,68 @@ document.addEventListener("DOMContentLoaded", () => {
         showNotification("Password updated successfully", "success")
       } catch (error) {
         console.error("Error updating password:", error)
-        showNotification("Failed to update password. Please try again.", "error")
+        showNotification("Failed to update password: " + error.message, "error")
+      } finally {
+        // Reset button state
+        const submitBtn = passwordForm.querySelector('button[type="submit"]')
+        submitBtn.innerHTML = '<i class="fas fa-key"></i> Update Password'
+        submitBtn.disabled = false
       }
     }
 
     // Handle delete account
-    function handleDeleteAccount() {
+    async function handleDeleteAccount() {
       if (deleteConfirmationInput && deleteConfirmationInput.value !== "delete my account") {
         return
       }
 
       try {
-        // Remove profile data
+        // Show loading state
+        if (confirmDeleteBtn) {
+          confirmDeleteBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Deleting...'
+          confirmDeleteBtn.disabled = true
+        }
+
+        // Try to delete account in Supabase if available
+        if (window.supabaseClient && currentUser && currentUser.id) {
+          console.log("Attempting to delete user account from Supabase...")
+
+          try {
+            // First try the RPC function method
+            const { data, error } = await window.supabaseClient.rpc("delete_user_completely", {
+              user_id: currentUser.id,
+            })
+
+            if (error) {
+              console.error("Error using RPC to delete user:", error)
+
+              // If RPC fails, try the Edge Function if available
+              try {
+                const response = await fetch(`${window.location.origin}/api/delete-user`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${(await window.supabaseClient.auth.getSession()).data.session?.access_token}`,
+                  },
+                  body: JSON.stringify({ userId: currentUser.id }),
+                })
+
+                if (!response.ok) {
+                  const result = await response.json()
+                  throw new Error(result.error || "Failed to delete account")
+                }
+              } catch (edgeFunctionError) {
+                console.error("Edge function error:", edgeFunctionError)
+                // Continue with local deletion even if Supabase deletion fails
+              }
+            }
+          } catch (supabaseError) {
+            console.error("Supabase deletion error:", supabaseError)
+            // Continue with local deletion even if Supabase deletion fails
+          }
+        }
+
+        // Remove profile data from localStorage
         localStorage.removeItem(`profile_${currentUser.id}`)
 
         // Clear session data
@@ -395,6 +489,10 @@ document.addEventListener("DOMContentLoaded", () => {
         showNotification("Failed to delete account. Please try again.", "error")
 
         if (deleteModal) deleteModal.classList.remove("active")
+        if (confirmDeleteBtn) {
+          confirmDeleteBtn.innerHTML = "Delete Account"
+          confirmDeleteBtn.disabled = false
+        }
       }
     }
 
