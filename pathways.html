@@ -7,6 +7,97 @@
     <meta name="description" content="Discover the different routes to higher education in Kent for refugees">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+    /* Enhanced styling similar to about page */
+    .section-divider {
+        height: 4px;
+        width: 100px;
+        background: linear-gradient(to right, #0066cc, #e67e22);
+        margin: 0 auto 2rem;
+        border-radius: 2px;
+    }
+    
+    .page-header {
+        background: linear-gradient(135deg, #0066cc, #004080);
+        position: relative;
+        overflow: hidden;
+    }
+    
+    .page-header::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-image: url('/placeholder.svg?height=500&width=1000');
+        background-size: cover;
+        background-position: center;
+        opacity: 0.1;
+        z-index: 0;
+    }
+    
+    .page-header .container {
+        position: relative;
+        z-index: 1;
+    }
+    
+    .pathway-content {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .pathway-content:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+    
+    .program-card {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    
+    .program-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    }
+    
+    .consideration {
+        transition: transform 0.3s ease;
+    }
+    
+    .consideration:hover {
+        transform: translateY(-5px);
+    }
+    
+    .cta {
+        background: linear-gradient(135deg, #0066cc, #004080);
+    }
+    
+    .steps li {
+        margin-bottom: 2rem;
+    }
+    
+    .step-number {
+        width: 36px;
+        height: 36px;
+        background-color: #0066cc;
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: bold;
+        margin-right: 1rem;
+        flex-shrink: 0;
+    }
+    
+    .info-box {
+        background-color: #f0f7ff;
+        border-left: 4px solid #0066cc;
+        padding: 1.5rem;
+        margin: 2rem 0;
+        border-radius: 0 8px 8px 0;
+    }
+</style>
 </head>
 <body>
     <header>
@@ -61,6 +152,7 @@
                 <div class="pathway" id="access-courses">
                     <div class="pathway-content">
                         <h2>1. Access Courses and Foundation Years</h2>
+                        <div class="section-divider"></div>
                         <p>Access courses and foundation years are designed to prepare you for undergraduate studies by covering essential academic skills and subject-specific knowledge.</p>
 
                         <h3>What You Need to Know</h3>
@@ -95,6 +187,7 @@
                 <div class="pathway" id="qualification-recognition">
                     <div class="pathway-content">
                         <h2>2. Recognition of Overseas Qualifications through UK ENIC</h2>
+                        <div class="section-divider"></div>
                         <p>UK ENIC (formerly NARIC) helps validate and align your international qualifications with UK standards, simplifying the application process by providing equivalency certification.</p>
 
                         <h3>What You Need to Know</h3>
@@ -146,6 +239,7 @@
                 <div class="pathway" id="bridging-programmes">
                     <div class="pathway-content">
                         <h2>3. University Bridging Programmes</h2>
+                        <div class="section-divider"></div>
                         <p>Bridging programmes are designed to help students transition to higher education by addressing gaps in academic knowledge and skills.</p>
 
                         <h3>Available Bridging Programmes in Kent</h3>
@@ -181,6 +275,7 @@
                 <div class="pathway" id="english-support">
                     <div class="pathway-content">
                         <h2>4. English Language Support</h2>
+                        <div class="section-divider"></div>
                         <p>For students seeking to enhance their English proficiency, Kent provides various resources and courses aimed at improving academic language skills. These services are designed to support students throughout their studies, ensuring they can fully engage with their coursework and university life.</p>
 
                         <h3>English Language Support Options</h3>
@@ -221,6 +316,7 @@
                 <div class="pathway" id="direct-entry">
                     <div class="pathway-content">
                         <h2>5. Direct Entry via UCAS</h2>
+                        <div class="section-divider"></div>
                         <p>Kent welcomes applications from students who meet the entry requirements for direct admission into undergraduate or postgraduate programs. Most undergraduate applications are made through UCAS (Universities and Colleges Admissions Service).</p>
 
                         <h3>Applying Through UCAS</h3>
@@ -296,6 +392,7 @@
                 <div class="pathway" id="scholarships">
                     <div class="pathway-content">
                         <h2>7. Refugee-Specific Scholarships</h2>
+                        <div class="section-divider"></div>
                         <p>Several universities and organizations in Kent offer scholarships specifically designed for refugees and asylum seekers to support their higher education journey.</p>
 
                         <h3>Scholarship Opportunities</h3>
@@ -337,6 +434,7 @@
                 <div class="pathway" id="part-time">
                     <div class="pathway-content">
                         <h2>8. Part-Time Study or Distance Learning</h2>
+                        <div class="section-divider"></div>
                         <p>Part-time study options allow you to balance your education with other commitments such as work, family, or community responsibilities.</p>
 
                         <h3>Part-Time Study Options in Kent</h3>
@@ -378,6 +476,7 @@
                 <div class="pathway" id="employer-sponsored">
                     <div class="pathway-content">
                         <h2>10. Employer-Sponsored Degrees</h2>
+                        <div class="section-divider"></div>
                         <p>Employer-sponsored degrees and apprenticeships allow you to earn while you learn, combining work experience with academic study.</p>
 
                         <h3>Employer-Sponsored Options in Kent</h3>
