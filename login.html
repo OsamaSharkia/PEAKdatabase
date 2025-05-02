@@ -13,27 +13,6 @@
       window.location.href = "profile.html";
     }
   </script>
-  <style>
-    /* Additional styles for error message */
-    .error-message {
-      background-color: #f8d7da;
-      color: #721c24;
-      padding: 15px;
-      border-radius: 5px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-    
-    /* Style for resend confirmation section */
-    .resend-confirmation {
-      background-color: #f8f9fa;
-      border: 1px solid #e9ecef;
-      border-radius: 5px;
-      padding: 15px;
-      margin-top: 20px;
-      text-align: center;
-    }
-  </style>
 </head>
 <body>
   <header>
@@ -103,7 +82,7 @@
               </div>
             </form>
 
-            <div id="resend-confirmation" class="resend-confirmation" style="display: none;">
+            <div id="resend-confirmation" class="resend-confirmation" style="display: none; margin-top: 20px; text-align: center; padding: 15px; background-color: #f8f9fa; border-radius: 5px;">
               <p><strong>Haven't received the verification email?</strong></p>
               <p>We can send you a new verification link to activate your account.</p>
               <button id="resend-btn" class="btn btn-secondary">Resend Verification Email</button>
@@ -175,7 +154,116 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="js/auth-service.js"></script>
   <script src="js/script.js"></script>
-  <!-- Remove the inline script that's conflicting with login.js -->
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const supabaseUrl = "https://znyoofmcjiknvevezbhb.supabase.co";
+    const supabaseKey = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InpueW9vZm1jamlrbnZldmV6YmhiIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDUwNjc1MjMsImV4cCI6MjA2MDY0MzUyM30.BG07ZfmdfEOhwJDcFkXVe3JHYB1GkcWceyn7nW9hGr0";
+    const supabaseClient = supabase.createClient(supabaseUrl, supabaseKey);
+
+    const resendBtn = document.getElementById("resend-btn");
+    const emailInput = document.getElementById("email");
+    const forgotPasswordLink = document.getElementById("forgot-password");
+    const errorElement = document.getElementById("login-error");
+    const resendConfirmation = document.getElementById("resend-confirmation");
+
+    // Override the login form submission to check for verification errors
+    const loginForm = document.getElementById("login-form");
+    if (loginForm) {
+      loginForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        
+        const email = emailInput.value.trim();
+        const password = document.getElementById("password").value;
+        
+        if (!email || !password) {
+          errorElement.textContent = "Please enter both email and password";
+          errorElement.style.display = "block";
+          return;
+        }
+        
+        try {
+          const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password,
+          });
+          
+          if (error) {
+            // Check if the error is related to email confirmation
+            if (error.message.includes("Email not confirmed") || 
+                error.message.includes("not verified") || 
+                error.message.includes("not confirmed")) {
+              errorElement.textContent = "Please verify your email address before logging in.";
+              resendConfirmation.style.display = "block";
+            } else {
+              errorElement.textContent = error.message || "Failed to login. Please check your credentials.";
+              resendConfirmation.style.display = "none";
+            }
+            errorElement.style.display = "block";
+            return;
+          }
+          
+          // If login successful
+          sessionStorage.setItem("isLoggedIn", "true");
+          sessionStorage.setItem("currentUser", JSON.stringify({
+            id: data.user.id,
+            email: data.user.email,
+            name: data.user.user_metadata?.name || "User",
+          }));
+          
+          // Redirect to profile or previously attempted page
+          const redirectTo = sessionStorage.getItem("redirectAfterLogin") || "profile.html";
+          window.location.href = redirectTo;
+          
+        } catch (err) {
+          console.error("Login error:", err);
+          errorElement.textContent = "An unexpected error occurred. Please try again.";
+          errorElement.style.display = "block";
+        }
+      });
+    }
+
+    if (resendBtn) {
+      resendBtn.addEventListener("click", async () => {
+        const email = emailInput.value.trim();
+        if (!email) {
+          errorElement.textContent = "Please enter your email address";
+          errorElement.style.display = "block";
+          return;
+        }
+        try {
+          const { error } = await supabaseClient.auth.resend({ type: "signup", email });
+          if (error) throw error;
+          alert("Confirmation email resent!");
+        } catch (error) {
+          errorElement.textContent = error.message || "Error resending email";
+          errorElement.style.display = "block";
+        }
+      });
+    }
+
+    if (forgotPasswordLink) {
+      forgotPasswordLink.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        if (!email) {
+          errorElement.textContent = "Please enter your email address";
+          errorElement.style.display = "block";
+          return;
+        }
+        try {
+          const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+            redirectTo: window.location.origin + "/reset-password.html",
+          });
+          if (error) throw error;
+          alert("Password reset email sent!");
+        } catch (error) {
+          errorElement.textContent = error.message || "Error sending reset email";
+          errorElement.style.display = "block";
+        }
+      });
+    }
+  });
+</script>
   <script src="js/login.js"></script>
 </body>
 </html>
