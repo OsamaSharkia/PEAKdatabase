@@ -8,15 +8,11 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Styling to match the Resources page */
-        .page-header {
-            background-color: #0066cc;
-        }
-        
+        /* Additional styles for the enhanced FAQ page */
         .faq-search-section {
-            background-color: #f5f7fa;
+            background-color: #f0f7ff;
             padding: 2rem 0;
-            margin-bottom: 0;
+            margin-bottom: 2rem;
         }
         
         .search-container {
@@ -27,67 +23,57 @@
         
         .search-container input {
             flex: 1;
-            padding: 12px 15px;
-            border: 1px solid #dcdfe6;
-            border-radius: 8px 0 0 8px;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px 0 0 4px;
             font-size: 1rem;
         }
         
         .search-container button {
-            background-color: #2e6da4;
+            background-color: #0066cc;
             color: white;
             border: none;
-            padding: 0 20px;
-            border-radius: 0 8px 8px 0;
+            padding: 0.75rem 1rem;
+            border-radius: 0 4px 4px 0;
             cursor: pointer;
         }
         
         .category-tabs {
             display: flex;
-            justify-content: center;
             flex-wrap: wrap;
+            justify-content: center;
             gap: 0.5rem;
-            margin: 1rem 0;
+            margin-bottom: 1rem;
         }
         
         .category-tab {
             background-color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 8px;
-            color: #333;
+            border: 1px solid #ddd;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
             cursor: pointer;
             transition: all 0.3s ease;
-            font-weight: 500;
-            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
-        }
-        
-        .category-tab:hover {
-            background-color: #f5f7fa;
         }
         
         .category-tab.active {
             background-color: #0066cc;
             color: white;
-        }
-        
-        .faq-content {
-            padding: 3rem 0;
+            border-color: #0066cc;
         }
         
         .faq-item {
             background-color: white;
             border-radius: 8px;
-            margin-bottom: 1rem;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             overflow: hidden;
         }
         
         .faq-question {
-            padding: 1.25rem 1.5rem;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            padding: 1.5rem;
             cursor: pointer;
         }
         
@@ -95,14 +81,16 @@
             margin: 0;
             font-size: 1.1rem;
             color: #333;
+            flex: 1;
         }
         
         .toggle-answer {
             background: none;
             border: none;
-            color: #2e6da4;
+            color: #0066cc;
             font-size: 1.2rem;
             cursor: pointer;
+            padding: 0.5rem;
         }
         
         .faq-answer {
@@ -111,67 +99,57 @@
         }
         
         .faq-answer p {
-            margin-bottom: 1rem;
-            color: #666;
+            margin-top: 0;
+            color: #555;
+            line-height: 1.6;
         }
         
-        .faq-item.active .toggle-answer {
-            transform: rotate(45deg);
+        .faq-category-title {
+            display: flex;
+            align-items: center;
+            margin: 2rem 0 1rem;
+            color: #0066cc;
+            font-size: 1.5rem;
         }
         
-        .faq-item.active .faq-answer {
-            display: block;
+        .faq-category-title i {
+            margin-right: 0.75rem;
         }
         
-        /* User contribution section styling to match Resources */
+        #faq-not-found {
+            text-align: center;
+            padding: 2rem;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            margin-top: 2rem;
+        }
+        
+        /* User contribution styles */
         .user-contribution {
-            padding: 3rem 0;
-            background-color: #f5f7fa;
-        }
-        
-        .user-contribution .container {
-            max-width: 800px;
-            margin: 0 auto;
+            margin-top: 3rem;
+            background-color: #f0f7ff;
+            padding: 2rem;
+            border-radius: 8px;
         }
         
         .user-contribution h2 {
             text-align: center;
-            margin-bottom: 2rem;
-            color: #333;
-            position: relative;
-            padding-bottom: 0.75rem;
-        }
-        
-        .user-contribution h2::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 60px;
-            height: 3px;
-            background-color: #0066cc;
+            margin-top: 0;
+            margin-bottom: 1.5rem;
+            color: #0066cc;
         }
         
         .auth-message {
-            background-color: white;
-            padding: 1.5rem;
-            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+            border-radius: 4px;
             text-align: center;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
-            margin-bottom: 2rem;
         }
         
-        .auth-message a {
-            color: #2e6da4;
-            font-weight: 600;
-        }
-        
-        .question-form {
-            background-color: white;
-            padding: 2rem;
-            border-radius: 8px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+        .auth-message.info {
+            background-color: #e3f2fd;
+            color: #0066cc;
+            border: 1px solid #bbdefb;
         }
         
         .form-group {
@@ -189,157 +167,199 @@
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #dcdfe6;
-            border-radius: 8px;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
             font-size: 1rem;
         }
         
-        .checkbox-group {
-            display: flex;
-            align-items: flex-start;
-            gap: 10px;
-        }
-        
-        .checkbox-group input {
-            width: auto;
-            margin-top: 5px;
-        }
-        
-        .checkbox-group label {
-            margin: 0;
-            font-weight: normal;
-            font-size: 0.9rem;
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            border-color: #0066cc;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
         }
         
         .btn-primary {
-            background-color: #2e6da4;
+            background-color: #0066cc;
             color: white;
             border: none;
-            padding: 12px 24px;
-            border-radius: 8px;
+            padding: 0.75rem 1.5rem;
+            border-radius: 4px;
             font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background-color: #0052a3;
+        }
+        
+        /* User contributed questions */
+        .user-question {
+            position: relative;
+        }
+        
+        .question-tag {
+            position: absolute;
+            top: 0;
+            right: 0;
+            font-size: 0.7rem;
+            padding: 0.25rem 0.5rem;
+            border-radius: 0 8px 0 8px;
+            z-index: 1;
+        }
+        
+        .community-tag {
+            background-color: #e67e22;
+            color: white;
+        }
+        
+        .pending-tag {
+            background-color: #f39c12;
+            color: white;
+        }
+        
+        .question-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #777;
+            margin-top: 1rem;
+            padding-top: 0.5rem;
+            border-top: 1px solid #eee;
+        }
+        
+        /* Image upload styles */
+        .image-upload {
+            border: 2px dashed #ddd;
+            padding: 1.5rem;
+            text-align: center;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
             cursor: pointer;
             transition: all 0.3s ease;
         }
         
-        .btn-primary:hover {
-            background-color: #1c4f7c;
+        .image-upload:hover {
+            border-color: #0066cc;
         }
         
-        /* Chat widget styles */
-        .chat-widget {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            z-index: 1000;
+        .image-upload i {
+            font-size: 2rem;
+            color: #0066cc;
+            margin-bottom: 0.5rem;
         }
         
-        .chat-toggle {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background-color: #2e6da4;
-            color: white;
-            border: none;
-            cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.5rem;
+        .image-upload p {
+            margin: 0;
+            color: #555;
         }
         
-        .chat-box {
-            position: absolute;
-            bottom: 80px;
-            right: 0;
-            width: 350px;
-            background-color: white;
-            border-radius: 8px;
-            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
-            overflow: hidden;
+        .image-preview {
+            margin-top: 1rem;
             display: none;
         }
         
-        .chat-box.active {
-            display: block;
+        .image-preview img {
+            max-width: 100%;
+            max-height: 200px;
+            border-radius: 4px;
         }
         
-        .chat-header {
-            background-color: #2e6da4;
-            color: white;
-            padding: 15px 20px;
+        /* Error message */
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+        
+        /* Reply section styles */
+        .replies-section {
+            margin-top: 1.5rem;
+            border-top: 1px dashed #ddd;
+            padding-top: 1.5rem;
+        }
+        
+        .replies-section h4 {
+            color: #0066cc;
+            margin-top: 0;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+        }
+        
+        .replies-section h4 i {
+            margin-right: 0.5rem;
+        }
+        
+        .reply {
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 3px solid #0066cc;
+        }
+        
+        .reply-content {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+        
+        .reply-meta {
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            font-size: 0.8rem;
+            color: #777;
         }
         
-        .chat-header h3 {
-            margin: 0;
-            font-size: 1.1rem;
+        .reply-form {
+            margin-top: 1.5rem;
         }
         
-        .close-chat {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 1.2rem;
+        .reply-form textarea {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            resize: vertical;
+            min-height: 80px;
+            margin-bottom: 1rem;
         }
         
-        .chat-messages {
-            padding: 20px;
-            max-height: 300px;
-            overflow-y: auto;
-        }
-        
-        .message {
-            margin-bottom: 15px;
-            padding: 10px 15px;
-            border-radius: 18px;
-            max-width: 80%;
-        }
-        
-        .message.received {
-            background-color: #f5f7fa;
-            border-bottom-left-radius: 5px;
-            align-self: flex-start;
-        }
-        
-        .message.sent {
-            background-color: #5a9bd5;
-            color: white;
-            border-bottom-right-radius: 5px;
-            margin-left: auto;
-        }
-        
-        .chat-form {
-            display: flex;
-            padding: 10px;
-            border-top: 1px solid #dcdfe6;
-        }
-        
-        .chat-form input {
-            flex: 1;
-            padding: 10px 15px;
-            border: 1px solid #dcdfe6;
-            border-radius: 20px;
-            outline: none;
-        }
-        
-        .chat-form button {
-            background-color: #2e6da4;
+        .reply-form button {
+            background-color: #0066cc;
             color: white;
             border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            margin-left: 10px;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            font-weight: 500;
+        }
+        
+        .reply-form button:hover {
+            background-color: #0052a3;
+        }
+        
+        .no-replies {
+            text-align: center;
+            color: #777;
+            font-style: italic;
+            padding: 1rem;
+        }
+        
+        .pending-message {
+            background-color: #fff3e0;
+            color: #e65100;
+            padding: 1rem;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-style: italic;
+            border-left: 3px solid #e65100;
         }
     </style>
 </head>
@@ -355,7 +375,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="pathways.html">Education Pathways</a></li>
                     <li><a href="resources.html">Resources</a></li>
-                    <li><a href="faq.html" class="active">FAQ</a></li>
+                    <li><a href="faq.html">FAQ</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <!-- Auth links will be added by JavaScript -->
@@ -376,24 +396,24 @@
         </div>
     </div>
 
-    <section class="resources-nav faq-nav">
+    <section class="faq-search-section">
         <div class="container">
             <div class="search-container">
                 <input type="text" id="faq-search" placeholder="Search for questions..." aria-label="Search for questions">
                 <button id="search-btn" aria-label="Search"><i class="fas fa-search"></i></button>
             </div>
-            <div class="resources-nav-container">
-                <a href="#" class="resource-nav-item active" data-category="all">All Questions</a>
-                <a href="#" class="resource-nav-item" data-category="admissions">Admissions</a>
-                <a href="#" class="resource-nav-item" data-category="language">Language</a>
-                <a href="#" class="resource-nav-item" data-category="financial">Financial</a>
-                <a href="#" class="resource-nav-item" data-category="general">General</a>
-                <a href="#" class="resource-nav-item" data-category="community">Community Questions</a>
+            <div class="category-tabs">
+                <button class="category-tab active" data-category="all">All Questions</button>
+                <button class="category-tab" data-category="admissions">Admissions</button>
+                <button class="category-tab" data-category="language">Language</button>
+                <button class="category-tab" data-category="financial">Financial</button>
+                <button class="category-tab" data-category="general">General</button>
+                <button class="category-tab" data-category="community">Community Questions</button>
             </div>
         </div>
     </section>
 
-    <section class="resource-section faq-content">
+    <section class="faq-content">
         <div class="container">
             <div id="faq-list">
                 <!-- FAQ items will be loaded dynamically -->
@@ -406,44 +426,55 @@
         </div>
     </section>
 
-    <section class="cta user-contribution">
+    <section class="user-contribution">
         <div class="container">
-            <div class="cta-content">
-                <h2>Ask a Question</h2>
-                
-                <!-- Message for non-authenticated users -->
-                <div id="login-to-ask" class="auth-message">
-                    <p>Please <a href="login.html">login</a> or <a href="register.html">register</a> to submit a question.</p>
+            <h2>Ask a Question</h2>
+            
+            <!-- Message for non-authenticated users -->
+            <div id="login-to-ask" class="auth-message info">
+                <p>Please <a href="login.html">login</a> or <a href="register.html">register</a> to submit a question.</p>
+            </div>
+            
+            <!-- Form for authenticated users -->
+            <form id="question-form" class="question-form" style="display: none;">
+                <div class="form-group">
+                    <label for="question">Your Question</label>
+                    <textarea id="question" name="question" rows="4" required></textarea>
                 </div>
                 
-                <!-- Form for authenticated users -->
-                <form id="question-form" class="question-form" style="display: none;">
-                    <div class="form-group">
-                        <label for="question">Your Question</label>
-                        <textarea id="question" name="question" rows="4" required></textarea>
+                <div class="form-group">
+                    <label for="category">Category</label>
+                    <select id="category" name="category" required>
+                        <option value="">Select a category</option>
+                        <option value="admissions">Admissions</option>
+                        <option value="language">Language Requirements</option>
+                        <option value="financial">Financial Support</option>
+                        <option value="general">General</option>
+                    </select>
+                </div>
+                
+                <!-- Image upload section -->
+                <div class="form-group">
+                    <label>Add an Image (Optional)</label>
+                    <div class="image-upload" id="image-upload-area">
+                        <i class="fas fa-cloud-upload-alt"></i>
+                        <p>Click to upload an image or drag and drop</p>
+                        <input type="file" id="question-image" name="question-image" accept="image/*" style="display: none;">
                     </div>
-                    
-                    <div class="form-group">
-                        <label for="category">Category</label>
-                        <select id="category" name="category" required>
-                            <option value="">Select a category</option>
-                            <option value="admissions">Admissions</option>
-                            <option value="language">Language Requirements</option>
-                            <option value="financial">Financial Support</option>
-                            <option value="general">General</option>
-                        </select>
+                    <div class="image-preview" id="image-preview">
+                        <img id="preview-img" src="#" alt="Preview">
                     </div>
-                    
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="terms" name="terms" required>
-                        <label for="terms">I agree to the <a href="terms.html">Terms and Conditions</a></label>
-                    </div>
-                    
-                    <div class="center-btn">
-                        <button type="submit" class="btn btn-primary">Submit Question</button>
-                    </div>
-                </form>
-            </div>
+                </div>
+                
+                <div class="form-group checkbox-group">
+                    <input type="checkbox" id="terms" name="terms" required>
+                    <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
+                </div>
+                
+                <div class="form-group">
+                    <button type="submit" class="btn btn-primary">Submit Question</button>
+                </div>
+            </form>
         </div>
     </section>
 
@@ -476,309 +507,11 @@
         </div>
     </footer>
 
-    <!-- Chat Widget -->
-    <div class="chat-widget">
-        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
-            <i class="fas fa-comments"></i>
-        </button>
-        <div class="chat-box" id="chat-box">
-            <div class="chat-header">
-                <h3>PEAK Support</h3>
-                <button class="close-chat" id="close-chat" aria-label="Close chat">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="message received">
-                    <p>Hello! How can I help you with your education pathway today?</p>
-                </div>
-            </div>
-            <form class="chat-form" id="chat-form">
-                <input type="text" placeholder="Type your message..." id="chat-input" aria-label="Type your message">
-                <button type="submit" aria-label="Send message">
-                    <i class="fas fa-paper-plane"></i>
-                </button>
-            </form>
-        </div>
-    </div>
-
     <!-- Add Supabase JS library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth-service.js"></script>
     <script src="js/script.js"></script>
-    <script>
-        // FAQ functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            // Load FAQ data
-            fetch('json/faq-data.json')
-                .then(response => response.json())
-                .then(data => {
-                    displayFAQs(data);
-                    setupCategoryFilters();
-                    setupSearch();
-                })
-                .catch(error => {
-                    console.error('Error loading FAQ data:', error);
-                    document.querySelector('.loading').textContent = 'Error loading questions. Please try again later.';
-                });
-
-            function displayFAQs(faqs, category = 'all', searchTerm = '') {
-                const faqList = document.getElementById('faq-list');
-                faqList.innerHTML = '';
-                
-                let filteredFAQs = faqs;
-                
-                // Filter by category if not 'all'
-                if (category !== 'all') {
-                    filteredFAQs = faqs.filter(faq => faq.category === category);
-                }
-                
-                // Filter by search term if provided
-                if (searchTerm) {
-                    const term = searchTerm.toLowerCase();
-                    filteredFAQs = filteredFAQs.filter(faq => 
-                        faq.question.toLowerCase().includes(term) || 
-                        faq.answer.toLowerCase().includes(term)
-                    );
-                }
-                
-                // Show or hide "no results" message
-                if (filteredFAQs.length === 0) {
-                    document.getElementById('faq-not-found').style.display = 'block';
-                    return;
-                } else {
-                    document.getElementById('faq-not-found').style.display = 'none';
-                }
-                
-                // Group FAQs by category for better organization
-                const faqsByCategory = {};
-                
-                filteredFAQs.forEach(faq => {
-                    if (!faqsByCategory[faq.category]) {
-                        faqsByCategory[faq.category] = [];
-                    }
-                    faqsByCategory[faq.category].push(faq);
-                });
-                
-                // Display FAQs grouped by category
-                for (const category in faqsByCategory) {
-                    // Add category title if not searching or if multiple categories are shown
-                    if (!searchTerm || Object.keys(faqsByCategory).length > 1) {
-                        const categoryTitle = document.createElement('h2');
-                        categoryTitle.className = 'faq-category-title';
-                        
-                        let icon = 'fa-graduation-cap'; // Default icon
-                        
-                        // Set appropriate icon for each category
-                        switch(category) {
-                            case 'admissions':
-                                icon = 'fa-university';
-                                break;
-                            case 'language':
-                                icon = 'fa-language';
-                                break;
-                            case 'financial':
-                                icon = 'fa-money-bill-wave';
-                                break;
-                            case 'general':
-                                icon = 'fa-info-circle';
-                                break;
-                            case 'community':
-                                icon = 'fa-users';
-                                break;
-                        }
-                        
-                        categoryTitle.innerHTML = `<i class="fas ${icon}"></i> ${category.charAt(0).toUpperCase() + category.slice(1)}`;
-                        faqList.appendChild(categoryTitle);
-                    }
-                    
-                    // Add FAQs for this category
-                    faqsByCategory[category].forEach(faq => {
-                        const faqItem = document.createElement('div');
-                        faqItem.className = 'faq-item';
-                        if (faq.source === 'community') {
-                            faqItem.classList.add('user-question');
-                        }
-                        
-                        let faqHTML = `
-                            <div class="faq-question">
-                                <h3>${faq.question}</h3>
-                                <button class="toggle-answer" aria-label="Toggle answer">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                            <div class="faq-answer">
-                                <p>${faq.answer}</p>
-                        `;
-                        
-                        // Add meta information for community questions
-                        if (faq.source === 'community') {
-                            faqHTML += `
-                                <div class="question-tag ${faq.status === 'pending' ? 'pending-tag' : 'community-tag'}">
-                                    ${faq.status === 'pending' ? 'Pending' : 'Community'}
-                                </div>
-                                <div class="question-meta">
-                                    <span>Asked by: ${faq.author || 'Anonymous'}</span>
-                                    <span>Date: ${faq.date || 'Recently'}</span>
-                                </div>
-                            `;
-                        }
-                        
-                        faqHTML += `</div>`;
-                        faqItem.innerHTML = faqHTML;
-                        faqList.appendChild(faqItem);
-                        
-                        // Add click event to toggle answer
-                        const toggleBtn = faqItem.querySelector('.toggle-answer');
-                        toggleBtn.addEventListener('click', function() {
-                            faqItem.classList.toggle('active');
-                        });
-                    });
-                }
-            }
-
-            function setupCategoryFilters() {
-                const categoryLinks = document.querySelectorAll('.resource-nav-item');
-                
-                categoryLinks.forEach(link => {
-                    link.addEventListener('click', function(e) {
-                        e.preventDefault();
-                        
-                        // Remove active class from all links
-                        categoryLinks.forEach(l => l.classList.remove('active'));
-                        
-                        // Add active class to clicked link
-                        this.classList.add('active');
-                        
-                        // Get selected category
-                        const category = this.getAttribute('data-category');
-                        
-                        // Reload FAQs with selected category
-                        fetch('json/faq-data.json')
-                            .then(response => response.json())
-                            .then(data => {
-                                displayFAQs(data, category);
-                            });
-                    });
-                });
-            }
-
-            function setupSearch() {
-                const searchInput = document.getElementById('faq-search');
-                const searchBtn = document.getElementById('search-btn');
-                
-                // Search on button click
-                searchBtn.addEventListener('click', performSearch);
-                
-                // Search on Enter key
-                searchInput.addEventListener('keypress', function(e) {
-                    if (e.key === 'Enter') {
-                        performSearch();
-                    }
-                });
-                
-                function performSearch() {
-                    const searchTerm = searchInput.value.trim();
-                    
-                    if (searchTerm) {
-                        // Reset category filters
-                        document.querySelectorAll('.resource-nav-item').forEach(link => {
-                            link.classList.remove('active');
-                        });
-                        document.querySelector('.resource-nav-item[data-category="all"]').classList.add('active');
-                        
-                        // Load and filter FAQs
-                        fetch('json/faq-data.json')
-                            .then(response => response.json())
-                            .then(data => {
-                                displayFAQs(data, 'all', searchTerm);
-                            });
-                    }
-                }
-            }
-
-            // Chat Widget Functionality
-            const chatToggle = document.getElementById('chat-toggle');
-            const chatBox = document.getElementById('chat-box');
-            const closeChat = document.getElementById('close-chat');
-            const chatForm = document.getElementById('chat-form');
-            const chatInput = document.getElementById('chat-input');
-            const chatMessages = document.getElementById('chat-messages');
-            
-            // Toggle chat box
-            chatToggle.addEventListener('click', function() {
-                chatBox.classList.add('active');
-            });
-            
-            // Close chat box
-            closeChat.addEventListener('click', function() {
-                chatBox.classList.remove('active');
-            });
-            
-            // Handle sending messages
-            chatForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const message = chatInput.value.trim();
-                if (message === '') return;
-                
-                // Add user message
-                addMessage(message, 'sent');
-                
-                // Clear input
-                chatInput.value = '';
-                
-                // Simulate response after a short delay
-                setTimeout(function() {
-                    let response;
-                    
-                    // Simple response logic based on keywords
-                    if (message.toLowerCase().includes('scholarship') || message.toLowerCase().includes('financial')) {
-                        response = "We have several scholarship opportunities for refugees. Check our Resources page for more details or contact us directly for personalized guidance.";
-                    } else if (message.toLowerCase().includes('application') || message.toLowerCase().includes('apply')) {
-                        response = "The application process varies by institution. You can find detailed guides in our Education Pathways section, or ask a specific question about the university you're interested in.";
-                    } else if (message.toLowerCase().includes('language') || message.toLowerCase().includes('english')) {
-                        response = "Most universities require IELTS scores of 6.0-7.0. We have resources to help you prepare for these tests in our Resources section.";
-                    } else if (message.toLowerCase().includes('hello') || message.toLowerCase().includes('hi')) {
-                        response = "Hello! How can I help you with your education journey today?";
-                    } else {
-                        response = "Thank you for your message. For more specific information, please check our FAQ section or contact us directly through the Contact page.";
-                    }
-                    
-                    addMessage(response, 'received');
-                    
-                    // Scroll to bottom
-                    chatMessages.scrollTop = chatMessages.scrollHeight;
-                }, 1000);
-                
-                // Scroll to bottom
-                chatMessages.scrollTop = chatMessages.scrollHeight;
-            });
-            
-            // Function to add a message to the chat
-            function addMessage(text, type) {
-                const messageDiv = document.createElement('div');
-                messageDiv.className = `message ${type}`;
-                messageDiv.innerHTML = `<p>${text}</p>`;
-                chatMessages.appendChild(messageDiv);
-            }
-
-            // Check authentication status for question form
-            checkAuthStatus();
-            function checkAuthStatus() {
-                // This is a placeholder - the actual implementation would use your auth service
-                // For now, we'll just simulate a non-authenticated user
-                const isAuthenticated = false;
-                
-                if (isAuthenticated) {
-                    document.getElementById('login-to-ask').style.display = 'none';
-                    document.getElementById('question-form').style.display = 'block';
-                } else {
-                    document.getElementById('login-to-ask').style.display = 'block';
-                    document.getElementById('question-form').style.display = 'none';
-                }
-            }
-        });
-    </script>
+    <script src="js/faq.js"></script>
+    <script src="js/faq-submission.js"></script>
 </body>
 </html>
