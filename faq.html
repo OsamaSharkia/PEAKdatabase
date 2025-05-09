@@ -8,11 +8,51 @@
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        /* Additional styles for the enhanced FAQ page */
-        .faq-search-section {
+        /* Styling to match the Resources page */
+        .page-header {
+            background-color: #0066cc;
+            background-image: linear-gradient(135deg, #0066cc, #004494);
+            color: white;
+            padding: 3rem 0;
+            text-align: center;
+        }
+        
+        .resources-nav {
+            background-color: #f5f7fa;
+            padding: 1rem 0;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: var(--header-height);
+            z-index: 900;
+        }
+        
+        .resources-nav-container {
+            display: flex;
+            overflow-x: auto;
+            gap: 1rem;
+            padding: 0.5rem 0;
+            justify-content: center;
+        }
+        
+        .resource-nav-item {
+            white-space: nowrap;
+            padding: 0.5rem 1rem;
+            background-color: white;
+            border-radius: 20px;
+            color: #333;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+        
+        .resource-nav-item:hover {
             background-color: #f0f7ff;
-            padding: 2rem 0;
-            margin-bottom: 2rem;
+            color: #0066cc;
+        }
+        
+        .resource-nav-item.active {
+            background-color: #0066cc;
+            color: white;
         }
         
         .search-container {
@@ -23,9 +63,9 @@
         
         .search-container input {
             flex: 1;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
+            padding: 12px 15px;
+            border: 1px solid #dcdfe6;
+            border-radius: 8px 0 0 8px;
             font-size: 1rem;
         }
         
@@ -33,40 +73,51 @@
             background-color: #0066cc;
             color: white;
             border: none;
-            padding: 0.75rem 1rem;
-            border-radius: 0 4px 4px 0;
+            padding: 0 20px;
+            border-radius: 0 8px 8px 0;
             cursor: pointer;
         }
         
-        .category-tabs {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 0.5rem;
-            margin-bottom: 1rem;
+        .resource-section {
+            padding: 4rem 0;
         }
         
-        .category-tab {
-            background-color: white;
-            border: 1px solid #ddd;
-            padding: 0.5rem 1rem;
-            border-radius: 20px;
-            cursor: pointer;
-            transition: all 0.3s ease;
+        .resource-section:nth-child(even) {
+            background-color: #f5f7fa;
         }
         
-        .category-tab.active {
+        .section-title {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            position: relative;
+            padding-bottom: 15px;
+            color: #333;
+        }
+        
+        .section-title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
             background-color: #0066cc;
-            color: white;
-            border-color: #0066cc;
         }
         
         .faq-item {
             background-color: white;
             border-radius: 8px;
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
             overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
         }
         
         .faq-question {
@@ -75,6 +126,7 @@
             align-items: center;
             padding: 1.5rem;
             cursor: pointer;
+            background-color: white;
         }
         
         .faq-question h3 {
@@ -91,6 +143,7 @@
             font-size: 1.2rem;
             cursor: pointer;
             padding: 0.5rem;
+            transition: all 0.3s ease;
         }
         
         .faq-answer {
@@ -125,31 +178,76 @@
         }
         
         /* User contribution styles */
+        .cta {
+            background-color: #0066cc;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .cta-content h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+            color: white;
+        }
+        
+        .cta-content p {
+            font-size: 1.1rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+            max-width: 700px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+        
         .user-contribution {
-            margin-top: 3rem;
-            background-color: #f0f7ff;
-            padding: 2rem;
-            border-radius: 8px;
+            padding: 4rem 0;
+            background-color: #f5f7fa;
+        }
+        
+        .user-contribution .container {
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         .user-contribution h2 {
             text-align: center;
-            margin-top: 0;
-            margin-bottom: 1.5rem;
-            color: #0066cc;
+            margin-bottom: 2rem;
+            color: #333;
+            position: relative;
+            padding-bottom: 0.75rem;
+        }
+        
+        .user-contribution h2::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 3px;
+            background-color: #0066cc;
         }
         
         .auth-message {
-            padding: 1rem;
-            margin-bottom: 1.5rem;
-            border-radius: 4px;
+            background-color: white;
+            padding: 1.5rem;
+            border-radius: 8px;
             text-align: center;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+            margin-bottom: 2rem;
         }
         
-        .auth-message.info {
-            background-color: #e3f2fd;
+        .auth-message a {
             color: #0066cc;
-            border: 1px solid #bbdefb;
+            font-weight: 600;
+        }
+        
+        .question-form {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 8px;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
         }
         
         .form-group {
@@ -167,9 +265,9 @@
         .form-group textarea,
         .form-group select {
             width: 100%;
-            padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            padding: 12px 15px;
+            border: 1px solid #dcdfe6;
+            border-radius: 8px;
             font-size: 1rem;
         }
         
@@ -181,19 +279,41 @@
             box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
         }
         
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-top: 5px;
+        }
+        
+        .checkbox-group label {
+            margin: 0;
+            font-weight: normal;
+            font-size: 0.9rem;
+        }
+        
         .btn-primary {
             background-color: #0066cc;
             color: white;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
+            padding: 12px 24px;
+            border-radius: 8px;
             font-weight: 600;
             cursor: pointer;
-            transition: background-color 0.3s ease;
+            transition: all 0.3s ease;
         }
         
         .btn-primary:hover {
             background-color: #0052a3;
+        }
+        
+        .center-btn {
+            text-align: center;
+            margin-top: 1.5rem;
         }
         
         /* User contributed questions */
@@ -229,43 +349,6 @@
             margin-top: 1rem;
             padding-top: 0.5rem;
             border-top: 1px solid #eee;
-        }
-        
-        /* Image upload styles */
-        .image-upload {
-            border: 2px dashed #ddd;
-            padding: 1.5rem;
-            text-align: center;
-            border-radius: 4px;
-            margin-bottom: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .image-upload:hover {
-            border-color: #0066cc;
-        }
-        
-        .image-upload i {
-            font-size: 2rem;
-            color: #0066cc;
-            margin-bottom: 0.5rem;
-        }
-        
-        .image-upload p {
-            margin: 0;
-            color: #555;
-        }
-        
-        .image-preview {
-            margin-top: 1rem;
-            display: none;
-        }
-        
-        .image-preview img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 4px;
         }
         
         /* Error message */
@@ -361,6 +444,127 @@
             font-style: italic;
             border-left: 3px solid #e65100;
         }
+        
+        /* Chat widget styles */
+        .chat-widget {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            z-index: 1000;
+        }
+        
+        .chat-toggle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-toggle:hover {
+            background-color: #0052a3;
+            transform: scale(1.05);
+        }
+        
+        .chat-box {
+            position: absolute;
+            bottom: 80px;
+            right: 0;
+            width: 350px;
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: none;
+        }
+        
+        .chat-box.active {
+            display: block;
+        }
+        
+        .chat-header {
+            background-color: #0066cc;
+            color: white;
+            padding: 15px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .chat-header h3 {
+            margin: 0;
+            font-size: 1.1rem;
+        }
+        
+        .close-chat {
+            background: none;
+            border: none;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+        
+        .chat-messages {
+            padding: 20px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        
+        .message {
+            margin-bottom: 15px;
+            padding: 10px 15px;
+            border-radius: 18px;
+            max-width: 80%;
+        }
+        
+        .message.received {
+            background-color: #f5f7fa;
+            border-bottom-left-radius: 5px;
+            align-self: flex-start;
+        }
+        
+        .message.sent {
+            background-color: #0066cc;
+            color: white;
+            border-bottom-right-radius: 5px;
+            margin-left: auto;
+        }
+        
+        .chat-form {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #dcdfe6;
+        }
+        
+        .chat-form input {
+            flex: 1;
+            padding: 10px 15px;
+            border: 1px solid #dcdfe6;
+            border-radius: 20px;
+            outline: none;
+        }
+        
+        .chat-form button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
 </head>
 <body>
@@ -375,7 +579,7 @@
                     <li><a href="index.html">Home</a></li>
                     <li><a href="pathways.html">Education Pathways</a></li>
                     <li><a href="resources.html">Resources</a></li>
-                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="faq.html" class="active">FAQ</a></li>
                     <li><a href="contact.html">Contact</a></li>
                     <li><a href="about.html">About Us</a></li>
                     <!-- Auth links will be added by JavaScript -->
@@ -396,24 +600,24 @@
         </div>
     </div>
 
-    <section class="faq-search-section">
+    <section class="resources-nav">
         <div class="container">
             <div class="search-container">
                 <input type="text" id="faq-search" placeholder="Search for questions..." aria-label="Search for questions">
                 <button id="search-btn" aria-label="Search"><i class="fas fa-search"></i></button>
             </div>
-            <div class="category-tabs">
-                <button class="category-tab active" data-category="all">All Questions</button>
-                <button class="category-tab" data-category="admissions">Admissions</button>
-                <button class="category-tab" data-category="language">Language</button>
-                <button class="category-tab" data-category="financial">Financial</button>
-                <button class="category-tab" data-category="general">General</button>
-                <button class="category-tab" data-category="community">Community Questions</button>
+            <div class="resources-nav-container">
+                <a href="#" class="resource-nav-item active" data-category="all">All Questions</a>
+                <a href="#" class="resource-nav-item" data-category="admissions">Admissions</a>
+                <a href="#" class="resource-nav-item" data-category="language">Language</a>
+                <a href="#" class="resource-nav-item" data-category="financial">Financial</a>
+                <a href="#" class="resource-nav-item" data-category="general">General</a>
+                <a href="#" class="resource-nav-item" data-category="community">Community Questions</a>
             </div>
         </div>
     </section>
 
-    <section class="faq-content">
+    <section class="resource-section">
         <div class="container">
             <div id="faq-list">
                 <!-- FAQ items will be loaded dynamically -->
@@ -431,7 +635,7 @@
             <h2>Ask a Question</h2>
             
             <!-- Message for non-authenticated users -->
-            <div id="login-to-ask" class="auth-message info">
+            <div id="login-to-ask" class="auth-message">
                 <p>Please <a href="login.html">login</a> or <a href="register.html">register</a> to submit a question.</p>
             </div>
             
@@ -453,25 +657,12 @@
                     </select>
                 </div>
                 
-                <!-- Image upload section -->
-                <div class="form-group">
-                    <label>Add an Image (Optional)</label>
-                    <div class="image-upload" id="image-upload-area">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Click to upload an image or drag and drop</p>
-                        <input type="file" id="question-image" name="question-image" accept="image/*" style="display: none;">
-                    </div>
-                    <div class="image-preview" id="image-preview">
-                        <img id="preview-img" src="#" alt="Preview">
-                    </div>
-                </div>
-                
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
+                    <label for="terms">I agree to the <a href="terms.html">Terms and Conditions</a></label>
                 </div>
                 
-                <div class="form-group">
+                <div class="center-btn">
                     <button type="submit" class="btn btn-primary">Submit Question</button>
                 </div>
             </form>
@@ -507,11 +698,141 @@
         </div>
     </footer>
 
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-box" id="chat-box">
+            <div class="chat-header">
+                <h3>PEAK Support</h3>
+                <button class="close-chat" id="close-chat" aria-label="Close chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message received">
+                    <p>Hello! How can I help you with your education pathway today?</p>
+                </div>
+            </div>
+            <form class="chat-form" id="chat-form">
+                <input type="text" placeholder="Type your message..." id="chat-input" aria-label="Type your message">
+                <button type="submit" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <!-- Add Supabase JS library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth-service.js"></script>
     <script src="js/script.js"></script>
     <script src="js/faq.js"></script>
     <script src="js/faq-submission.js"></script>
+    <script>
+        // Chat Widget Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatToggle = document.getElementById('chat-toggle');
+            const chatBox = document.getElementById('chat-box');
+            const closeChat = document.getElementById('close-chat');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // Toggle chat box
+            chatToggle.addEventListener('click', function() {
+                chatBox.classList.add('active');
+            });
+            
+            // Close chat box
+            closeChat.addEventListener('click', function() {
+                chatBox.classList.remove('active');
+            });
+            
+            // Handle sending messages
+            chatForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const message = chatInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message
+                addMessage(message, 'sent');
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Simulate response after a short delay
+                setTimeout(function() {
+                    let response;
+                    
+                    // Simple response logic based on keywords
+                    if (message.toLowerCase().includes('scholarship') || message.toLowerCase().includes('financial')) {
+                        response = "We have several scholarship opportunities for refugees. Check our Resources page for more details or contact us directly for personalized guidance.";
+                    } else if (message.toLowerCase().includes('application') || message.toLowerCase().includes('apply')) {
+                        response = "The application process varies by institution. You can find detailed guides in our Education Pathways section, or ask a specific question about the university you're interested in.";
+                    } else if (message.toLowerCase().includes('language') || message.toLowerCase().includes('english')) {
+                        response = "Most universities require IELTS scores of 6.0-7.0. We have resources to help you prepare for these tests in our Resources section.";
+                    } else if (message.toLowerCase().includes('hello') || message.toLowerCase().includes('hi')) {
+                        response = "Hello! How can I help you with your education journey today?";
+                    } else {
+                        response = "Thank you for your message. For more specific information, please check our FAQ section or contact us directly through the Contact page.";
+                    }
+                    
+                    addMessage(response, 'received');
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+            
+            // Function to add a message to the chat
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.innerHTML = `<p>${text}</p>`;
+                chatMessages.appendChild(messageDiv);
+            }
+        });
+        
+        // Update category tabs to use anchor links instead of buttons
+        document.addEventListener('DOMContentLoaded', function() {
+            const categoryLinks = document.querySelectorAll('.resource-nav-item');
+            
+            categoryLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    // Remove active class from all links
+                    categoryLinks.forEach(l => l.classList.remove('active'));
+                    
+                    // Add active class to clicked link
+                    this.classList.add('active');
+                    
+                    // Get selected category
+                    const category = this.getAttribute('data-category');
+                    
+                    // Filter FAQs by category
+                    filterFAQsByCategory(category);
+                });
+            });
+            
+            function filterFAQsByCategory(category) {
+                // This function will be handled by the existing faq.js
+                // We're just updating the UI elements to match the Resources page
+                
+                // Trigger a click on the corresponding original category tab
+                // This ensures the existing functionality continues to work
+                const originalCategoryTab = document.querySelector(`.category-tab[data-category="${category}"]`);
+                if (originalCategoryTab) {
+                    originalCategoryTab.click();
+                }
+            }
+        });
+    </script>
 </body>
 </html>
