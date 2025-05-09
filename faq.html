@@ -10,11 +10,58 @@
     <style>
         /* Styling to match the Resources page */
         .page-header {
-            background-color: #0066cc;
-            background-image: linear-gradient(135deg, #0066cc, #004494);
+            background: linear-gradient(135deg, #0066cc, #004080);
             color: white;
-            padding: 3rem 0;
+            padding: 5rem 0;
+            margin-bottom: 0;
+            position: relative;
+            overflow: hidden;
             text-align: center;
+        }
+        
+        .page-header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('/placeholder.svg?height=500&width=1000');
+            background-size: cover;
+            background-position: center;
+            opacity: 0.1;
+            z-index: 0;
+        }
+        
+        .page-header .container {
+            position: relative;
+            z-index: 1;
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .animated-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            animation: fadeInUp 1s ease;
+        }
+        
+        .animated-subtitle {
+            font-size: 1.2rem;
+            margin-bottom: 2rem;
+            animation: fadeInUp 1.2s ease;
+        }
+        
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .resources-nav {
@@ -40,7 +87,7 @@
             background-color: white;
             border-radius: 20px;
             color: #333;
-            transition: all 0.3s ease;
+            transition: var(--transition);
             text-decoration: none;
             box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
         }
@@ -104,6 +151,14 @@
             width: 80px;
             height: 3px;
             background-color: #0066cc;
+        }
+        
+        .section-divider {
+            height: 4px;
+            width: 100px;
+            background: linear-gradient(to right, #0066cc, #e67e22);
+            margin: 0 auto 2rem;
+            border-radius: 2px;
         }
         
         .faq-item {
@@ -179,7 +234,7 @@
         
         /* User contribution styles */
         .cta {
-            background-color: #0066cc;
+            background: linear-gradient(135deg, #0066cc, #004080);
             color: white;
             padding: 4rem 0;
             text-align: center;
@@ -488,6 +543,18 @@
         
         .chat-box.active {
             display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .chat-header {
@@ -510,6 +577,11 @@
             color: white;
             cursor: pointer;
             font-size: 1.2rem;
+            transition: all 0.2s ease;
+        }
+        
+        .close-chat:hover {
+            transform: scale(1.1);
         }
         
         .chat-messages {
@@ -523,6 +595,18 @@
             padding: 10px 15px;
             border-radius: 18px;
             max-width: 80%;
+            animation: messageIn 0.3s ease;
+        }
+        
+        @keyframes messageIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
         
         .message.received {
@@ -550,6 +634,12 @@
             border: 1px solid #dcdfe6;
             border-radius: 20px;
             outline: none;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-form input:focus {
+            border-color: #0066cc;
+            box-shadow: 0 0 0 2px rgba(0, 102, 204, 0.1);
         }
         
         .chat-form button {
@@ -564,6 +654,12 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            transition: all 0.3s ease;
+        }
+        
+        .chat-form button:hover {
+            background-color: #0052a3;
+            transform: scale(1.05);
         }
     </style>
 </head>
@@ -595,8 +691,8 @@
 
     <div class="page-header">
         <div class="container">
-            <h1>Frequently Asked Questions</h1>
-            <p>Find answers to common questions about higher education access for refugees in Kent</p>
+            <h1 class="animated-title">Frequently Asked Questions</h1>
+            <p class="animated-subtitle">Find answers to common questions about higher education access for refugees in Kent</p>
         </div>
     </div>
 
@@ -619,6 +715,8 @@
 
     <section class="resource-section">
         <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="section-divider"></div>
             <div id="faq-list">
                 <!-- FAQ items will be loaded dynamically -->
                 <p class="loading">Loading questions...</p>
@@ -630,42 +728,44 @@
         </div>
     </section>
 
-    <section class="user-contribution">
+    <section class="cta user-contribution">
         <div class="container">
-            <h2>Ask a Question</h2>
-            
-            <!-- Message for non-authenticated users -->
-            <div id="login-to-ask" class="auth-message">
-                <p>Please <a href="login.html">login</a> or <a href="register.html">register</a> to submit a question.</p>
+            <div class="cta-content">
+                <h2>Ask a Question</h2>
+                
+                <!-- Message for non-authenticated users -->
+                <div id="login-to-ask" class="auth-message">
+                    <p>Please <a href="login.html">login</a> or <a href="register.html">register</a> to submit a question.</p>
+                </div>
+                
+                <!-- Form for authenticated users -->
+                <form id="question-form" class="question-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="question">Your Question</label>
+                        <textarea id="question" name="question" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="admissions">Admissions</option>
+                            <option value="language">Language Requirements</option>
+                            <option value="financial">Financial Support</option>
+                            <option value="general">General</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the <a href="terms.html">Terms and Conditions</a></label>
+                    </div>
+                    
+                    <div class="center-btn">
+                        <button type="submit" class="btn btn-primary">Submit Question</button>
+                    </div>
+                </form>
             </div>
-            
-            <!-- Form for authenticated users -->
-            <form id="question-form" class="question-form" style="display: none;">
-                <div class="form-group">
-                    <label for="question">Your Question</label>
-                    <textarea id="question" name="question" rows="4" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select id="category" name="category" required>
-                        <option value="">Select a category</option>
-                        <option value="admissions">Admissions</option>
-                        <option value="language">Language Requirements</option>
-                        <option value="financial">Financial Support</option>
-                        <option value="general">General</option>
-                    </select>
-                </div>
-                
-                <div class="form-group checkbox-group">
-                    <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I agree to the <a href="terms.html">Terms and Conditions</a></label>
-                </div>
-                
-                <div class="center-btn">
-                    <button type="submit" class="btn btn-primary">Submit Question</button>
-                </div>
-            </form>
         </div>
     </section>
 
