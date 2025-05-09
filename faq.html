@@ -1512,12 +1512,19 @@
             const chatMessages = document.getElementById('chat-messages');
 
             if (chatToggle && chatBox && closeChat && chatForm && chatInput && chatMessages) {
+                // Replace this click handler
                 chatToggle.addEventListener('click', () => {
-                    chatBox.style.display = chatBox.style.display === 'block' ? 'none' : 'flex';
+                    chatBox.style.display = 'flex';
+                    chatToggle.style.display = 'none';
+                    
+                    // Focus on input and scroll to bottom of messages
+                    chatInput.focus();
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
                 });
 
                 closeChat.addEventListener('click', () => {
                     chatBox.style.display = 'none';
+                    chatToggle.style.display = 'flex';
                 });
 
                 chatForm.addEventListener('submit', function(e) {
