@@ -737,17 +737,18 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>About PEAK</h3>
-                    <p>Pathway to Education Access in Kent (PEAK) is dedicated to helping refugees access higher education opportunities in Kent.</p>
+                    <h3>PEAK</h3>
+                    <p>Supporting refugees in Kent to access higher education opportunities.</p>
                 </div>
                 <div class="footer-section">
                     <h3>Quick Links</h3>
                     <ul>
                         <li><a href="index.html">Home</a></li>
-                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="pathways.html">Education Pathways</a></li>
                         <li><a href="resources.html">Resources</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
                         <li><a href="contact.html">Contact</a></li>
-                        <li><a href="admin.html">Admin</a></li>
+                        <li><a href="about.html">About Us</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -761,6 +762,29 @@
             </div>
         </div>
     </footer>
+
+    <div class="chat-widget" id="chat-widget">
+        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-box" id="chat-box">
+            <div class="chat-header">
+                <h3>Need Help?</h3>
+                <button class="close-chat" id="close-chat" aria-label="Close chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message received">
+                    <p>Hello! How can we help you with your education journey today?</p>
+                </div>
+            </div>
+            <form id="chat-form" class="chat-form">
+                <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
+                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+    </div>
 
     <!-- Add Supabase JS library -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
@@ -1479,28 +1503,6 @@
             });
         }
     </script>
-    <div class="chat-widget" id="chat-widget">
-        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
-            <i class="fas fa-comments"></i>
-        </button>
-        <div class="chat-box" id="chat-box">
-            <div class="chat-header">
-                <h3>Need Help?</h3>
-                <button class="close-chat" id="close-chat" aria-label="Close chat">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <div class="chat-messages" id="chat-messages">
-                <div class="message received">
-                    <p>Hello! How can we help you with your education journey today?</p>
-                </div>
-            </div>
-            <form id="chat-form" class="chat-form">
-                <input type="text" id="chat-input" placeholder="Type your message..." aria-label="Type your message">
-                <button type="submit" aria-label="Send message"><i class="fas fa-paper-plane"></i></button>
-            </form>
-        </div>
-    </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const chatWidget = document.getElementById('chat-widget');
