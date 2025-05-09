@@ -10,34 +10,34 @@
     <style>
         /* Additional styles for the enhanced FAQ page */
         .faq-search-section {
-            background-color: #f0f7ff;
+            background-color: var(--bg-light);
             padding: 2rem 0;
             margin-bottom: 2rem;
         }
-        
+
         .search-container {
             display: flex;
             max-width: 600px;
             margin: 0 auto 1.5rem;
         }
-        
+
         .search-container input {
             flex: 1;
             padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px 0 0 4px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius) 0 0 var(--border-radius);
             font-size: 1rem;
         }
-        
+
         .search-container button {
-            background-color: #0066cc;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 0.75rem 1rem;
-            border-radius: 0 4px 4px 0;
+            border-radius: 0 var(--border-radius) var(--border-radius) 0;
             cursor: pointer;
         }
-        
+
         .category-tabs {
             display: flex;
             flex-wrap: wrap;
@@ -45,30 +45,30 @@
             gap: 0.5rem;
             margin-bottom: 1rem;
         }
-        
+
         .category-tab {
             background-color: white;
-            border: 1px solid #ddd;
+            border: 1px solid var(--border-color);
             padding: 0.5rem 1rem;
             border-radius: 20px;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
-        
+
         .category-tab.active {
-            background-color: #0066cc;
+            background-color: var(--primary-color);
             color: white;
-            border-color: #0066cc;
+            border-color: var(--primary-color);
         }
-        
+
         .faq-item {
             background-color: white;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
             margin-bottom: 1.5rem;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            box-shadow: var(--shadow);
             overflow: hidden;
         }
-        
+
         .faq-question {
             display: flex;
             justify-content: space-between;
@@ -76,287 +76,235 @@
             padding: 1.5rem;
             cursor: pointer;
         }
-        
+
         .faq-question h3 {
             margin: 0;
             font-size: 1.1rem;
-            color: #333;
+            color: var(--text-color);
             flex: 1;
         }
-        
+
         .toggle-answer {
             background: none;
             border: none;
-            color: #0066cc;
+            color: var(--primary-color);
             font-size: 1.2rem;
             cursor: pointer;
             padding: 0.5rem;
         }
-        
+
         .faq-answer {
             padding: 0 1.5rem 1.5rem;
             display: none;
         }
-        
+
         .faq-answer p {
             margin-top: 0;
-            color: #555;
+            color: var(--text-light);
             line-height: 1.6;
         }
-        
+
         .faq-category-title {
             display: flex;
             align-items: center;
             margin: 2rem 0 1rem;
-            color: #0066cc;
+            color: var(--primary-color);
             font-size: 1.5rem;
         }
-        
+
         .faq-category-title i {
             margin-right: 0.75rem;
         }
-        
+
         #faq-not-found {
             text-align: center;
             padding: 2rem;
-            background-color: #f8f9fa;
-            border-radius: 8px;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
             margin-top: 2rem;
         }
-        
+
         /* User contribution styles */
         .user-contribution {
             margin-top: 3rem;
-            background-color: #f0f7ff;
+            background-color: var(--bg-light);
             padding: 2rem;
-            border-radius: 8px;
+            border-radius: var(--border-radius);
         }
-        
+
         .user-contribution h2 {
             text-align: center;
             margin-top: 0;
             margin-bottom: 1.5rem;
-            color: #0066cc;
+            color: var(--primary-color);
         }
-        
+
         .auth-message {
             padding: 1rem;
             margin-bottom: 1.5rem;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             text-align: center;
         }
-        
+
         .auth-message.info {
             background-color: #e3f2fd;
-            color: #0066cc;
+            color: var(--primary-color);
             border: 1px solid #bbdefb;
         }
-        
+
         .form-group {
             margin-bottom: 1.5rem;
         }
-        
+
         .form-group label {
             display: block;
             margin-bottom: 0.5rem;
             font-weight: 500;
-            color: #333;
+            color: var(--text-color);
         }
-        
+
         .form-group input,
         .form-group textarea,
         .form-group select {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
             font-size: 1rem;
         }
-        
+
         .form-group input:focus,
         .form-group textarea:focus,
         .form-group select:focus {
-            border-color: #0066cc;
+            border-color: var(--primary-color);
             outline: none;
             box-shadow: 0 0 0 3px rgba(0, 102, 204, 0.1);
         }
-        
-        .btn-primary {
-            background-color: #0066cc;
-            color: white;
-            border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 4px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: background-color 0.3s ease;
-        }
-        
-        .btn-primary:hover {
-            background-color: #0052a3;
-        }
-        
+
         /* User contributed questions */
         .user-question {
             position: relative;
         }
-        
+
         .question-tag {
             position: absolute;
             top: 0;
             right: 0;
             font-size: 0.7rem;
             padding: 0.25rem 0.5rem;
-            border-radius: 0 8px 0 8px;
+            border-radius: 0 var(--border-radius) 0 var(--border-radius);
             z-index: 1;
         }
-        
+
         .community-tag {
-            background-color: #e67e22;
+            background-color: var(--secondary-color);
             color: white;
         }
-        
+
         .pending-tag {
-            background-color: #f39c12;
+            background-color: var(--warning-color);
             color: white;
         }
-        
+
         .question-meta {
             display: flex;
             justify-content: space-between;
             font-size: 0.85rem;
-            color: #777;
+            color: var(--text-lighter);
             margin-top: 1rem;
             padding-top: 0.5rem;
-            border-top: 1px solid #eee;
+            border-top: 1px solid var(--border-color);
         }
-        
-        /* Image upload styles */
-        .image-upload {
-            border: 2px dashed #ddd;
-            padding: 1.5rem;
-            text-align: center;
-            border-radius: 4px;
-            margin-bottom: 1.5rem;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .image-upload:hover {
-            border-color: #0066cc;
-        }
-        
-        .image-upload i {
-            font-size: 2rem;
-            color: #0066cc;
-            margin-bottom: 0.5rem;
-        }
-        
-        .image-upload p {
-            margin: 0;
-            color: #555;
-        }
-        
-        .image-preview {
-            margin-top: 1rem;
-            display: none;
-        }
-        
-        .image-preview img {
-            max-width: 100%;
-            max-height: 200px;
-            border-radius: 4px;
-        }
-        
+
         /* Error message */
         .error-message {
             background-color: #ffebee;
-            color: #c62828;
+            color: var(--error-color);
             padding: 1rem;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             margin-bottom: 1.5rem;
             text-align: center;
         }
-        
+
         /* Reply section styles */
         .replies-section {
             margin-top: 1.5rem;
-            border-top: 1px dashed #ddd;
+            border-top: 1px dashed var(--border-color);
             padding-top: 1.5rem;
         }
-        
+
         .replies-section h4 {
-            color: #0066cc;
+            color: var(--primary-color);
             margin-top: 0;
             margin-bottom: 1rem;
             display: flex;
             align-items: center;
         }
-        
+
         .replies-section h4 i {
             margin-right: 0.5rem;
         }
-        
+
         .reply {
-            background-color: #f8f9fa;
-            border-radius: 8px;
+            background-color: var(--bg-light);
+            border-radius: var(--border-radius);
             padding: 1rem;
             margin-bottom: 1rem;
-            border-left: 3px solid #0066cc;
+            border-left: 3px solid var(--primary-color);
         }
-        
+
         .reply-content {
-            color: #333;
+            color: var(--text-color);
             margin-bottom: 0.5rem;
         }
-        
+
         .reply-meta {
             display: flex;
             justify-content: space-between;
             font-size: 0.8rem;
-            color: #777;
+            color: var(--text-lighter);
         }
-        
+
         .reply-form {
             margin-top: 1.5rem;
         }
-        
+
         .reply-form textarea {
             width: 100%;
             padding: 0.75rem;
-            border: 1px solid #ddd;
-            border-radius: 4px;
+            border: 1px solid var(--border-color);
+            border-radius: var(--border-radius);
             resize: vertical;
             min-height: 80px;
             margin-bottom: 1rem;
         }
-        
+
         .reply-form button {
-            background-color: #0066cc;
+            background-color: var(--primary-color);
             color: white;
             border: none;
             padding: 0.5rem 1rem;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             cursor: pointer;
             font-weight: 500;
         }
-        
+
         .reply-form button:hover {
-            background-color: #0052a3;
+            background-color: var(--primary-dark);
         }
-        
+
         .no-replies {
             text-align: center;
-            color: #777;
+            color: var(--text-lighter);
             font-style: italic;
             padding: 1rem;
         }
-        
+
         .pending-message {
             background-color: #fff3e0;
             color: #e65100;
             padding: 1rem;
-            border-radius: 4px;
+            border-radius: var(--border-radius);
             margin-bottom: 1rem;
             font-style: italic;
             border-left: 3px solid #e65100;
@@ -453,22 +401,9 @@
                     </select>
                 </div>
                 
-                <!-- Image upload section -->
-                <div class="form-group">
-                    <label>Add an Image (Optional)</label>
-                    <div class="image-upload" id="image-upload-area">
-                        <i class="fas fa-cloud-upload-alt"></i>
-                        <p>Click to upload an image or drag and drop</p>
-                        <input type="file" id="question-image" name="question-image" accept="image/*" style="display: none;">
-                    </div>
-                    <div class="image-preview" id="image-preview">
-                        <img id="preview-img" src="#" alt="Preview">
-                    </div>
-                </div>
-                
                 <div class="form-group checkbox-group">
                     <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I agree to the <a href="#">Terms and Conditions</a></label>
+                    <label for="terms">I agree to the <a href="terms.html">Terms and Conditions</a></label>
                 </div>
                 
                 <div class="form-group">
@@ -513,5 +448,99 @@
     <script src="js/script.js"></script>
     <script src="js/faq.js"></script>
     <script src="js/faq-submission.js"></script>
+    <!-- Chat Widget -->
+    <div class="chat-widget">
+        <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
+            <i class="fas fa-comments"></i>
+        </button>
+        <div class="chat-box" id="chat-box">
+            <div class="chat-header">
+                <h3>PEAK Support</h3>
+                <button class="close-chat" id="close-chat" aria-label="Close chat">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="chat-messages" id="chat-messages">
+                <div class="message received">
+                    <p>Hello! How can I help you with your education pathway today?</p>
+                </div>
+            </div>
+            <form class="chat-form" id="chat-form">
+                <input type="text" placeholder="Type your message..." id="chat-input" aria-label="Type your message">
+                <button type="submit" aria-label="Send message">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    <script>
+        // Chat Widget Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const chatToggle = document.getElementById('chat-toggle');
+            const chatBox = document.getElementById('chat-box');
+            const closeChat = document.getElementById('close-chat');
+            const chatForm = document.getElementById('chat-form');
+            const chatInput = document.getElementById('chat-input');
+            const chatMessages = document.getElementById('chat-messages');
+            
+            // Toggle chat box
+            chatToggle.addEventListener('click', function() {
+                chatBox.classList.add('active');
+            });
+            
+            // Close chat box
+            closeChat.addEventListener('click', function() {
+                chatBox.classList.remove('active');
+            });
+            
+            // Handle sending messages
+            chatForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const message = chatInput.value.trim();
+                if (message === '') return;
+                
+                // Add user message
+                addMessage(message, 'sent');
+                
+                // Clear input
+                chatInput.value = '';
+                
+                // Simulate response after a short delay
+                setTimeout(function() {
+                    let response;
+                    
+                    // Simple response logic based on keywords
+                    if (message.toLowerCase().includes('scholarship') || message.toLowerCase().includes('financial')) {
+                        response = "We have several scholarship opportunities for refugees. Check our Resources page for more details or contact us directly for personalized guidance.";
+                    } else if (message.toLowerCase().includes('application') || message.toLowerCase().includes('apply')) {
+                        response = "The application process varies by institution. You can find detailed guides in our Education Pathways section, or ask a specific question about the university you're interested in.";
+                    } else if (message.toLowerCase().includes('language') || message.toLowerCase().includes('english')) {
+                        response = "Most universities require IELTS scores of 6.0-7.0. We have resources to help you prepare for these tests in our Resources section.";
+                    } else if (message.toLowerCase().includes('hello') || message.toLowerCase().includes('hi')) {
+                        response = "Hello! How can I help you with your education journey today?";
+                    } else {
+                        response = "Thank you for your message. For more specific information, please check our FAQ section or contact us directly through the Contact page.";
+                    }
+                    
+                    addMessage(response, 'received');
+                    
+                    // Scroll to bottom
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 1000);
+                
+                // Scroll to bottom
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            });
+            
+            // Function to add a message to the chat
+            function addMessage(text, type) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${type}`;
+                messageDiv.innerHTML = `<p>${text}</p>`;
+                chatMessages.appendChild(messageDiv);
+            }
+        });
+    </script>
 </body>
 </html>
