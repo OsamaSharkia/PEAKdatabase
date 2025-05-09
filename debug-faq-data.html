@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug FAQ Data</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #0066cc;
+            margin-top: 0;
+        }
+        .actions {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        button {
+            background-color: #0066cc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #0052a3;
+        }
+        .data-display {
+            background-color: #f8f9fa;
+            padding: 15px;
+            border-radius: 4px;
+            border: 1px solid #ddd;
+            overflow: auto;
+            max-height: 600px;
+        }
+        pre {
+            margin: 0;
+            white-space: pre-wrap;
+        }
+        .status {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 4px;
+        }
+        .success {
+            background-color: #d4edda;
+            color: #155724;
+        }
+        .error {
+            background-color: #f8d7da;
+            color: #721c24;
+        }
+        .fix-options {
+            margin-top: 20px;
+            padding: 15px;
+            background-color: #e9f5ff;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>FAQ Data Debugger</h1>
+        
+        <div class="actions">
+            <button id="view-data">View FAQ Data</button>
+            <button id="fix-data">Fix FAQ Data</button>
+            <button id="reset-data">Reset to Default FAQs</button>
+            <button id="back">Back to Admin</button>
+        </div>
+        
+        <div id="status" class="status" style="display: none;"></div>
+        
+        <div id="fix-options" class="fix-options" style="display: none;">
+            <h3>Fix Options</h3>
+            <button id="fix-approval">Fix Approval Status</button>
+            <button id="fix-structure">Fix Data Structure</button>
+            <button id="remove-duplicates">Remove Duplicates</button>
+        </div>
+        
+        <div id="data-display" class="data-display" style="display: none;">
+            <pre id="data-content"></pre>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const viewDataBtn = document.getElementById('view-data');
+            const fixDataBtn = document.getElementById('fix-data');
+            const resetDataBtn = document.getElementById('reset-data');
+            const backBtn = document.getElementById('back');
+            const dataDisplay = document.getElementById('data-display');
+            const dataContent = document.getElementById('data-content');
+            const statusEl = document.getElementById('status');
+            const fixOptions = document.getElementById('fix-options');
+            
+            // View FAQ data
+            viewDataBtn.addEventListener('click', function() {
+                const faqs = JSON.parse(localStorage.getItem('faqs') || '[]');
+                dataContent.textContent = JSON.stringify(faqs, null, 2);
+                dataDisplay.style.display = 'block';
+                statusEl.style.display = 'none';
+                fixOptions.style.display = 'none';
+                
+                // Add analysis
+                const approvedCount = faqs.filter(faq => faq.approved === true).length;
+                const pendingCount = faqs.filter(faq => faq.approved !== true).length;
+                const nullApprovalCount = faqs.filter(faq => faq.approved === null || faq.approved === undefined).length;
+                
+                dataContent.textContent += `\n\n--- Analysis ---\n`;
+                dataContent.textContent += `Total FAQs: ${faqs.length}\n`;
+                dataContent.textContent += `Approved FAQs: ${approvedCount}\n`;
+                dataContent.textContent += `Pending FAQs: ${pendingCount}\n`;
+                dataContent.textContent += `FAQs with null/undefined approval: ${nullApprovalCount}\n`;
+            });
+            
+            // Show fix options
+            fixDataBtn.addEventListener('click', function() {
+                fixOptions.style.display = 'block';
+                dataDisplay.style.display = 'none';
+                statusEl.style.display = 'none';
+            });
+            
+            // Fix approval status
+            document.getElementById('fix-approval').addEventListener('click', function() {
+                const faqs = JSON.parse(localStorage.getItem('faqs') || '[]');
+                let fixedCount = 0;
+                
+                faqs.forEach(faq => {
+                    // Convert null/undefined to false (pending)
+                    if (faq.approved === null || faq.approved === undefined) {
+                        faq.approved = false;
+                        fixedCount++;
+                    }
+                    // Convert string 'true'/'false' to boolean
+                    else if (typeof faq.approved === 'string') {
+                        faq.approved = faq.approved === 'true';
+                        fixedCount++;
+                    }
+                });
+                
+                localStorage.setItem('faqs', JSON.stringify(faqs));
+                showStatus(`Fixed approval status for ${fixedCount} FAQs`, 'success');
+            });
+            
+            // Fix data structure
+            document.getElementById('fix-structure').addEventListener('click', function() {
+                const faqs = JSON.parse(localStorage.getItem('faqs') || '[]');
+                let fixedCount = 0;
+                
+                faqs.forEach(faq => {
+                    // Ensure required fields exist
+                    if (!faq.id) {
+                        faq.id = Date.now().toString() + Math.random().toString(36).substr(2, 5);
+                        fixedCount++;
+                    }
+                    if (!faq.category) {
+                        faq.category = 'general';
+                        fixedCount++;
+                    }
+                    if (!faq.replies) {
+                        faq.replies = [];
+                        fixedCount++;
+                    }
+                    if (!faq.createdAt) {
+                        faq.createdAt = new Date().toISOString();
+                        fixedCount++;
+                    }
+                });
+                
+                localStorage.setItem('faqs', JSON.stringify(faqs));
+                showStatus(`Fixed data structure for ${fixedCount} fields`, 'success');
+            });
+            
+            // Remove duplicates
+            document.getElementById('remove-duplicates').addEventListener('click', function() {
+                const faqs = JSON.parse(localStorage.getItem('faqs') || '[]');
+                const uniqueIds = {};
+                const uniqueFaqs = [];
+                
+                faqs.forEach(faq => {
+                    if (!uniqueIds[faq.id]) {
+                        uniqueIds[faq.id] = true;
+                        uniqueFaqs.push(faq);
+                    }
+                });
+                
+                const removedCount = faqs.length - uniqueFaqs.length;
+                localStorage.setItem('faqs', JSON.stringify(uniqueFaqs));
+                showStatus(`Removed ${removedCount} duplicate FAQs`, 'success');
+            });
+            
+            // Reset to default FAQs
+            resetDataBtn.addEventListener('click', function() {
+                if (confirm('This will reset all FAQs to default values. Any custom FAQs will be lost. Continue?')) {
+                    const defaultFaqs = [
+                        {
+                            id: "1",
+                            question: "How do I apply to universities in Kent?",
+                            answer: "Most undergraduate courses in the UK require application through UCAS (Universities and Colleges Admissions Service). You'll need to create an account on the UCAS website, search for courses at Kent universities, and submit your application before the deadline.",
+                            category: "admissions",
+                            approved: true,
+                            replies: [],
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: "2",
+                            question: "What are the application deadlines?",
+                            answer: "For undergraduate courses starting in September 2025, the main UCAS deadline is January 31st, 2025. However, some courses may have earlier deadlines, especially for international students. It's best to check specific university websites for the most accurate information.",
+                            category: "admissions",
+                            approved: true,
+                            replies: [],
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: "3",
+                            question: "What English language qualifications do I need?",
+                            answer: "Most universities require IELTS Academic with a score of 6.0-7.0 overall, with no component below 5.5. Some courses, particularly in healthcare or education, may require higher scores. Universities may also accept other qualifications like TOEFL, PTE Academic, or Cambridge English qualifications.",
+                            category: "language",
+                            approved: true,
+                            replies: [],
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: "4",
+                            question: "Are there any scholarships available for refugees?",
+                            answer: "Yes, many universities offer specific scholarships for refugees and asylum seekers. The Refugee Education UK charity also provides support. Universities like Kent, Canterbury Christ Church, and Greenwich (Medway campus) have dedicated refugee scholarships. Contact the university's international office for more information.",
+                            category: "financial",
+                            approved: true,
+                            replies: [],
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: "5",
+                            question: "How can I get my previous qualifications recognized in the UK?",
+                            answer: "UK NARIC (now UK ENIC) can provide statements of comparability for international qualifications. Universities may also have their own assessment processes. Some universities offer foundation years specifically designed for students with international qualifications.",
+                            category: "general",
+                            approved: true,
+                            replies: [],
+                            createdAt: new Date().toISOString()
+                        },
+                        {
+                            id: "6",
+                            question: "What support services are available for refugee students?",
+                            answer: "Universities in Kent offer various support services including counseling, academic skills support, and sometimes dedicated refugee advisors. Organizations like Refugee Education UK and Student Action for Refugees also provide additional support and networking opportunities.",
+                            category: "general",
+                            approved: true,
+                            replies: [],
+                            createdAt: new Date().toISOString()
+                        }
+                    ];
+                    
+                    localStorage.setItem('faqs', JSON.stringify(defaultFaqs));
+                    showStatus('FAQs have been reset to default values', 'success');
+                }
+            });
+            
+            // Back to admin
+            backBtn.addEventListener('click', function() {
+                window.location.href = 'admin.html';
+            });
+            
+            // Helper function to show status
+            function showStatus(message, type) {
+                statusEl.textContent = message;
+                statusEl.className = 'status ' + type;
+                statusEl.style.display = 'block';
+                
+                // Refresh data display if visible
+                if (dataDisplay.style.display === 'block') {
+                    viewDataBtn.click();
+                }
+            }
+        });
+    </script>
+</body>
+</html>

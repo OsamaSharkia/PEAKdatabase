@@ -7,6 +7,143 @@
     <meta name="description" content="Administrator dashboard for PEAK website management">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Admin questions management styles */
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .filter-button {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            background-color: #f5f5f5;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+        }
+        
+        .filter-button.active {
+            background-color: #0066cc;
+            color: white;
+            border-color: #0066cc;
+        }
+        
+        .questions-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        
+        .questions-table th, 
+        .questions-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        
+        .questions-table th {
+            background-color: #f5f5f5;
+            font-weight: 600;
+        }
+        
+        .questions-table tr:hover {
+            background-color: #f9f9f9;
+        }
+        
+        .status-approved {
+            color: #2e7d32;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            color: #ed6c02;
+            font-weight: 500;
+        }
+        
+        .status-declined {
+            color: #d32f2f;
+            font-weight: 500;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .action-button {
+            padding: 6px 12px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+        
+        .approve-button {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .approve-button:hover {
+            background-color: #c8e6c9;
+        }
+        
+        .decline-button {
+            background-color: #ffebee;
+            color: #c62828;
+        }
+        
+        .decline-button:hover {
+            background-color: #ffcdd2;
+        }
+        
+        .delete-button {
+            background-color: #f5f5f5;
+            color: #333;
+        }
+        
+        .delete-button:hover {
+            background-color: #e0e0e0;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 40px;
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            margin-top: 20px;
+        }
+        
+        .empty-state h3 {
+            margin-top: 0;
+            color: #666;
+        }
+        
+        .empty-state p {
+            color: #888;
+        }
+        
+        .status-message {
+            padding: 10px 15px;
+            margin-bottom: 20px;
+            border-radius: 4px;
+            font-weight: 500;
+            display: none;
+        }
+        
+        .status-message.success {
+            background-color: #e8f5e9;
+            color: #2e7d32;
+            border: 1px solid #c8e6c9;
+        }
+        
+        .status-message.error {
+            background-color: #ffebee;
+            color: #c62828;
+            border: 1px solid #ffcdd2;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -44,6 +181,7 @@
                             <ul>
                                 <li><a href="#dashboard" class="active">Dashboard</a></li>
                                 <li><a href="#users">User Management</a></li>
+                                <li><a href="#questions">FAQ Questions</a></li>
                                 <li><a href="#content">Content Management</a></li>
                                 <li><a href="#messages">Messages</a></li>
                                 <li><a href="#settings">Settings</a></li>
@@ -136,6 +274,41 @@
                             </div>
                         </div>
                         
+                        <!-- FAQ Questions Management Tab -->
+                        <div id="questions" class="admin-tab">
+                            <h2>Manage FAQ Questions</h2>
+                            <p>Review and respond to user-submitted questions</p>
+                            
+                            <div id="status-message" class="status-message"></div>
+                            
+                            <div class="filter-buttons">
+                                <button class="filter-button active" data-filter="pending">Pending</button>
+                                <button class="filter-button" data-filter="approved">Approved</button>
+                                <button class="filter-button" data-filter="declined">Declined</button>
+                                <button class="filter-button" data-filter="all">All Questions</button>
+                            </div>
+                            
+                            <div class="questions-container">
+                                <table class="questions-table">
+                                    <thead>
+                                        <tr>
+                                            <th>ID</th>
+                                            <th>Question</th>
+                                            <th>Answer</th>
+                                            <th>Category</th>
+                                            <th>Status</th>
+                                            <th>Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="questions-body">
+                                        <tr>
+                                            <td colspan="6" style="text-align: center;">Loading questions...</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        
                         <div id="content" class="admin-tab">
                             <h2>Content Management</h2>
                             <p>This feature is coming soon.</p>
@@ -190,144 +363,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="js/auth-service.js"></script>
     <script src="js/script.js"></script>
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            // Check if user is logged in and is admin
-            const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
-            const isAdmin = sessionStorage.getItem("isAdmin") === "true";
-            const currentUser = JSON.parse(sessionStorage.getItem("currentUser") || "null");
-            
-            if (!isLoggedIn || !isAdmin || !currentUser) {
-                window.location.href = "admin-login.html";
-                return;
-            }
-            
-            // Admin tab navigation
-            const tabLinks = document.querySelectorAll(".admin-nav a");
-            const tabContents = document.querySelectorAll(".admin-tab");
-            
-            tabLinks.forEach(link => {
-                link.addEventListener("click", (e) => {
-                    e.preventDefault();
-                    
-                    // Remove active class from all links and tabs
-                    tabLinks.forEach(l => l.classList.remove("active"));
-                    tabContents.forEach(t => t.classList.remove("active"));
-                    
-                    // Add active class to clicked link
-                    link.classList.add("active");
-                    
-                    // Show corresponding tab
-                    const targetId = link.getAttribute("href").substring(1);
-                    document.getElementById(targetId).classList.add("active");
-                });
-            });
-            
-            // Load users
-            const loadUsers = async () => {
-                const usersTableBody = document.getElementById("users-table-body");
-                const usersLoading = document.getElementById("users-loading");
-                const usersEmpty = document.getElementById("users-empty");
-                
-                try {
-                    usersLoading.style.display = "block";
-                    usersEmpty.style.display = "none";
-                    
-                    const { data: users, error } = await supabaseClient
-                        .from('user_profiles')
-                        .select('*')
-                        .order('created_at', { ascending: false });
-                        
-                    if (error) throw error;
-                    
-                    usersLoading.style.display = "none";
-                    
-                    if (!users || users.length === 0) {
-                        usersEmpty.style.display = "block";
-                        return;
-                    }
-                    
-                    // Clear existing rows
-                    usersTableBody.innerHTML = "";
-                    
-                    // Add user rows
-                    users.forEach(user => {
-                        const row = document.createElement("tr");
-                        
-                        row.innerHTML = `
-                            <td>${user.name || "N/A"}</td>
-                            <td>${user.email || "N/A"}</td>
-                            <td>${user.is_admin ? "Admin" : "User"}</td>
-                            <td>Active</td>
-                            <td>
-                                <button class="btn-icon edit-user" data-id="${user.id}" title="Edit User">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <button class="btn-icon delete-user" data-id="${user.id}" title="Delete User">
-                                    <i class="fas fa-trash-alt"></i>
-                                </button>
-                            </td>
-                        `;
-                        
-                        usersTableBody.appendChild(row);
-                    });
-                    
-                    // Add event listeners to action buttons
-                    document.querySelectorAll(".edit-user").forEach(button => {
-                        button.addEventListener("click", () => {
-                            const userId = button.getAttribute("data-id");
-                            alert("Edit user functionality coming soon. User ID: " + userId);
-                        });
-                    });
-                    
-                    document.querySelectorAll(".delete-user").forEach(button => {
-                        button.addEventListener("click", async () => {
-                            const userId = button.getAttribute("data-id");
-                            
-                            // Prevent deleting current user
-                            if (userId === currentUser.id) {
-                                alert("You cannot delete your own account from here.");
-                                return;
-                            }
-                            
-                            const confirmed = confirm("Are you sure you want to delete this user? This action cannot be undone.");
-                            
-                            if (confirmed) {
-                                try {
-                                    // Delete user profile
-                                    const { error: profileError } = await supabaseClient
-                                        .from('user_profiles')
-                                        .delete()
-                                        .eq('id', userId);
-                                        
-                                    if (profileError) throw profileError;
-                                    
-                                    alert("User deleted successfully.");
-                                    loadUsers(); // Reload the user list
-                                    
-                                } catch (error) {
-                                    console.error("User deletion error:", error);
-                                    alert("Failed to delete user: " + error.message);
-                                }
-                            }
-                        });
-                    });
-                    
-                } catch (error) {
-                    console.error("Error loading users:", error);
-                    usersLoading.style.display = "none";
-                    alert("Failed to load users: " + error.message);
-                }
-            };
-            
-            // Load users when the users tab is clicked
-            document.querySelector('a[href="#users"]').addEventListener("click", loadUsers);
-            
-            // Create user button
-            document.getElementById("create-user-btn").addEventListener("click", () => {
-                alert("Create user functionality coming soon.");
-            });
-        });
-    </script>
+    <script src="js/admin.js"></script>
 </body>
 </html>

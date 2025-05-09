@@ -1,0 +1,577 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Questions - PEAK Admin</title>
+    <meta name="description" content="Administrator dashboard for PEAK website management">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        .admin-questions {
+            margin: 2rem 0;
+        }
+        
+        .question-filters {
+            display: flex;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .filter-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f5f5f5;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .filter-btn.active {
+            background: #0066cc;
+            color: white;
+            border-color: #0052a3;
+        }
+        
+        .question-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+            overflow: hidden;
+        }
+        
+        .question-header {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .question-meta {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        
+        .question-content {
+            padding: 1rem;
+        }
+        
+        .question-text {
+            font-size: 1.1rem;
+            margin-bottom: 1rem;
+        }
+        
+        .question-category {
+            display: inline-block;
+            padding: 0.25rem 0.5rem;
+            background: #e3f2fd;
+            color: #0066cc;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            margin-bottom: 1rem;
+        }
+        
+        .question-image {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+        }
+        
+        .answer-form {
+            margin-top: 1rem;
+            border-top: 1px solid #eee;
+            padding-top: 1rem;
+        }
+        
+        .answer-textarea {
+            width: 100%;
+            min-height: 100px;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            margin-bottom: 1rem;
+            font-family: inherit;
+            font-size: 1rem;
+        }
+        
+        .question-actions {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: flex-end;
+        }
+        
+        .btn-approve {
+            background: #4caf50;
+            color: white;
+        }
+        
+        .btn-decline {
+            background: #f44336;
+            color: white;
+        }
+        
+        .btn-save {
+            background: #0066cc;
+            color: white;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem;
+            background: #f9f9f9;
+            border-radius: 8px;
+        }
+        
+        .empty-state i {
+            font-size: 3rem;
+            color: #ccc;
+            margin-bottom: 1rem;
+        }
+        
+        .status-badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 500;
+        }
+        
+        .status-pending {
+            background: #fff3e0;
+            color: #e65100;
+        }
+        
+        .status-approved {
+            background: #e8f5e9;
+            color: #2e7d32;
+        }
+        
+        .status-declined {
+            background: #ffebee;
+            color: #c62828;
+        }
+        
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .pagination-btn {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            background: #f5f5f5;
+            cursor: pointer;
+        }
+        
+        .pagination-btn.active {
+            background: #0066cc;
+            color: white;
+            border-color: #0052a3;
+        }
+        
+        .pagination-btn.disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <h1>PEAK</h1>
+                <p class="tagline">Pathway to Education Access in Kent</p>
+            </div>
+            <nav id="navbar">
+                <button id="menu-toggle" aria-label="Toggle menu">
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                    <span class="bar"></span>
+                </button>
+                <ul id="nav-links">
+                    <!-- Navigation will be populated by script.js -->
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <div class="container">
+                <h1>Manage Questions</h1>
+                <p>Review and respond to user-submitted questions</p>
+            </div>
+        </section>
+
+        <section class="admin-questions">
+            <div class="container">
+                <div class="question-filters">
+                    <button class="filter-btn active" data-filter="pending">Pending</button>
+                    <button class="filter-btn" data-filter="approved">Approved</button>
+                    <button class="filter-btn" data-filter="declined">Declined</button>
+                    <button class="filter-btn" data-filter="all">All Questions</button>
+                </div>
+                
+                <div id="questions-container">
+                    <div class="loading">Loading questions...</div>
+                </div>
+                
+                <div id="pagination" class="pagination"></div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>PEAK</h3>
+                    <p>Supporting refugees in Kent to access higher education opportunities.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="pathways.html">Education Pathways</a></li>
+                        <li><a href="resources.html">Resources</a></li>
+                        <li><a href="faq.html">FAQ</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                        <li><a href="about.html">About Us</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contact Us</h3>
+                    <p><i class="fas fa-envelope"></i> os146@canterbury.ac.uk</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Pathway to Education Access in Kent. All rights reserved.</p>
+                <p>Developed by Osama Sharkia</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/auth-service.js"></script>
+    <script src="js/script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            // Check if user is logged in and is admin
+            const isLoggedIn = sessionStorage.getItem("isLoggedIn") === "true";
+            const isAdmin = sessionStorage.getItem("isAdmin") === "true";
+            
+            if (!isLoggedIn || !isAdmin) {
+                window.location.href = "admin-login.html";
+                return;
+            }
+            
+            // Get Supabase client from window (initialized in auth-service.js)
+            const supabaseClient = window.supabaseClient;
+            if (!supabaseClient) {
+                console.error("Supabase client not initialized");
+                return;
+            }
+            
+            // Initialize variables
+            let currentFilter = "pending";
+            let currentPage = 1;
+            const questionsPerPage = 10;
+            
+            // DOM elements
+            const questionsContainer = document.getElementById("questions-container");
+            const paginationContainer = document.getElementById("pagination");
+            const filterButtons = document.querySelectorAll(".filter-btn");
+            
+            // Add event listeners to filter buttons
+            filterButtons.forEach(button => {
+                button.addEventListener("click", () => {
+                    filterButtons.forEach(btn => btn.classList.remove("active"));
+                    button.classList.add("active");
+                    currentFilter = button.getAttribute("data-filter");
+                    currentPage = 1;
+                    loadQuestions();
+                });
+            });
+            
+            // Load questions
+            loadQuestions();
+            
+            async function loadQuestions() {
+                try {
+                    questionsContainer.innerHTML = '<div class="loading">Loading questions...</div>';
+                    
+                    // Build query
+                    let query = supabaseClient
+                        .from('faq_questions')
+                        .select('*', { count: 'exact' });
+                    
+                    // Apply filter
+                    if (currentFilter === "pending") {
+                        query = query.eq('approved', false).is('reviewed_at', null);
+                    } else if (currentFilter === "approved") {
+                        query = query.eq('approved', true);
+                    } else if (currentFilter === "declined") {
+                        query = query.eq('approved', false).not('reviewed_at', 'is', null);
+                    }
+                    
+                    // Add pagination
+                    const from = (currentPage - 1) * questionsPerPage;
+                    const to = from + questionsPerPage - 1;
+                    
+                    query = query
+                        .order('created_at', { ascending: false })
+                        .range(from, to);
+                    
+                    // Execute query
+                    const { data: questions, error, count } = await query;
+                    
+                    if (error) throw error;
+                    
+                    console.log("Questions loaded:", questions);
+                    
+                    // Display questions
+                    if (questions && questions.length > 0) {
+                        questionsContainer.innerHTML = '';
+                        
+                        questions.forEach(question => {
+                            const card = createQuestionCard(question);
+                            questionsContainer.appendChild(card);
+                        });
+                        
+                        // Create pagination
+                        createPagination(count);
+                    } else {
+                        questionsContainer.innerHTML = `
+                            <div class="empty-state">
+                                <i class="fas fa-inbox"></i>
+                                <h3>No questions found</h3>
+                                <p>There are no ${currentFilter === "all" ? "" : currentFilter} questions at this time.</p>
+                            </div>
+                        `;
+                        paginationContainer.innerHTML = '';
+                    }
+                } catch (error) {
+                    console.error("Error loading questions:", error);
+                    questionsContainer.innerHTML = `
+                        <div class="empty-state">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <h3>Error loading questions</h3>
+                            <p>There was an error loading the questions: ${error.message}</p>
+                        </div>
+                    `;
+                }
+            }
+            
+            function createQuestionCard(question) {
+                const card = document.createElement('div');
+                card.className = 'question-card';
+                
+                // Determine status
+                let statusClass = 'status-pending';
+                let statusText = 'Pending';
+                
+                if (question.approved) {
+                    statusClass = 'status-approved';
+                    statusText = 'Approved';
+                } else if (question.reviewed_at) {
+                    statusClass = 'status-declined';
+                    statusText = 'Declined';
+                }
+                
+                // Format date
+                const createdDate = new Date(question.created_at).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'short',
+                    day: 'numeric'
+                });
+                
+                card.innerHTML = `
+                    <div class="question-header">
+                        <div class="question-meta">
+                            <span>From: ${question.user_name || 'Anonymous'} (${question.user_email})</span>
+                            <span>Date: ${createdDate}</span>
+                        </div>
+                        <span class="status-badge ${statusClass}">${statusText}</span>
+                    </div>
+                    <div class="question-content">
+                        <div class="question-text">${question.question}</div>
+                        <div class="question-category">${question.category}</div>
+                        ${question.image_url ? `<img src="${question.image_url}" alt="Question image" class="question-image">` : ''}
+                        
+                        <div class="answer-form">
+                            <label for="answer-${question.id}">Answer:</label>
+                            <textarea id="answer-${question.id}" class="answer-textarea">${question.answer || ''}</textarea>
+                            
+                            <div class="question-actions">
+                                ${!question.approved && !question.reviewed_at ? `
+                                    <button class="btn btn-decline" data-id="${question.id}">Decline</button>
+                                    <button class="btn btn-approve" data-id="${question.id}">Approve</button>
+                                ` : `
+                                    <button class="btn btn-save" data-id="${question.id}">Save Changes</button>
+                                `}
+                            </div>
+                        </div>
+                    </div>
+                `;
+                
+                // Add event listeners
+                const approveBtn = card.querySelector('.btn-approve');
+                const declineBtn = card.querySelector('.btn-decline');
+                const saveBtn = card.querySelector('.btn-save');
+                
+                if (approveBtn) {
+                    approveBtn.addEventListener('click', () => approveQuestion(question.id));
+                }
+                
+                if (declineBtn) {
+                    declineBtn.addEventListener('click', () => declineQuestion(question.id));
+                }
+                
+                if (saveBtn) {
+                    saveBtn.addEventListener('click', () => saveChanges(question.id));
+                }
+                
+                return card;
+            }
+            
+            async function approveQuestion(id) {
+                try {
+                    const answerText = document.getElementById(`answer-${id}`).value.trim();
+                    
+                    if (!answerText) {
+                        alert("Please provide an answer before approving the question.");
+                        return;
+                    }
+                    
+                    const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+                    
+                    const { error } = await supabaseClient
+                        .from('faq_questions')
+                        .update({
+                            approved: true,
+                            answer: answerText,
+                            reviewed_at: new Date().toISOString(),
+                            reviewed_by: currentUser.id
+                        })
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                    
+                    alert("Question approved successfully!");
+                    loadQuestions();
+                } catch (error) {
+                    console.error("Error approving question:", error);
+                    alert("There was an error approving the question: " + error.message);
+                }
+            }
+            
+            async function declineQuestion(id) {
+                try {
+                    const currentUser = JSON.parse(sessionStorage.getItem("currentUser"));
+                    
+                    const { error } = await supabaseClient
+                        .from('faq_questions')
+                        .update({
+                            approved: false,
+                            reviewed_at: new Date().toISOString(),
+                            reviewed_by: currentUser.id
+                        })
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                    
+                    alert("Question declined successfully!");
+                    loadQuestions();
+                } catch (error) {
+                    console.error("Error declining question:", error);
+                    alert("There was an error declining the question: " + error.message);
+                }
+            }
+            
+            async function saveChanges(id) {
+                try {
+                    const answerText = document.getElementById(`answer-${id}`).value.trim();
+                    
+                    const { error } = await supabaseClient
+                        .from('faq_questions')
+                        .update({
+                            answer: answerText,
+                            updated_at: new Date().toISOString()
+                        })
+                        .eq('id', id);
+                    
+                    if (error) throw error;
+                    
+                    alert("Changes saved successfully!");
+                } catch (error) {
+                    console.error("Error saving changes:", error);
+                    alert("There was an error saving the changes: " + error.message);
+                }
+            }
+            
+            function createPagination(totalCount) {
+                const totalPages = Math.ceil(totalCount / questionsPerPage);
+                
+                if (totalPages <= 1) {
+                    paginationContainer.innerHTML = '';
+                    return;
+                }
+                
+                let paginationHTML = '';
+                
+                // Previous button
+                paginationHTML += `
+                    <button class="pagination-btn ${currentPage === 1 ? 'disabled' : ''}" 
+                            ${currentPage === 1 ? 'disabled' : ''} 
+                            data-page="${currentPage - 1}">
+                        <i class="fas fa-chevron-left"></i> Previous
+                    </button>
+                `;
+                
+                // Page numbers
+                const maxButtons = 5;
+                let startPage = Math.max(1, currentPage - Math.floor(maxButtons / 2));
+                let endPage = Math.min(totalPages, startPage + maxButtons - 1);
+                
+                if (endPage - startPage + 1 < maxButtons) {
+                    startPage = Math.max(1, endPage - maxButtons + 1);
+                }
+                
+                for (let i = startPage; i <= endPage; i++) {
+                    paginationHTML += `
+                        <button class="pagination-btn ${i === currentPage ? 'active' : ''}" 
+                                data-page="${i}">
+                            ${i}
+                        </button>
+                    `;
+                }
+                
+                // Next button
+                paginationHTML += `
+                    <button class="pagination-btn ${currentPage === totalPages ? 'disabled' : ''}" 
+                            ${currentPage === totalPages ? 'disabled' : ''} 
+                            data-page="${currentPage + 1}">
+                        Next <i class="fas fa-chevron-right"></i>
+                    </button>
+                `;
+                
+                paginationContainer.innerHTML = paginationHTML;
+                
+                // Add event listeners to pagination buttons
+                const paginationButtons = paginationContainer.querySelectorAll('.pagination-btn:not(.disabled)');
+                paginationButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        currentPage = parseInt(button.getAttribute('data-page'));
+                        loadQuestions();
+                    });
+                });
+            }
+        });
+    </script>
+</body>
+</html>
