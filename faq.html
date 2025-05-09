@@ -376,24 +376,24 @@
         </div>
     </div>
 
-    <section class="faq-search-section">
+    <section class="resources-nav faq-nav">
         <div class="container">
             <div class="search-container">
                 <input type="text" id="faq-search" placeholder="Search for questions..." aria-label="Search for questions">
                 <button id="search-btn" aria-label="Search"><i class="fas fa-search"></i></button>
             </div>
-            <div class="category-tabs">
-                <button class="category-tab active" data-category="all">All Questions</button>
-                <button class="category-tab" data-category="admissions">Admissions</button>
-                <button class="category-tab" data-category="language">Language</button>
-                <button class="category-tab" data-category="financial">Financial</button>
-                <button class="category-tab" data-category="general">General</button>
-                <button class="category-tab" data-category="community">Community Questions</button>
+            <div class="resources-nav-container">
+                <a href="#" class="resource-nav-item active" data-category="all">All Questions</a>
+                <a href="#" class="resource-nav-item" data-category="admissions">Admissions</a>
+                <a href="#" class="resource-nav-item" data-category="language">Language</a>
+                <a href="#" class="resource-nav-item" data-category="financial">Financial</a>
+                <a href="#" class="resource-nav-item" data-category="general">General</a>
+                <a href="#" class="resource-nav-item" data-category="community">Community Questions</a>
             </div>
         </div>
     </section>
 
-    <section class="faq-content">
+    <section class="resource-section faq-content">
         <div class="container">
             <div id="faq-list">
                 <!-- FAQ items will be loaded dynamically -->
@@ -406,42 +406,44 @@
         </div>
     </section>
 
-    <section class="user-contribution">
+    <section class="cta user-contribution">
         <div class="container">
-            <h2>Ask a Question</h2>
-            
-            <!-- Message for non-authenticated users -->
-            <div id="login-to-ask" class="auth-message">
-                <p>Please <a href="login.html">login</a> or <a href="register.html">register</a> to submit a question.</p>
+            <div class="cta-content">
+                <h2>Ask a Question</h2>
+                
+                <!-- Message for non-authenticated users -->
+                <div id="login-to-ask" class="auth-message">
+                    <p>Please <a href="login.html">login</a> or <a href="register.html">register</a> to submit a question.</p>
+                </div>
+                
+                <!-- Form for authenticated users -->
+                <form id="question-form" class="question-form" style="display: none;">
+                    <div class="form-group">
+                        <label for="question">Your Question</label>
+                        <textarea id="question" name="question" rows="4" required></textarea>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="category">Category</label>
+                        <select id="category" name="category" required>
+                            <option value="">Select a category</option>
+                            <option value="admissions">Admissions</option>
+                            <option value="language">Language Requirements</option>
+                            <option value="financial">Financial Support</option>
+                            <option value="general">General</option>
+                        </select>
+                    </div>
+                    
+                    <div class="form-group checkbox-group">
+                        <input type="checkbox" id="terms" name="terms" required>
+                        <label for="terms">I agree to the <a href="terms.html">Terms and Conditions</a></label>
+                    </div>
+                    
+                    <div class="center-btn">
+                        <button type="submit" class="btn btn-primary">Submit Question</button>
+                    </div>
+                </form>
             </div>
-            
-            <!-- Form for authenticated users -->
-            <form id="question-form" class="question-form" style="display: none;">
-                <div class="form-group">
-                    <label for="question">Your Question</label>
-                    <textarea id="question" name="question" rows="4" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="category">Category</label>
-                    <select id="category" name="category" required>
-                        <option value="">Select a category</option>
-                        <option value="admissions">Admissions</option>
-                        <option value="language">Language Requirements</option>
-                        <option value="financial">Financial Support</option>
-                        <option value="general">General</option>
-                    </select>
-                </div>
-                
-                <div class="form-group checkbox-group">
-                    <input type="checkbox" id="terms" name="terms" required>
-                    <label for="terms">I agree to the <a href="terms.html">Terms and Conditions</a></label>
-                </div>
-                
-                <div class="form-group">
-                    <button type="submit" class="btn btn-primary">Submit Question</button>
-                </div>
-            </form>
         </div>
     </section>
 
@@ -474,12 +476,6 @@
         </div>
     </footer>
 
-    <!-- Add Supabase JS library -->
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-    <script src="js/auth-service.js"></script>
-    <script src="js/script.js"></script>
-    <script src="js/faq.js"></script>
-    <script src="js/faq-submission.js"></script>
     <!-- Chat Widget -->
     <div class="chat-widget">
         <button class="chat-toggle" id="chat-toggle" aria-label="Open chat">
@@ -505,9 +501,203 @@
             </form>
         </div>
     </div>
+
+    <!-- Add Supabase JS library -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="js/auth-service.js"></script>
+    <script src="js/script.js"></script>
     <script>
-        // Chat Widget Functionality
+        // FAQ functionality
         document.addEventListener('DOMContentLoaded', function() {
+            // Load FAQ data
+            fetch('json/faq-data.json')
+                .then(response => response.json())
+                .then(data => {
+                    displayFAQs(data);
+                    setupCategoryFilters();
+                    setupSearch();
+                })
+                .catch(error => {
+                    console.error('Error loading FAQ data:', error);
+                    document.querySelector('.loading').textContent = 'Error loading questions. Please try again later.';
+                });
+
+            function displayFAQs(faqs, category = 'all', searchTerm = '') {
+                const faqList = document.getElementById('faq-list');
+                faqList.innerHTML = '';
+                
+                let filteredFAQs = faqs;
+                
+                // Filter by category if not 'all'
+                if (category !== 'all') {
+                    filteredFAQs = faqs.filter(faq => faq.category === category);
+                }
+                
+                // Filter by search term if provided
+                if (searchTerm) {
+                    const term = searchTerm.toLowerCase();
+                    filteredFAQs = filteredFAQs.filter(faq => 
+                        faq.question.toLowerCase().includes(term) || 
+                        faq.answer.toLowerCase().includes(term)
+                    );
+                }
+                
+                // Show or hide "no results" message
+                if (filteredFAQs.length === 0) {
+                    document.getElementById('faq-not-found').style.display = 'block';
+                    return;
+                } else {
+                    document.getElementById('faq-not-found').style.display = 'none';
+                }
+                
+                // Group FAQs by category for better organization
+                const faqsByCategory = {};
+                
+                filteredFAQs.forEach(faq => {
+                    if (!faqsByCategory[faq.category]) {
+                        faqsByCategory[faq.category] = [];
+                    }
+                    faqsByCategory[faq.category].push(faq);
+                });
+                
+                // Display FAQs grouped by category
+                for (const category in faqsByCategory) {
+                    // Add category title if not searching or if multiple categories are shown
+                    if (!searchTerm || Object.keys(faqsByCategory).length > 1) {
+                        const categoryTitle = document.createElement('h2');
+                        categoryTitle.className = 'faq-category-title';
+                        
+                        let icon = 'fa-graduation-cap'; // Default icon
+                        
+                        // Set appropriate icon for each category
+                        switch(category) {
+                            case 'admissions':
+                                icon = 'fa-university';
+                                break;
+                            case 'language':
+                                icon = 'fa-language';
+                                break;
+                            case 'financial':
+                                icon = 'fa-money-bill-wave';
+                                break;
+                            case 'general':
+                                icon = 'fa-info-circle';
+                                break;
+                            case 'community':
+                                icon = 'fa-users';
+                                break;
+                        }
+                        
+                        categoryTitle.innerHTML = `<i class="fas ${icon}"></i> ${category.charAt(0).toUpperCase() + category.slice(1)}`;
+                        faqList.appendChild(categoryTitle);
+                    }
+                    
+                    // Add FAQs for this category
+                    faqsByCategory[category].forEach(faq => {
+                        const faqItem = document.createElement('div');
+                        faqItem.className = 'faq-item';
+                        if (faq.source === 'community') {
+                            faqItem.classList.add('user-question');
+                        }
+                        
+                        let faqHTML = `
+                            <div class="faq-question">
+                                <h3>${faq.question}</h3>
+                                <button class="toggle-answer" aria-label="Toggle answer">
+                                    <i class="fas fa-plus"></i>
+                                </button>
+                            </div>
+                            <div class="faq-answer">
+                                <p>${faq.answer}</p>
+                        `;
+                        
+                        // Add meta information for community questions
+                        if (faq.source === 'community') {
+                            faqHTML += `
+                                <div class="question-tag ${faq.status === 'pending' ? 'pending-tag' : 'community-tag'}">
+                                    ${faq.status === 'pending' ? 'Pending' : 'Community'}
+                                </div>
+                                <div class="question-meta">
+                                    <span>Asked by: ${faq.author || 'Anonymous'}</span>
+                                    <span>Date: ${faq.date || 'Recently'}</span>
+                                </div>
+                            `;
+                        }
+                        
+                        faqHTML += `</div>`;
+                        faqItem.innerHTML = faqHTML;
+                        faqList.appendChild(faqItem);
+                        
+                        // Add click event to toggle answer
+                        const toggleBtn = faqItem.querySelector('.toggle-answer');
+                        toggleBtn.addEventListener('click', function() {
+                            faqItem.classList.toggle('active');
+                        });
+                    });
+                }
+            }
+
+            function setupCategoryFilters() {
+                const categoryLinks = document.querySelectorAll('.resource-nav-item');
+                
+                categoryLinks.forEach(link => {
+                    link.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        
+                        // Remove active class from all links
+                        categoryLinks.forEach(l => l.classList.remove('active'));
+                        
+                        // Add active class to clicked link
+                        this.classList.add('active');
+                        
+                        // Get selected category
+                        const category = this.getAttribute('data-category');
+                        
+                        // Reload FAQs with selected category
+                        fetch('json/faq-data.json')
+                            .then(response => response.json())
+                            .then(data => {
+                                displayFAQs(data, category);
+                            });
+                    });
+                });
+            }
+
+            function setupSearch() {
+                const searchInput = document.getElementById('faq-search');
+                const searchBtn = document.getElementById('search-btn');
+                
+                // Search on button click
+                searchBtn.addEventListener('click', performSearch);
+                
+                // Search on Enter key
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+                
+                function performSearch() {
+                    const searchTerm = searchInput.value.trim();
+                    
+                    if (searchTerm) {
+                        // Reset category filters
+                        document.querySelectorAll('.resource-nav-item').forEach(link => {
+                            link.classList.remove('active');
+                        });
+                        document.querySelector('.resource-nav-item[data-category="all"]').classList.add('active');
+                        
+                        // Load and filter FAQs
+                        fetch('json/faq-data.json')
+                            .then(response => response.json())
+                            .then(data => {
+                                displayFAQs(data, 'all', searchTerm);
+                            });
+                    }
+                }
+            }
+
+            // Chat Widget Functionality
             const chatToggle = document.getElementById('chat-toggle');
             const chatBox = document.getElementById('chat-box');
             const closeChat = document.getElementById('close-chat');
@@ -571,6 +761,22 @@
                 messageDiv.className = `message ${type}`;
                 messageDiv.innerHTML = `<p>${text}</p>`;
                 chatMessages.appendChild(messageDiv);
+            }
+
+            // Check authentication status for question form
+            checkAuthStatus();
+            function checkAuthStatus() {
+                // This is a placeholder - the actual implementation would use your auth service
+                // For now, we'll just simulate a non-authenticated user
+                const isAuthenticated = false;
+                
+                if (isAuthenticated) {
+                    document.getElementById('login-to-ask').style.display = 'none';
+                    document.getElementById('question-form').style.display = 'block';
+                } else {
+                    document.getElementById('login-to-ask').style.display = 'block';
+                    document.getElementById('question-form').style.display = 'none';
+                }
             }
         });
     </script>
